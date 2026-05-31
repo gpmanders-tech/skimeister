@@ -95,35 +95,17 @@ function Hero() {
 function HeroVisual() {
   return (
     <div className="relative">
-      {/* Alpenachtergrond */}
+      {/* Alpenfoto */}
       <div className="overflow-hidden rounded-3xl shadow-2xl ring-1 ring-white/10">
-        <svg viewBox="0 0 480 360" className="w-full" aria-hidden>
-          <defs>
-            <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0" stopColor="#cfe0f4" />
-              <stop offset="0.55" stopColor="#7ea2d5" />
-              <stop offset="1" stopColor="#2f5a98" />
-            </linearGradient>
-            <linearGradient id="snowfield" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0" stopColor="#ffffff" />
-              <stop offset="1" stopColor="#e7eef8" />
-            </linearGradient>
-          </defs>
-          {/* lucht */}
-          <rect width="480" height="360" fill="url(#sky)" />
-          {/* zon + gloed */}
-          <circle cx="384" cy="80" r="42" fill="#fff3e0" opacity="0.45" />
-          <circle cx="384" cy="80" r="30" fill="#ffd9a8" opacity="0.95" />
-          {/* verre bergketen */}
-          <path d="M0 215 L80 140 L150 205 L240 120 L320 200 L400 140 L480 210 L480 360 L0 360 Z" fill="#5b7fb4" opacity="0.65" />
-          {/* hoofdbergen met sneeuwtoppen */}
-          <path d="M0 255 L70 160 L140 240 L215 150 L300 245 L375 175 L480 258 L480 360 L0 360 Z" fill="#36568a" />
-          <path d="M215 150 l28 44 -56 0 z M70 160 l24 38 -48 0 z M375 175 l22 34 -44 0 z" fill="#ffffff" opacity="0.92" />
-          {/* voorgrond sneeuwveld */}
-          <path d="M0 288 Q240 252 480 292 L480 360 L0 360 Z" fill="url(#snowfield)" />
-          {/* skispoor */}
-          <path d="M55 348 Q190 300 250 322 T445 305" stroke="#ff6b35" strokeWidth="5" fill="none" strokeLinecap="round" opacity="0.9" />
-        </svg>
+        <div className="relative aspect-[3/2]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/hero-alps.jpg"
+            alt="Besneeuwde Alpentop tegen een blauwe lucht"
+            className="h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-tr from-alpine-900/45 via-alpine-900/5 to-transparent" />
+        </div>
       </div>
 
       {/* Zwevende instructeurkaart */}
