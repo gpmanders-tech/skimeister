@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+/* ===========================================================================
+   Skimeister.nl — merkidentiteit
+   Alpine-blauw + sneeuwwit + energiek oranje
+   =========================================================================== */
+@theme {
+  /* Primair — alpine-blauw */
+  --color-alpine-50: #eef3fa;
+  --color-alpine-100: #d4e0f1;
+  --color-alpine-200: #a9c1e3;
+  --color-alpine-300: #7ea2d5;
+  --color-alpine-400: #4f7ec0;
+  --color-alpine-500: #2f5a98;
+  --color-alpine-600: #1b3a6b; /* primaire huisstijlkleur */
+  --color-alpine-700: #163057;
+  --color-alpine-800: #112543;
+  --color-alpine-900: #0b1930;
+
+  /* Accent — energiek oranje */
+  --color-piste-50: #fff3ee;
+  --color-piste-100: #ffe0d2;
+  --color-piste-200: #ffc1a6;
+  --color-piste-300: #ff9d72;
+  --color-piste-400: #ff7d47;
+  --color-piste-500: #ff6b35; /* accentkleur */
+  --color-piste-600: #e85420;
+  --color-piste-700: #c04116;
+
+  /* Sneeuw / neutralen */
+  --color-snow: #fbfcfe;
+  --color-snow-200: #eef1f6;
+
+  /* Fonts (gekoppeld in layout.tsx) */
+  --font-display: var(--font-display), "Segoe UI", sans-serif;
+  --font-sans: var(--font-body), "Segoe UI", sans-serif;
+}
+
+:root {
+  --background: #fbfcfe;
+  --foreground: #0b1930;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+/* Subtiele sneeuw/berg-textuur voor achtergronden */
+.bg-snow-texture {
+  background-color: var(--color-snow);
+  background-image:
+    radial-gradient(circle at 20% 15%, rgba(27, 58, 107, 0.04) 0, transparent 35%),
+    radial-gradient(circle at 80% 0%, rgba(255, 107, 53, 0.05) 0, transparent 30%);
+}
+
+/* Berg-silhouet als SVG-achtergrond kan per sectie worden toegevoegd */
+h1, h2, h3, h4, .font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+}
