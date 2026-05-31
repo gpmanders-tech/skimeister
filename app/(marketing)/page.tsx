@@ -85,29 +85,84 @@ function Hero() {
           </p>
         </div>
         <div className="relative hidden lg:block">
-          <MountainArt />
+          <HeroVisual />
         </div>
       </Container>
     </section>
   );
 }
 
-function MountainArt() {
+function HeroVisual() {
   return (
-    <svg viewBox="0 0 400 320" className="w-full drop-shadow-2xl" aria-hidden>
-      <defs>
-        <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0" stopColor="#7ea2d5" />
-          <stop offset="1" stopColor="#1b3a6b" />
-        </linearGradient>
-      </defs>
-      <rect width="400" height="320" rx="24" fill="url(#sky)" />
-      <circle cx="320" cy="70" r="34" fill="#ffd9c2" opacity="0.9" />
-      <path d="M0 250 L90 120 L150 200 L210 90 L280 210 L340 150 L400 250 Z" fill="#112543" />
-      <path d="M210 90 l24 36 -48 0 z M90 120 l18 28 -36 0 z" fill="#fff" />
-      <path d="M0 250 L400 250 L400 320 L0 320 Z" fill="#fbfcfe" />
-      <path d="M40 290 q160 -40 320 0" stroke="#ff6b35" strokeWidth="4" fill="none" strokeLinecap="round" />
-    </svg>
+    <div className="relative">
+      {/* Alpenachtergrond */}
+      <div className="overflow-hidden rounded-3xl shadow-2xl ring-1 ring-white/10">
+        <svg viewBox="0 0 480 360" className="w-full" aria-hidden>
+          <defs>
+            <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stopColor="#cfe0f4" />
+              <stop offset="0.55" stopColor="#7ea2d5" />
+              <stop offset="1" stopColor="#2f5a98" />
+            </linearGradient>
+            <linearGradient id="snowfield" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stopColor="#ffffff" />
+              <stop offset="1" stopColor="#e7eef8" />
+            </linearGradient>
+          </defs>
+          {/* lucht */}
+          <rect width="480" height="360" fill="url(#sky)" />
+          {/* zon + gloed */}
+          <circle cx="384" cy="80" r="42" fill="#fff3e0" opacity="0.45" />
+          <circle cx="384" cy="80" r="30" fill="#ffd9a8" opacity="0.95" />
+          {/* verre bergketen */}
+          <path d="M0 215 L80 140 L150 205 L240 120 L320 200 L400 140 L480 210 L480 360 L0 360 Z" fill="#5b7fb4" opacity="0.65" />
+          {/* hoofdbergen met sneeuwtoppen */}
+          <path d="M0 255 L70 160 L140 240 L215 150 L300 245 L375 175 L480 258 L480 360 L0 360 Z" fill="#36568a" />
+          <path d="M215 150 l28 44 -56 0 z M70 160 l24 38 -48 0 z M375 175 l22 34 -44 0 z" fill="#ffffff" opacity="0.92" />
+          {/* voorgrond sneeuwveld */}
+          <path d="M0 288 Q240 252 480 292 L480 360 L0 360 Z" fill="url(#snowfield)" />
+          {/* skispoor */}
+          <path d="M55 348 Q190 300 250 322 T445 305" stroke="#ff6b35" strokeWidth="5" fill="none" strokeLinecap="round" opacity="0.9" />
+        </svg>
+      </div>
+
+      {/* Zwevende instructeurkaart */}
+      <div className="absolute -bottom-6 -left-6 w-64 rounded-2xl bg-white p-4 shadow-xl ring-1 ring-alpine-100">
+        <div className="flex items-center gap-3">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-alpine-500 to-alpine-700 font-display text-lg font-bold text-white">
+            L
+          </div>
+          <div className="min-w-0">
+            <p className="flex items-center gap-1.5 font-semibold text-alpine-900">
+              Lars V.
+              <span className="h-2 w-2 rounded-full bg-green-500" />
+            </p>
+            <p className="text-xs text-alpine-500">Sankt Anton · 8 jr ervaring</p>
+          </div>
+        </div>
+        <div className="mt-3 flex items-center gap-1 text-sm">
+          <span className="text-piste-500">★★★★★</span>
+          <span className="font-medium text-alpine-700">4,9</span>
+          <span className="text-xs text-alpine-400">(27)</span>
+        </div>
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          <span className="rounded-full bg-alpine-50 px-2 py-0.5 text-xs font-medium text-alpine-700">
+            ÖSV Landeslehrer
+          </span>
+          <span className="rounded-full bg-alpine-50 px-2 py-0.5 text-xs font-medium text-alpine-700">
+            ISIA
+          </span>
+        </div>
+      </div>
+
+      {/* Zwevende verificatie-badge */}
+      <div className="absolute -right-4 top-6 rounded-xl bg-white px-3 py-2 shadow-lg ring-1 ring-alpine-100">
+        <p className="flex items-center gap-1.5 text-sm font-semibold text-alpine-900">
+          <span className="text-green-600">✓</span> VOG &amp; EHBO
+        </p>
+        <p className="text-xs text-alpine-500">geverifieerd</p>
+      </div>
+    </div>
   );
 }
 
