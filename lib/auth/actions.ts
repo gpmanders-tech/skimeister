@@ -34,26 +34,39 @@ export async function signUpAction(
     return { error: "Kies een geldig accounttype." };
   }
 
-  const supabase = await createClient();
-  const { error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      data: { role },
-      emailRedirectTo: `${siteUrl()}/dashboard`,
-    },
-  });
+  try {
+    const supabase = await createClient();
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { role },
+        emailRedirectTo: `${siteUrl()}/dashboard`,
+      },
+    });
 
-  if (error) {
-    return { error: vertaalAuthFout(error.message) };
+    if (error) {
+      return { error: vertaalAuthFout(error.message) };
+    }
+
+    // De welkomstmail mag de registratie nooit laten crashen.
+    try {
+      await notifyWelcome(email, ROLE_LABELS[role]);
+    } catch (e) {
+      console.error("Welkomstmail mislukt (genegeerd):", e);
+    }
+
+    return {
+      message:
+        "Account aangemaakt! Je kunt nu inloggen.",
+    };
+  } catch (e) {
+    console.error("Registratie-fout:", e);
+    return {
+      error:
+        "Er ging iets mis bij het aanmaken van je account. Probeer het opnieuw of neem contact op.",
+    };
   }
-
-  await notifyWelcome(email, ROLE_LABELS[role]);
-
-  return {
-    message:
-      "Account aangemaakt! Check je e-mail om je adres te bevestigen, en log daarna in.",
-  };
 }
 
 /** Inloggen met e-mail + wachtwoord. */
