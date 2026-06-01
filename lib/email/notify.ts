@@ -19,9 +19,11 @@ export async function notifyWelcome(email: string, roleLabel: string) {
   await sendEmail({ to: email, ...t });
 }
 
-/** Seintje naar de beheerder (ADMIN_EMAIL) bij elke nieuwe registratie. */
+/** Seintje naar de beheerder bij elke nieuwe registratie. */
 export async function notifyAdminNewSignup(roleLabel: string, newEmail: string) {
-  const to = process.env.ADMIN_EMAIL;
+  // Valt terug op het vaste beheeradres als ADMIN_EMAIL niet (goed) is gezet,
+  // zodat de melding altijd verstuurd wordt.
+  const to = (process.env.ADMIN_EMAIL || "gpmanders@gmail.com").trim();
   if (!to) return;
   await sendEmail({ to, ...emailTemplates.newSignup(roleLabel, newEmail) });
 }
