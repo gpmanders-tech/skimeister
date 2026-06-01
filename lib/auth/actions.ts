@@ -2,17 +2,13 @@
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { REGISTERABLE_ROLES, ROLE_LABELS, type Role } from "@/lib/constants/options";
 import { notifyWelcome } from "@/lib/email/notify";
 
 export interface AuthState {
   error?: string;
   message?: string;
-}
-
-function siteUrl() {
-  return process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 }
 
 /** Registratie: maakt een Supabase-account aan met de gekozen rol in de metadata. */
@@ -35,14 +31,15 @@ export async function signUpAction(
   }
 
   try {
-    const supabase = await createClient();
-    const { error } = await supabase.auth.signUp({
+    // We maken de gebruiker direct bevestigd aan via de service-role (admin),
+    // zodat Supabase GEEN bevestigingsmail stuurt (omzeilt de mail-limiet).
+    // Zodra Resend/SMTP is gekoppeld, kan dit terug naar e-mailverificatie.
+    const service = createServiceClient();
+    const { error } = await service.auth.admin.createUser({
       email,
       password,
-      options: {
-        data: { role },
-        emailRedirectTo: `${siteUrl()}/dashboard`,
-      },
+      email_confirm: true,
+      user_metadata: { role },
     });
 
     if (error) {
@@ -104,7 +101,12 @@ export async function signOutAction(): Promise<void> {
 function vertaalAuthFout(message: string): string {
   const m = message.toLowerCase();
   if (m.includes("invalid login")) return "Onjuist e-mailadres of wachtwoord.";
-  if (m.includes("already registered") || m.includes("already been registered"))
+  if (
+    m.includes("already registered") ||
+    m.includes("already been registered") ||
+    m.includes("already exists") ||
+    m.includes("email_exists")
+  )
     return "Er bestaat al een account met dit e-mailadres.";
   if (m.includes("email not confirmed"))
     return "Bevestig eerst je e-mailadres via de link in je mailbox.";
