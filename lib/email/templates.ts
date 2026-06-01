@@ -33,6 +33,15 @@ export const emailTemplates = {
     ),
   }),
 
+  newSignup: (roleLabel: string, email: string) => ({
+    subject: `Nieuwe aanmelding: ${roleLabel}`,
+    html: layout(
+      "Nieuwe aanmelding op Skimeister",
+      `Er heeft zich zojuist iemand geregistreerd:<br><br><strong>${roleLabel}</strong> — ${email}`,
+      { label: "Bekijk in admin", href: `${SITE}/admin/gebruikers` },
+    ),
+  }),
+
   newApplication: (projectName: string) => ({
     subject: `Nieuwe aanmelding voor "${projectName}"`,
     html: layout(

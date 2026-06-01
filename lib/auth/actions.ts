@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { REGISTERABLE_ROLES, ROLE_LABELS, type Role } from "@/lib/constants/options";
-import { notifyWelcome } from "@/lib/email/notify";
+import { notifyWelcome, notifyAdminNewSignup } from "@/lib/email/notify";
 
 export interface AuthState {
   error?: string;
@@ -46,11 +46,12 @@ export async function signUpAction(
       return { error: vertaalAuthFout(error.message) };
     }
 
-    // De welkomstmail mag de registratie nooit laten crashen.
+    // E-mails mogen de registratie nooit laten crashen.
     try {
       await notifyWelcome(email, ROLE_LABELS[role]);
+      await notifyAdminNewSignup(ROLE_LABELS[role], email);
     } catch (e) {
-      console.error("Welkomstmail mislukt (genegeerd):", e);
+      console.error("Registratie-mail mislukt (genegeerd):", e);
     }
 
     return {

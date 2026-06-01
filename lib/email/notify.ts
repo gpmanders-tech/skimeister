@@ -19,6 +19,13 @@ export async function notifyWelcome(email: string, roleLabel: string) {
   await sendEmail({ to: email, ...t });
 }
 
+/** Seintje naar de beheerder (ADMIN_EMAIL) bij elke nieuwe registratie. */
+export async function notifyAdminNewSignup(roleLabel: string, newEmail: string) {
+  const to = process.env.ADMIN_EMAIL;
+  if (!to) return;
+  await sendEmail({ to, ...emailTemplates.newSignup(roleLabel, newEmail) });
+}
+
 export async function notifyNewMessage(receiverId: string, senderName: string) {
   const to = await emailFor(receiverId);
   if (!to) return;
