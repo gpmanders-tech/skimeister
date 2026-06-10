@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { RESORTS } from "@/lib/constants/resorts";
 import { BLOG_POSTS } from "@/lib/constants/blog";
 
-const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://skimeister.nl";
+const BASE = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.skimeister.nl").trim();
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPaths = [

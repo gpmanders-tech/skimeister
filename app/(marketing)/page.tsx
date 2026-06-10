@@ -4,7 +4,7 @@ import { ButtonLink } from "@/components/ui/Button";
 import { RESORTS, RESORTS_BY_COUNTRY } from "@/lib/constants/resorts";
 import { REGISTERABLE_ROLES, ROLE_LABELS, ROLE_TAGLINES } from "@/lib/constants/options";
 
-const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://skimeister.nl";
+const SITE = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.skimeister.nl").trim();
 
 const JSON_LD = {
   "@context": "https://schema.org",
