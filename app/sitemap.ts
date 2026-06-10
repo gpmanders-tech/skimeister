@@ -2,7 +2,10 @@ import type { MetadataRoute } from "next";
 import { RESORTS } from "@/lib/constants/resorts";
 import { BLOG_POSTS } from "@/lib/constants/blog";
 
-const BASE = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.skimeister.nl").trim();
+// Canonicale host: bewust hardcoded op www (waar de site naartoe redirect en
+// waar de Search Console-property op staat). Niet uit env, want die bevatte
+// spaties en de non-www-variant — dat brak de sitemap.
+const BASE = "https://www.skimeister.nl";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPaths = [
