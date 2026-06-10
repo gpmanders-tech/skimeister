@@ -19,9 +19,11 @@ const body = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.skimeister.nl"),
   alternates: { canonical: "/" },
-  verification: process.env.GOOGLE_SITE_VERIFICATION
-    ? { google: process.env.GOOGLE_SITE_VERIFICATION }
-    : undefined,
+  verification: {
+    google:
+      process.env.GOOGLE_SITE_VERIFICATION ??
+      "kaWRgUaBbKFikBZ7WZHE3HLLRhRZihjhNBzG75BWXMc",
+  },
   title: {
     default: "Skimeister.nl — De verbinding tussen skileraren en de skipiste",
     template: "%s · Skimeister.nl",
