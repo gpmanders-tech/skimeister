@@ -4,11 +4,33 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { REGISTERABLE_ROLES, ROLE_LABELS, type Role } from "@/lib/constants/options";
-import { notifyWelcome, notifyAdminNewSignup } from "@/lib/email/notify";
+import { notifyWelcome, notifyAdminSignupCopy } from "@/lib/email/notify";
+import { checkFormGuards } from "@/lib/security/formGuard";
+import { checkEmailShape, checkEmailDomainExists } from "@/lib/security/emailCheck";
+import { clientIp, rateLimit } from "@/lib/security/rateLimit";
 
 export interface AuthState {
   error?: string;
   message?: string;
+}
+
+/** Registraties per IP: max 5 per uur en 15 per dag. */
+const SIGNUP_PER_HOUR = 5;
+const SIGNUP_PER_DAY = 15;
+
+function logGeblokkeerd(reason: string, email: string, ip: string): void {
+  // Zichtbaar in de Vercel-logs; zo zie je of de filters werk verzetten.
+  console.warn(`[registratie geblokkeerd] ${reason} | ${email || "(leeg)"} | ip ${ip}`);
+}
+
+/**
+ * Normaliseert een NL/BE-telefoonnummer naar alleen cijfers en een eventuele +.
+ * Geeft null bij een onbruikbaar nummer.
+ */
+function normaliseerTelefoon(raw: string): string | null {
+  const compact = raw.replace(/[\s.\-()/]/g, "");
+  if (!/^(\+|00)?\d{9,15}$/.test(compact)) return null;
+  return compact;
 }
 
 /** Registratie: maakt een Supabase-account aan met de gekozen rol in de metadata. */
@@ -16,9 +38,33 @@ export async function signUpAction(
   _prev: AuthState,
   formData: FormData,
 ): Promise<AuthState> {
-  const email = String(formData.get("email") ?? "").trim();
+  const email = String(formData.get("email") ?? "").trim().toLowerCase();
   const password = String(formData.get("password") ?? "");
   const role = String(formData.get("role") ?? "") as Role;
+  const phoneRaw = String(formData.get("phone") ?? "").trim();
+  const city = String(formData.get("city") ?? "").trim();
+  const ip = await clientIp();
+
+  // ── Bot-afweer: honeypot + ondertekend tijdstempel ───────────────────────
+  const guard = checkFormGuards(formData);
+  if (!guard.ok) {
+    logGeblokkeerd(guard.reason, email, ip);
+    return { error: guard.message };
+  }
+
+  // ── Rate limit per IP ────────────────────────────────────────────────────
+  // Bij een onbekend IP (ontbrekende proxy-header) ruimer, zodat echte
+  // bezoekers nooit collectief buitengesloten worden.
+  const factor = ip === "onbekend" ? 10 : 1;
+  const perHour = rateLimit(`signup:h:${ip}`, SIGNUP_PER_HOUR * factor, 60 * 60 * 1000);
+  const perDay = rateLimit(`signup:d:${ip}`, SIGNUP_PER_DAY * factor, 24 * 60 * 60 * 1000);
+  if (!perHour.ok || !perDay.ok) {
+    const wacht = !perHour.ok ? perHour.retryAfterMinutes : perDay.retryAfterMinutes;
+    logGeblokkeerd("rate-limit", email, ip);
+    return {
+      error: `Er zijn te veel accounts aangemaakt vanaf deze verbinding. Probeer het over ${wacht} minuten opnieuw.`,
+    };
+  }
 
   if (!email || !password) {
     return { error: "Vul je e-mailadres en wachtwoord in." };
@@ -30,6 +76,28 @@ export async function signUpAction(
     return { error: "Kies een geldig accounttype." };
   }
 
+  // ── Telefoonnummer en woonplaats ─────────────────────────────────────────
+  const phone = normaliseerTelefoon(phoneRaw);
+  if (!phone) {
+    return { error: "Vul een geldig telefoonnummer in, bijvoorbeeld 06 12345678." };
+  }
+  if (city.length < 2 || city.length > 60) {
+    return { error: "Vul je woonplaats in." };
+  }
+
+  // ── E-mailadres: vorm, wegwerpdiensten, bestaat het domein ───────────────
+  const shape = checkEmailShape(email);
+  if (!shape.ok) {
+    logGeblokkeerd(shape.reason!, email, ip);
+    return { error: shape.message };
+  }
+
+  const domain = await checkEmailDomainExists(email);
+  if (!domain.ok) {
+    logGeblokkeerd(domain.reason!, email, ip);
+    return { error: domain.message };
+  }
+
   try {
     // We maken de gebruiker direct bevestigd aan via de service-role (admin),
     // zodat Supabase GEEN bevestigingsmail stuurt (omzeilt de mail-limiet).
@@ -39,7 +107,7 @@ export async function signUpAction(
       email,
       password,
       email_confirm: true,
-      user_metadata: { role },
+      user_metadata: { role, phone, city },
     });
 
     if (error) {
@@ -49,7 +117,14 @@ export async function signUpAction(
     // E-mails mogen de registratie nooit laten crashen.
     try {
       await notifyWelcome(email, ROLE_LABELS[role]);
-      await notifyAdminNewSignup(ROLE_LABELS[role], email);
+      // Kopie van de volledige aanmelding naar de beheerder.
+      await notifyAdminSignupCopy({
+        roleLabel: ROLE_LABELS[role],
+        email,
+        phone,
+        city,
+        ip,
+      });
     } catch (e) {
       console.error("Registratie-mail mislukt (genegeerd):", e);
     }

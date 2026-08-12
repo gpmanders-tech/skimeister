@@ -12,6 +12,36 @@ interface UserRow {
   created_at: string;
 }
 
+interface SignupDetails {
+  phone?: string;
+  city?: string;
+}
+
+/**
+ * Telefoonnummer en woonplaats worden bij registratie in de account-metadata
+ * gezet (zie signUpAction). Die staan in auth.users, niet in public.users,
+ * dus halen we ze er apart bij en koppelen we ze op id.
+ */
+async function signupDetailsById(
+  service: ReturnType<typeof createServiceClient>,
+): Promise<Map<string, SignupDetails>> {
+  const map = new Map<string, SignupDetails>();
+  const perPage = 1000;
+
+  for (let page = 1; page <= 5; page++) {
+    const { data, error } = await service.auth.admin.listUsers({ page, perPage });
+    if (error || !data?.users?.length) break;
+
+    for (const u of data.users) {
+      const meta = (u.user_metadata ?? {}) as SignupDetails;
+      map.set(u.id, { phone: meta.phone, city: meta.city });
+    }
+    if (data.users.length < perPage) break;
+  }
+
+  return map;
+}
+
 export default async function AdminUsersPage({
   searchParams,
 }: {
@@ -26,6 +56,14 @@ export default async function AdminUsersPage({
 
   const { data } = await query.limit(500);
   const users = (data ?? []) as UserRow[];
+
+  // Mag de pagina nooit laten klappen als de auth-API hapert.
+  let details = new Map<string, SignupDetails>();
+  try {
+    details = await signupDetailsById(service);
+  } catch (e) {
+    console.error("Aanmeldgegevens ophalen mislukt (genegeerd):", e);
+  }
 
   return (
     <>
@@ -55,6 +93,8 @@ export default async function AdminUsersPage({
             <tr>
               <th className="p-3">E-mail</th>
               <th className="p-3">Rol</th>
+              <th className="p-3">Telefoon</th>
+              <th className="p-3">Woonplaats</th>
               <th className="p-3">Aangemeld</th>
             </tr>
           </thead>
@@ -66,6 +106,12 @@ export default async function AdminUsersPage({
                   <span className="rounded-full bg-alpine-50 px-2 py-0.5 text-xs font-medium text-alpine-700">
                     {ROLE_LABELS[u.role] ?? u.role}
                   </span>
+                </td>
+                <td className="p-3 text-alpine-700">
+                  {details.get(u.id)?.phone ?? "–"}
+                </td>
+                <td className="p-3 text-alpine-700">
+                  {details.get(u.id)?.city ?? "–"}
                 </td>
                 <td className="p-3 text-alpine-500">{formatDate(u.created_at)}</td>
               </tr>

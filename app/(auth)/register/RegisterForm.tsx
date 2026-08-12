@@ -11,11 +11,12 @@ import {
 } from "@/lib/constants/options";
 import { Button } from "@/components/ui/Button";
 import { Input, Label, FormError, FormMessage } from "@/components/ui/form";
+import { HONEYPOT_FIELD, TOKEN_FIELD } from "@/lib/security/formFields";
 import { cn } from "@/lib/utils";
 
 const initial: AuthState = {};
 
-export function RegisterForm() {
+export function RegisterForm({ formToken }: { formToken: string }) {
   const [role, setRole] = useState<Role>("instructor");
   const [state, formAction, pending] = useActionState(signUpAction, initial);
 
@@ -45,6 +46,23 @@ export function RegisterForm() {
 
       <form action={formAction} className="mt-6 space-y-5">
         <input type="hidden" name="role" value={role} />
+        <input type="hidden" name={TOKEN_FIELD} value={formToken} />
+
+        {/* Honeypot: onzichtbaar voor bezoekers, bots vullen 'm wel in. */}
+        <div
+          aria-hidden="true"
+          className="absolute left-[-9999px] h-0 w-0 overflow-hidden"
+        >
+          <label htmlFor={HONEYPOT_FIELD}>Laat dit veld leeg</label>
+          <input
+            id={HONEYPOT_FIELD}
+            name={HONEYPOT_FIELD}
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+            defaultValue=""
+          />
+        </div>
 
         <div className="grid grid-cols-1 gap-2">
           {REGISTERABLE_ROLES.map((r) => (
@@ -70,6 +88,29 @@ export function RegisterForm() {
         <div>
           <Label htmlFor="email">E-mailadres</Label>
           <Input id="email" name="email" type="email" autoComplete="email" required />
+        </div>
+        <div>
+          <Label htmlFor="phone">Telefoonnummer</Label>
+          <Input
+            id="phone"
+            name="phone"
+            type="tel"
+            inputMode="tel"
+            autoComplete="tel"
+            placeholder="06 12345678"
+            required
+          />
+        </div>
+        <div>
+          <Label htmlFor="city">Woonplaats</Label>
+          <Input
+            id="city"
+            name="city"
+            type="text"
+            autoComplete="address-level2"
+            maxLength={60}
+            required
+          />
         </div>
         <div>
           <Label htmlFor="password">Wachtwoord</Label>

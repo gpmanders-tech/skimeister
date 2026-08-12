@@ -1,6 +1,7 @@
 import { createServiceClient } from "@/lib/supabase/server";
 import { sendEmail } from "@/lib/email/client";
 import { emailTemplates } from "@/lib/email/templates";
+import { ROLE_LABELS, type Role } from "@/lib/constants/options";
 
 /** Zoekt het e-mailadres bij een user-id (service role; omzeilt RLS). */
 async function emailFor(userId: string): Promise<string | null> {
@@ -19,13 +20,23 @@ export async function notifyWelcome(email: string, roleLabel: string) {
   await sendEmail({ to: email, ...t });
 }
 
-/** Seintje naar de beheerder bij elke nieuwe registratie. */
-export async function notifyAdminNewSignup(roleLabel: string, newEmail: string) {
-  // Valt terug op het vaste beheeradres als ADMIN_EMAIL niet (goed) is gezet,
-  // zodat de melding altijd verstuurd wordt.
+export interface SignupCopy {
+  roleLabel: string;
+  email: string;
+  phone: string;
+  city: string;
+  ip?: string;
+}
+
+/**
+ * Stuurt de beheerder een kopie van de volledige aanmelding: alles wat de
+ * bezoeker heeft ingevuld, niet alleen een seintje dat er iemand was.
+ * Valt terug op het vaste beheeradres als ADMIN_EMAIL niet (goed) is gezet.
+ */
+export async function notifyAdminSignupCopy(copy: SignupCopy): Promise<void> {
   const to = (process.env.ADMIN_EMAIL || "gpmanders@gmail.com").trim();
   if (!to) return;
-  await sendEmail({ to, ...emailTemplates.newSignup(roleLabel, newEmail) });
+  await sendEmail({ to, ...emailTemplates.signupCopy(copy) });
 }
 
 export async function notifyNewMessage(receiverId: string, senderName: string) {

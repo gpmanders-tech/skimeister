@@ -19,6 +19,14 @@ function layout(title: string, body: string, cta?: { label: string; href: string
   </div>`;
 }
 
+/** Eén regel in een label/waarde-tabel. */
+function row(label: string, value: string): string {
+  return (
+    `<tr><td style="padding:8px 12px 8px 0;border-bottom:1px solid #eef1f6;color:#7e8aa0;white-space:nowrap;vertical-align:top">${label}</td>` +
+    `<td style="padding:8px 0;border-bottom:1px solid #eef1f6"><strong>${value}</strong></td></tr>`
+  );
+}
+
 export const emailTemplates = {
   welcome: (role: string) => ({
     subject: "Welkom bij Skimeister.nl 🎿",
@@ -33,11 +41,24 @@ export const emailTemplates = {
     ),
   }),
 
-  newSignup: (roleLabel: string, email: string) => ({
-    subject: `Nieuwe aanmelding: ${roleLabel}`,
+  /** Kopie van de volledige aanmelding naar de beheerder. */
+  signupCopy: (c: {
+    roleLabel: string;
+    email: string;
+    phone: string;
+    city: string;
+    ip?: string;
+  }) => ({
+    subject: `Aanmelding Skimeister: ${c.roleLabel} — ${c.city}`,
     html: layout(
-      "Nieuwe aanmelding op Skimeister",
-      `Er heeft zich zojuist iemand geregistreerd:<br><br><strong>${roleLabel}</strong> — ${email}`,
+      "Kopie van de aanmelding",
+      `<table style="width:100%;border-collapse:collapse;font-size:15px">` +
+        row("Accounttype", c.roleLabel) +
+        row("E-mailadres", `<a href="mailto:${c.email}">${c.email}</a>`) +
+        row("Telefoonnummer", `<a href="tel:${c.phone}">${c.phone}</a>`) +
+        row("Woonplaats", c.city) +
+        (c.ip ? row("IP-adres", c.ip) : "") +
+        `</table>`,
       { label: "Bekijk in admin", href: `${SITE}/admin/gebruikers` },
     ),
   }),
