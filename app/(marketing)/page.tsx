@@ -1,8 +1,14 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { ButtonLink } from "@/components/ui/Button";
-import { RESORTS, RESORTS_BY_COUNTRY } from "@/lib/constants/resorts";
+import { OpdrachtKaart } from "@/components/opdrachten/OpdrachtKaart";
+import { getRecenteOpdrachten } from "@/lib/opdrachten/queries";
+import { getLiveCijfers, type LiveCijfers } from "@/lib/stats";
+import { RESORTS_BY_COUNTRY } from "@/lib/constants/resorts";
 import { REGISTERABLE_ROLES, ROLE_LABELS, ROLE_TAGLINES } from "@/lib/constants/options";
+
+// Homepage blijft statisch, maar haalt elke 5 minuten verse opdrachten op.
+export const revalidate = 300;
 
 const SITE = "https://www.skimeister.nl";
 
@@ -26,7 +32,12 @@ const JSON_LD = {
   ],
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const [opdrachten, cijfers] = await Promise.all([
+    getRecenteOpdrachten(3),
+    getLiveCijfers(),
+  ]);
+
   return (
     <>
       <script
@@ -34,12 +45,12 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
       />
       <Hero />
+      <OpenOpdrachten opdrachten={opdrachten} />
       <HowItWorks />
       <Audiences />
-      <Stats />
+      <Cijfers cijfers={cijfers} />
       <ResortsSection />
       <PricingTeaser />
-      <Partners />
       <FinalCta />
     </>
   );
@@ -59,29 +70,35 @@ function Hero() {
       />
       <Container className="relative grid gap-10 py-20 lg:grid-cols-2 lg:items-center lg:py-28">
         <div>
-          <p className="mb-4 inline-block rounded-full bg-white/10 px-4 py-1 text-sm font-medium text-piste-200">
-            De verbinding tussen skileraren en de skipiste
+          <p className="mb-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-sm font-medium text-piste-200">
+            <span className="h-1.5 w-1.5 rounded-full bg-piste-300" />
+            In opbouw voor seizoen 2026/27
           </p>
           <h1 className="font-display text-4xl font-extrabold leading-tight sm:text-5xl">
-            Vind de beste skileraar voor jouw seizoen
+            Echte opdrachten voor gecontroleerde skileraren
           </h1>
           <p className="mt-5 max-w-xl text-lg text-alpine-100">
-            Skimeister.nl verbindt gecertificeerde skileraren met skischolen,
-            reisorganisaties en scholen in Oostenrijk en de Alpen. Eén platform
-            voor het hele seizoen.
+            Skischolen, reisorganisaties en scholen plaatsen hun opdrachten
+            open en zichtbaar. Wij controleren VOG en EHBO handmatig, zodat je
+            weet wie er voor je groep staat.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <ButtonLink href="/register" variant="accent" size="lg">
-              Maak gratis profiel aan
+            <ButtonLink href="/opdrachten" variant="accent" size="lg">
+              Bekijk de opdrachten
             </ButtonLink>
-            <ButtonLink href="/instructeurs" variant="outline" size="lg" className="border-white/30 text-white hover:bg-white/10">
-              Vind jouw skileraar
+            <ButtonLink
+              href="/register"
+              variant="outline"
+              size="lg"
+              className="border-white/30 text-white hover:bg-white/10"
+            >
+              Maak een gratis profiel aan
             </ButtonLink>
           </div>
           <p className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-alpine-100">
-            <span>✓ VOG &amp; EHBO geverifieerd</span>
+            <span>✓ VOG &amp; EHBO handmatig gecontroleerd</span>
             <span>✓ Gratis voor instructeurs</span>
-            <span>✓ {RESORTS.length} skigebieden</span>
+            <span>✓ Reageren in één klik</span>
           </p>
         </div>
         <div className="relative hidden lg:block">
@@ -108,52 +125,63 @@ function HeroVisual() {
         </div>
       </div>
 
-      {/* Zwevende instructeurkaart */}
-      <div className="absolute -bottom-6 -left-6 w-64 rounded-2xl bg-white p-4 shadow-xl ring-1 ring-alpine-100">
-        <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-alpine-500 to-alpine-700 font-display text-lg font-bold text-white">
-            L
-          </div>
-          <div className="min-w-0">
-            <p className="flex items-center gap-1.5 font-semibold text-alpine-900">
-              Lars V.
-              <span className="h-2 w-2 rounded-full bg-green-500" />
-            </p>
-            <p className="text-xs text-alpine-500">Sankt Anton · 8 jr ervaring</p>
-          </div>
-        </div>
-        <div className="mt-3 flex items-center gap-1 text-sm">
-          <span className="text-piste-500">★★★★★</span>
-          <span className="font-medium text-alpine-700">4,9</span>
-          <span className="text-xs text-alpine-400">(27)</span>
-        </div>
-        <div className="mt-3 flex flex-wrap gap-1.5">
-          <span className="rounded-full bg-alpine-50 px-2 py-0.5 text-xs font-medium text-alpine-700">
-            ÖSV Landeslehrer
-          </span>
-          <span className="rounded-full bg-alpine-50 px-2 py-0.5 text-xs font-medium text-alpine-700">
-            ISIA
-          </span>
-        </div>
-      </div>
-
       {/* Zwevende verificatie-badge */}
       <div className="absolute -right-4 top-6 rounded-xl bg-white px-3 py-2 shadow-lg ring-1 ring-alpine-100">
         <p className="flex items-center gap-1.5 text-sm font-semibold text-alpine-900">
           <span className="text-green-600">✓</span> VOG &amp; EHBO
         </p>
-        <p className="text-xs text-alpine-500">geverifieerd</p>
+        <p className="text-xs text-alpine-500">handmatig gecontroleerd</p>
       </div>
     </div>
+  );
+}
+
+/* ── Open opdrachten ───────────────────────────────────────────────────────*/
+function OpenOpdrachten({ opdrachten }: { opdrachten: Awaited<ReturnType<typeof getRecenteOpdrachten>> }) {
+  return (
+    <section className="border-b border-alpine-100 bg-snow-texture py-14 sm:py-16">
+      <Container>
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <SectionHeading eyebrow="Open opdrachten" title="Werk dat nu klaarstaat" />
+          <Link
+            href="/opdrachten"
+            className="text-sm font-semibold text-piste-600 hover:underline"
+          >
+            Alle opdrachten →
+          </Link>
+        </div>
+
+        {opdrachten.length > 0 ? (
+          <div className="mt-8 grid gap-4 lg:grid-cols-3">
+            {opdrachten.map((o) => (
+              <OpdrachtKaart key={o.id} opdracht={o} />
+            ))}
+          </div>
+        ) : (
+          <div className="mt-8 rounded-2xl border border-dashed border-alpine-200 bg-white p-8 text-center">
+            <p className="text-alpine-800">
+              De eerste opdrachten voor seizoen 2026/27 komen eraan.
+            </p>
+            <p className="mx-auto mt-2 max-w-md text-sm text-alpine-600">
+              Maak nu een profiel aan, dan ben je erbij zodra ze online staan en
+              krijg je een mail bij een opdracht die bij je past.
+            </p>
+            <ButtonLink href="/register" variant="accent" className="mt-5">
+              Maak een gratis profiel aan
+            </ButtonLink>
+          </div>
+        )}
+      </Container>
+    </section>
   );
 }
 
 /* ── Hoe werkt het ─────────────────────────────────────────────────────────*/
 function HowItWorks() {
   const steps = [
-    { n: 1, t: "Maak een profiel", d: "Instructeurs, skischolen en organisaties maken in enkele minuten een profiel aan." },
-    { n: 2, t: "Vind een match", d: "Zoek en filter op skigebied, certificering, beschikbaarheid en specialisatie." },
-    { n: 3, t: "Regel het seizoen", d: "Neem contact op, plaats projecten en regel je hele seizoen op één plek." },
+    { n: 1, t: "Bekijk de opdrachten", d: "Alle opdrachten staan open en volledig zichtbaar, ook zonder account." },
+    { n: 2, t: "Reageer in één klik", d: "Maak een gratis profiel aan en reageer op wat bij je past. Een bericht erbij mag, hoeft niet." },
+    { n: 3, t: "Gecontroleerd aan het werk", d: "Wij controleren VOG en EHBO handmatig. De opdrachtgever neemt daarna zelf contact op." },
   ];
   return (
     <section className="py-20">
@@ -210,18 +238,23 @@ function Audiences() {
   );
 }
 
-/* ── Statistieken ──────────────────────────────────────────────────────────*/
-function Stats() {
+/* ── Live cijfers ──────────────────────────────────────────────────────────*/
+/**
+ * Alleen echte, telbare cijfers uit de database. Het blok verdwijnt zolang de
+ * getallen te klein zijn om iets te betekenen: liever niets dan opsmuk.
+ */
+function Cijfers({ cijfers }: { cijfers: LiveCijfers }) {
+  if (!cijfers.toonbaar) return null;
+
   const stats = [
-    { v: `${RESORTS.length}`, l: "Skigebieden" },
-    { v: "8", l: "Certificeringsinstituten" },
-    { v: "5", l: "Doelgroepen" },
-    { v: "100%", l: "Nederlandstalig" },
+    { v: `${cijfers.openOpdrachten}`, l: "Open opdrachten" },
+    { v: `${cijfers.geverifieerdeInstructeurs}`, l: "Geverifieerde instructeurs" },
   ];
+
   return (
-    <section className="bg-alpine-600 py-16 text-white">
+    <section className="bg-alpine-600 py-14 text-white">
       <Container>
-        <div className="grid gap-8 text-center sm:grid-cols-4">
+        <div className="grid gap-8 text-center sm:grid-cols-2">
           {stats.map((s) => (
             <div key={s.l}>
               <div className="font-display text-4xl font-extrabold text-piste-300">{s.v}</div>
@@ -278,35 +311,18 @@ function PricingTeaser() {
       <Container className="text-center">
         <SectionHeading
           eyebrow="Prijzen"
-          title="Gratis voor instructeurs, eerlijk voor organisaties"
+          title="Gratis voor instructeurs, geen risico voor organisaties"
           center
         />
         <p className="mx-auto mt-4 max-w-2xl text-alpine-700">
-          Instructeurs en aspiranten gebruiken Skimeister altijd gratis.
-          Skischolen en reisorganisaties kiezen een abonnement; scholen betalen
-          eenvoudig per project.
+          Instructeurs en aspiranten gebruiken Skimeister altijd gratis. Skischolen
+          en reisorganisaties plaatsen gratis een opdracht en betalen pas bij een
+          bevestigde plaatsing. Scholen betalen per project.
         </p>
         <div className="mt-8">
           <ButtonLink href="/prijzen" variant="primary" size="lg">
             Bekijk alle prijzen
           </ButtonLink>
-        </div>
-      </Container>
-    </section>
-  );
-}
-
-/* ── Partners ──────────────────────────────────────────────────────────────*/
-function Partners() {
-  return (
-    <section className="py-16">
-      <Container className="text-center">
-        <p className="text-sm font-semibold uppercase tracking-wide text-alpine-500">
-          In samenwerking met opleidings- en verzekeringspartners
-        </p>
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-x-12 gap-y-4 text-alpine-300">
-          <span className="font-display text-xl font-bold">Opleidingspartner</span>
-          <span className="font-display text-xl font-bold">Verzekeringspartner</span>
         </div>
       </Container>
     </section>
@@ -323,15 +339,20 @@ function FinalCta() {
             Klaar voor het seizoen?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-alpine-100">
-            Maak vandaag nog een gratis profiel aan of vind de skileraar die bij
-            jouw groep past.
+            We bouwen Skimeister op met de eerste lichting skileraren en
+            opdrachtgevers voor seizoen 2026/27. Sluit je aan.
           </p>
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-            <ButtonLink href="/register" variant="accent" size="lg">
-              Maak gratis profiel aan
+            <ButtonLink href="/opdrachten" variant="accent" size="lg">
+              Bekijk de opdrachten
             </ButtonLink>
-            <ButtonLink href="/instructeurs" variant="outline" size="lg" className="border-white/30 text-white hover:bg-white/10">
-              Vind jouw skileraar
+            <ButtonLink
+              href="/register"
+              variant="outline"
+              size="lg"
+              className="border-white/30 text-white hover:bg-white/10"
+            >
+              Maak een gratis profiel aan
             </ButtonLink>
           </div>
         </div>

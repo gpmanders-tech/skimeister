@@ -24,7 +24,7 @@ export default function Page() {
           { t: "Regel het contract", d: "Gebruik onze contract template en ratio calculator." },
         ],
         benefits: [
-          { t: "Betaal per project", d: "Geen abonnement nodig — €79 per geplaatst project of een voordelige bundel." },
+          { t: "Betaal per project", d: "Geen abonnement: € 79 per schoolreis-project, inclusief contracttemplate en ratio calculator." },
           { t: "VOG verplicht bij kinderen", d: "Bij groepen met kinderen tonen we alleen instructeurs met geldige VOG." },
           { t: "Ratio calculator", d: "Bereken direct hoeveel instructeurs je nodig hebt voor jouw groep." },
           { t: "Schoolgroep-ervaring", d: "Filter op instructeurs die ervaring hebben met schoolreizen." },

@@ -32,6 +32,21 @@ export async function createClient() {
 }
 
 /**
+ * Anonieme client zonder cookies, voor publiek leesbare data zoals het
+ * opdrachtenboard. Omdat er geen cookies bij komen kijken, blijft een pagina
+ * die alleen deze client gebruikt statisch renderbaar met revalidatie.
+ * RLS geldt onverkort: je ziet hiermee alleen wat een policy publiek maakt.
+ */
+export function createPublicClient() {
+  const { createClient: createSupabaseClient } = require("@supabase/supabase-js");
+  return createSupabaseClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    { auth: { autoRefreshToken: false, persistSession: false } },
+  );
+}
+
+/**
  * Service-role client (omzeilt RLS). ALLEEN server-side gebruiken voor
  * admin-acties en webhooks, nooit blootstellen aan de client.
  */

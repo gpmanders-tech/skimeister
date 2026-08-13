@@ -14,7 +14,7 @@ const FAQS = [
   },
   {
     q: "Wat kost het voor skischolen en reisorganisaties?",
-    a: "Skischolen en reisorganisaties kiezen een maandelijks of jaarlijks abonnement. Scholen betalen eenvoudig per geplaatst project. Bekijk de prijzenpagina voor alle details.",
+    a: "Skischolen en reisorganisaties plaatsen gratis een opdracht en ontvangen gratis reacties. Je betaalt € 195 per instructeur die je daadwerkelijk plaatst, achteraf. Er is geen abonnement en geen kosten vooraf. Scholen betalen € 79 per project. De eerste plaatsing van seizoen 2026/27 is gratis.",
   },
   {
     q: "Welke certificeringen worden ondersteund?",

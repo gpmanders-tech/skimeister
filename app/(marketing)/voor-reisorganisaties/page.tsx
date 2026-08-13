@@ -21,7 +21,7 @@ export default function Page() {
           { t: "Plan het seizoen", d: "Zie al je projecten in één kalender en exporteer naar CSV/PDF." },
         ],
         benefits: [
-          { t: "Onbeperkte projecten", d: "Met een Pro-abonnement plaats je zoveel reizen als je wilt." },
+          { t: "Onbeperkt plaatsen", d: "Plaats zoveel reizen als je wilt. Plaatsen en reacties ontvangen is gratis." },
           { t: "Automatische matching", d: "Instructeurs zien projecten die passen bij hun gebied en beschikbaarheid." },
           { t: "Seizoenskalender", d: "Kleurgecodeerd overzicht van open, in behandeling en gesloten projecten." },
           { t: "Bulk communicatie", d: "Bereik in één keer alle aangemelde instructeurs van een project." },

@@ -1,113 +1,97 @@
 /**
- * Prijsmodel. Instructeur & aspirant zijn altijd gratis.
- * Skischool & reisorganisatie = abonnement (Mollie terugkerend).
- * School NL/BE = eenmalig per project (Mollie one-off).
+ * Prijsmodel vanaf seizoen 2026/27.
+ *
+ * Geen abonnementen meer. Een opdracht plaatsen en reacties ontvangen is
+ * gratis; een organisatie betaalt pas als er iemand daadwerkelijk geplaatst is.
+ * Dat past bij een platform dat nog moet bewijzen dat het levert.
  */
 
-export interface PlanFeature {
-  text: string;
-}
+/** Wat een organisatie betaalt per daadwerkelijk geplaatste instructeur. */
+export const PLAATSINGSFEE = 195;
 
-export interface Plan {
+/** Wat een school NL/BE betaalt per schoolreis-project. */
+export const SCHOOL_PROJECT_PRIJS = 79;
+
+/** Lanceringsactie voor het eerste seizoen. */
+export const LANCERINGSACTIE =
+  "Eerste plaatsing van seizoen 2026/27 gratis.";
+
+export type Doelgroep = "instructeur" | "organisatie" | "school";
+
+export interface PrijsBlok {
   id: string;
-  name: string;
-  audience: "skischool" | "reisorganisatie" | "school";
-  priceMonthly?: number;
-  priceYearly?: number;
-  priceOneOff?: number;
-  unit?: string;
-  highlight?: boolean;
+  doelgroep: Doelgroep;
+  naam: string;
+  /** Groot getoonde prijs, al opgemaakt. */
+  prijs: string;
+  /** Kleine regel onder de prijs. */
+  eenheid: string;
+  samenvatting: string;
   features: string[];
+  highlight?: boolean;
+  ctaLabel: string;
+  ctaHref: string;
 }
 
-export const PLANS: Plan[] = [
-  // ── Skischool ──────────────────────────────────────────────────────────
+export const PRIJSBLOKKEN: PrijsBlok[] = [
   {
-    id: "skischool_basic",
-    name: "Skischool Basic",
-    audience: "skischool",
-    priceMonthly: 49,
-    priceYearly: 399,
+    id: "instructeur",
+    doelgroep: "instructeur",
+    naam: "Instructeurs en aspiranten",
+    prijs: "Gratis",
+    eenheid: "altijd",
+    samenvatting: "Je betaalt nooit iets. Niet voor je profiel, niet voor reageren.",
     features: [
-      "Tot 20 profielen bekijken per maand",
-      "10 contactverzoeken per maand",
-      "Basis zoeken en filteren",
+      "Profiel aanmaken en beheren",
+      "Alle opdrachten bekijken",
+      "Onbeperkt reageren op opdrachten",
+      "VOG en EHBO laten controleren",
+      "Bericht bij een opdracht die bij je past",
     ],
+    ctaLabel: "Maak een gratis profiel aan",
+    ctaHref: "/register",
   },
   {
-    id: "skischool_pro",
-    name: "Skischool Pro",
-    audience: "skischool",
-    priceMonthly: 149,
-    priceYearly: 999,
+    id: "organisatie",
+    doelgroep: "organisatie",
+    naam: "Skischolen en reisorganisaties",
+    prijs: `€ ${PLAATSINGSFEE}`,
+    eenheid: "per geplaatste instructeur",
+    samenvatting:
+      "Plaatsen en reacties ontvangen is gratis. Je betaalt pas bij een bevestigde plaatsing.",
     highlight: true,
     features: [
-      "Onbeperkt profielen bekijken",
-      "Onbeperkt contactverzoeken",
-      "Vergelijk instructeurs naast elkaar",
-      "Exporteer seizoensoverzicht",
-      "Notities per instructeur",
+      "Onbeperkt opdrachten plaatsen, gratis",
+      "Alle reacties bekijken, gratis",
+      "Geen abonnement en geen kosten vooraf",
+      "VOG en EHBO handmatig gecontroleerd",
+      "Betalen pas bij een bevestigde plaatsing",
     ],
-  },
-  // ── Reisorganisatie ────────────────────────────────────────────────────
-  {
-    id: "travel_starter",
-    name: "Reisorganisatie Starter",
-    audience: "reisorganisatie",
-    priceMonthly: 149,
-    priceYearly: 999,
-    features: [
-      "Tot 5 actieve projecten",
-      "Onbeperkt aanmeldingen per project",
-      "Seizoenskalender",
-    ],
+    ctaLabel: "Plaats een opdracht",
+    ctaHref: "/contact",
   },
   {
-    id: "travel_pro",
-    name: "Reisorganisatie Pro",
-    audience: "reisorganisatie",
-    priceMonthly: 299,
-    priceYearly: 1999,
-    highlight: true,
-    features: [
-      "Onbeperkte projecten",
-      "Seizoensplanning dashboard",
-      "Export naar CSV/PDF",
-      "Bulk communicatie",
-    ],
-  },
-  // ── School NL/BE ───────────────────────────────────────────────────────
-  {
-    id: "school_project",
-    name: "School — per project",
-    audience: "school",
-    priceOneOff: 79,
-    unit: "per geplaatst project",
+    id: "school",
+    doelgroep: "school",
+    naam: "Scholen in Nederland en België",
+    prijs: `€ ${SCHOOL_PROJECT_PRIJS}`,
+    eenheid: "per project",
+    samenvatting:
+      "Eén vast bedrag per schoolreis. Geen plaatsingsfee, geen abonnement.",
     features: [
       "Eén schoolreis-project plaatsen",
-      "Onbeperkt aanmeldingen",
-      "Inclusief contract template",
+      "Onbeperkt reacties ontvangen",
+      "Alleen instructeurs met gecontroleerde VOG",
+      "Inclusief contracttemplate",
       "Inclusief ratio calculator",
     ],
-  },
-  {
-    id: "school_bundle",
-    name: "School — bundel",
-    audience: "school",
-    priceOneOff: 129,
-    unit: "voor 2 projecten per jaar",
-    highlight: true,
-    features: [
-      "Twee projecten per jaar",
-      "Onbeperkt aanmeldingen",
-      "Inclusief contract template",
-      "Inclusief ratio calculator",
-    ],
+    ctaLabel: "Plaats je schoolreis",
+    ctaHref: "/contact",
   },
 ];
 
-export const PLANS_BY_AUDIENCE = {
-  skischool: PLANS.filter((p) => p.audience === "skischool"),
-  reisorganisatie: PLANS.filter((p) => p.audience === "reisorganisatie"),
-  school: PLANS.filter((p) => p.audience === "school"),
+export const PRIJSBLOK_PER_DOELGROEP: Record<Doelgroep, PrijsBlok> = {
+  instructeur: PRIJSBLOKKEN[0],
+  organisatie: PRIJSBLOKKEN[1],
+  school: PRIJSBLOKKEN[2],
 };

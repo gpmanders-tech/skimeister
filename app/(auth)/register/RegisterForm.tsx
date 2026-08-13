@@ -4,28 +4,37 @@ import { useActionState, useState } from "react";
 import Link from "next/link";
 import { signUpAction, type AuthState } from "@/lib/auth/actions";
 import {
+  LANGUAGES,
   REGISTERABLE_ROLES,
   ROLE_LABELS,
   ROLE_TAGLINES,
   type Role,
 } from "@/lib/constants/options";
+import { CERT_BODIES, CERTIFICATIONS_BY_BODY } from "@/lib/constants/certifications";
 import { Button } from "@/components/ui/Button";
-import { Input, Label, FormError, FormMessage } from "@/components/ui/form";
+import { Input, Label, Select, FormError, FormMessage } from "@/components/ui/form";
 import { HONEYPOT_FIELD, TOKEN_FIELD } from "@/lib/security/formFields";
 import { cn } from "@/lib/utils";
 
 const initial: AuthState = {};
 
-export function RegisterForm({ formToken }: { formToken: string }) {
+export function RegisterForm({
+  formToken,
+  next,
+}: {
+  formToken: string;
+  next?: string;
+}) {
   const [role, setRole] = useState<Role>("instructor");
   const [state, formAction, pending] = useActionState(signUpAction, initial);
 
+  const isInstructeur = role === "instructor" || role === "aspirant";
+
+  // Alleen zichtbaar als het automatisch inloggen niet lukte.
   if (state.message) {
     return (
       <div className="rounded-2xl border border-alpine-100 bg-white p-8 text-center shadow-sm">
-        <h1 className="font-display text-2xl font-bold text-alpine-900">
-          Bijna klaar!
-        </h1>
+        <h1 className="font-display text-2xl font-bold text-alpine-900">Bijna klaar!</h1>
         <FormMessage>{state.message}</FormMessage>
         <Link
           href="/login"
@@ -38,21 +47,23 @@ export function RegisterForm({ formToken }: { formToken: string }) {
   }
 
   return (
-    <div className="rounded-2xl border border-alpine-100 bg-white p-8 shadow-sm">
+    <div className="rounded-2xl border border-alpine-100 bg-white p-6 shadow-sm sm:p-8">
       <h1 className="font-display text-2xl font-bold text-alpine-900">
-        Maak een account
+        Maak een gratis account
       </h1>
-      <p className="mt-1 text-sm text-alpine-600">Kies je accounttype.</p>
+      <p className="mt-1 text-sm text-alpine-600">
+        {isInstructeur
+          ? "Klaar in drie minuten. De rest van je profiel vul je later aan."
+          : "Kies je accounttype."}
+      </p>
 
       <form action={formAction} className="mt-6 space-y-5">
         <input type="hidden" name="role" value={role} />
         <input type="hidden" name={TOKEN_FIELD} value={formToken} />
+        {next ? <input type="hidden" name="next" value={next} /> : null}
 
         {/* Honeypot: onzichtbaar voor bezoekers, bots vullen 'm wel in. */}
-        <div
-          aria-hidden="true"
-          className="absolute left-[-9999px] h-0 w-0 overflow-hidden"
-        >
+        <div aria-hidden="true" className="absolute left-[-9999px] h-0 w-0 overflow-hidden">
           <label htmlFor={HONEYPOT_FIELD}>Laat dit veld leeg</label>
           <input
             id={HONEYPOT_FIELD}
@@ -77,18 +88,40 @@ export function RegisterForm({ formToken }: { formToken: string }) {
                   : "border-alpine-200 hover:bg-alpine-50",
               )}
             >
-              <div className="text-sm font-semibold text-alpine-900">
-                {ROLE_LABELS[r]}
-              </div>
+              <div className="text-sm font-semibold text-alpine-900">{ROLE_LABELS[r]}</div>
               <div className="text-xs text-alpine-600">{ROLE_TAGLINES[r]}</div>
             </button>
           ))}
         </div>
 
+        {isInstructeur ? (
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div>
+              <Label htmlFor="first_name">Voornaam</Label>
+              <Input
+                id="first_name"
+                name="first_name"
+                autoComplete="given-name"
+                required
+              />
+            </div>
+            <div>
+              <Label htmlFor="last_name">Achternaam</Label>
+              <Input
+                id="last_name"
+                name="last_name"
+                autoComplete="family-name"
+                required
+              />
+            </div>
+          </div>
+        ) : null}
+
         <div>
           <Label htmlFor="email">E-mailadres</Label>
           <Input id="email" name="email" type="email" autoComplete="email" required />
         </div>
+
         <div>
           <Label htmlFor="phone">Telefoonnummer</Label>
           <Input
@@ -101,17 +134,67 @@ export function RegisterForm({ formToken }: { formToken: string }) {
             required
           />
         </div>
-        <div>
-          <Label htmlFor="city">Woonplaats</Label>
-          <Input
-            id="city"
-            name="city"
-            type="text"
-            autoComplete="address-level2"
-            maxLength={60}
-            required
-          />
-        </div>
+
+        {isInstructeur ? (
+          <>
+            <div>
+              <Label htmlFor="certification">Hoogste certificering</Label>
+              <Select id="certification" name="certification" defaultValue="" required>
+                <option value="" disabled>
+                  Kies je niveau
+                </option>
+                {CERT_BODIES.map((body) => (
+                  <optgroup key={body.key} label={`${body.flag} ${body.name}`}>
+                    {CERTIFICATIONS_BY_BODY[body.key].map((c) => (
+                      <option key={c.id} value={c.id}>
+                        {c.name}
+                      </option>
+                    ))}
+                  </optgroup>
+                ))}
+              </Select>
+              <p className="mt-1 text-xs text-alpine-500">
+                Meer certificaten kun je later toevoegen.
+              </p>
+            </div>
+
+            <div>
+              <Label htmlFor="years_experience">Jaren ervaring</Label>
+              <Input
+                id="years_experience"
+                name="years_experience"
+                type="number"
+                inputMode="numeric"
+                min={0}
+                max={60}
+                defaultValue={0}
+                required
+              />
+            </div>
+
+            <div>
+              <Label>Talen waarin je lesgeeft</Label>
+              <div className="flex flex-wrap gap-x-5 gap-y-2">
+                {LANGUAGES.map((l) => (
+                  <label
+                    key={l.id}
+                    className="flex items-center gap-2 text-sm text-alpine-800"
+                  >
+                    <input
+                      type="checkbox"
+                      name="languages"
+                      value={l.id}
+                      defaultChecked={l.id === "nl"}
+                      className="h-4 w-4 rounded border-alpine-300 text-piste-500 focus:ring-piste-400"
+                    />
+                    {l.label}
+                  </label>
+                ))}
+              </div>
+            </div>
+          </>
+        ) : null}
+
         <div>
           <Label htmlFor="password">Wachtwoord</Label>
           <Input
@@ -127,9 +210,16 @@ export function RegisterForm({ formToken }: { formToken: string }) {
 
         <FormError>{state.error}</FormError>
 
-        <Button type="submit" variant="accent" className="w-full" disabled={pending}>
+        <Button type="submit" variant="accent" size="lg" className="w-full" disabled={pending}>
           {pending ? "Bezig…" : "Account aanmaken"}
         </Button>
+
+        {isInstructeur ? (
+          <p className="text-center text-xs text-alpine-500">
+            Daarna kun je meteen op opdrachten reageren. Foto, skigebieden,
+            beschikbaarheid en je VOG vul je later aan.
+          </p>
+        ) : null}
       </form>
 
       <p className="mt-5 text-center text-sm text-alpine-600">

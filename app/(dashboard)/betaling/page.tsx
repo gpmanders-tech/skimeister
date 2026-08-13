@@ -2,7 +2,7 @@ import { PageHeader } from "@/components/dashboard/PageHeader";
 import { CheckoutForm } from "@/components/payments/CheckoutForm";
 import { createClient } from "@/lib/supabase/server";
 import { getSessionUser } from "@/lib/auth/user";
-import { PLANS_BY_AUDIENCE, type Plan } from "@/lib/constants/pricing";
+import { PRIJSBLOK_PER_DOELGROEP } from "@/lib/constants/pricing";
 import { euro, formatDate, cn } from "@/lib/utils";
 
 export const metadata = { title: "Betaling" };
@@ -20,7 +20,7 @@ export default async function PaymentPage({
   }
 
   const { betaald } = await searchParams;
-  const plans = PLANS_BY_AUDIENCE.school;
+  const blok = PRIJSBLOK_PER_DOELGROEP.school;
 
   // Eerdere betalingen tonen.
   const supabase = await createClient();
@@ -43,10 +43,27 @@ export default async function PaymentPage({
         </div>
       )}
 
-      <div className="grid gap-6 md:grid-cols-2">
-        {plans.map((plan) => (
-          <PlanCard key={plan.id} plan={plan} />
-        ))}
+      <div className="max-w-md">
+        <div className="flex flex-col rounded-2xl border border-piste-300 bg-white p-6 shadow-sm ring-1 ring-piste-200">
+          <h3 className="font-display text-lg font-bold text-alpine-900">{blok.naam}</h3>
+          <p className="mt-2">
+            <span className="font-display text-3xl font-extrabold text-alpine-900">
+              {blok.prijs}
+            </span>
+            <span className="ml-2 text-sm text-alpine-600">{blok.eenheid}</span>
+          </p>
+          <ul className="mt-4 flex-1 space-y-2">
+            {blok.features.map((f) => (
+              <li key={f} className="flex items-start gap-2 text-sm text-alpine-800">
+                <span className="mt-0.5 text-piste-500">✓</span>
+                {f}
+              </li>
+            ))}
+          </ul>
+          <div className="mt-6">
+            <CheckoutForm label={`Betaal ${blok.prijs}`} />
+          </div>
+        </div>
       </div>
 
       {(payments?.length ?? 0) > 0 && (
@@ -72,33 +89,6 @@ export default async function PaymentPage({
         </div>
       )}
     </>
-  );
-}
-
-function PlanCard({ plan }: { plan: Plan }) {
-  return (
-    <div
-      className={cn(
-        "flex flex-col rounded-2xl border bg-white p-6 shadow-sm",
-        plan.highlight ? "border-piste-300 ring-1 ring-piste-200" : "border-alpine-100",
-      )}
-    >
-      <h3 className="font-display text-lg font-bold text-alpine-900">{plan.name}</h3>
-      <p className="mt-2 text-sm text-alpine-600">
-        {euro(plan.priceOneOff!)} {plan.unit}
-      </p>
-      <ul className="mt-4 flex-1 space-y-2">
-        {plan.features.map((f) => (
-          <li key={f} className="flex items-start gap-2 text-sm text-alpine-800">
-            <span className="mt-0.5 text-piste-500">✓</span>
-            {f}
-          </li>
-        ))}
-      </ul>
-      <div className="mt-6">
-        <CheckoutForm kind="project" planId={plan.id} label={`Betaal ${euro(plan.priceOneOff!)}`} />
-      </div>
-    </div>
   );
 }
 

@@ -46,20 +46,41 @@ export const emailTemplates = {
     roleLabel: string;
     email: string;
     phone: string;
-    city: string;
+    naam: string;
     ip?: string;
   }) => ({
-    subject: `Aanmelding Skimeister: ${c.roleLabel} — ${c.city}`,
+    subject: `Aanmelding Skimeister: ${c.roleLabel} — ${c.naam}`,
     html: layout(
       "Kopie van de aanmelding",
       `<table style="width:100%;border-collapse:collapse;font-size:15px">` +
         row("Accounttype", c.roleLabel) +
+        row("Naam", c.naam) +
         row("E-mailadres", `<a href="mailto:${c.email}">${c.email}</a>`) +
         row("Telefoonnummer", `<a href="tel:${c.phone}">${c.phone}</a>`) +
-        row("Woonplaats", c.city) +
         (c.ip ? row("IP-adres", c.ip) : "") +
         `</table>`,
       { label: "Bekijk in admin", href: `${SITE}/admin/gebruikers` },
+    ),
+  }),
+
+  /** Seintje naar de beheerder bij elke reactie op een opdracht. */
+  adminNieuweReactie: (c: {
+    opdrachtNaam: string;
+    opdrachtId: string;
+    instructeur: string;
+    bericht: string | null;
+  }) => ({
+    subject: `Nieuwe reactie: ${c.instructeur} op "${c.opdrachtNaam}"`,
+    html: layout(
+      "Nieuwe reactie op een opdracht",
+      `<table style="width:100%;border-collapse:collapse;font-size:15px">` +
+        row("Opdracht", c.opdrachtNaam) +
+        row("Instructeur", c.instructeur) +
+        `</table>` +
+        (c.bericht
+          ? `<blockquote style="margin:16px 0 0;padding-left:14px;border-left:2px solid #dfe5ee;color:#163057;font-style:italic">${c.bericht}</blockquote>`
+          : ""),
+      { label: "Bekijk de reactie", href: `${SITE}/admin/opdrachten/${c.opdrachtId}` },
     ),
   }),
 

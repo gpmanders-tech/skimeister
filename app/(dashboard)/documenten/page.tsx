@@ -5,6 +5,11 @@ import { deleteDocumentAction } from "@/lib/documents/actions";
 import { createClient } from "@/lib/supabase/server";
 import { getSessionUser } from "@/lib/auth/user";
 import { DOC_TYPE_LABELS, type DocType } from "@/lib/constants/options";
+import {
+  documentStatus,
+  DOC_STATUS_LABELS,
+  DOC_STATUS_STIJL,
+} from "@/lib/documents/status";
 import { formatDate } from "@/lib/utils";
 import type { DocumentRow } from "@/lib/types";
 
@@ -46,7 +51,7 @@ export default async function DocumentsPage() {
     <>
       <PageHeader
         title="Documenten"
-        subtitle="Upload je VOG, EHBO-certificaat en verzekeringsbewijs. Na controle verschijnt een verified-badge op je profiel."
+        subtitle="Upload je VOG, EHBO-certificaat en verzekeringsbewijs. Ze staan op 'ingediend' tot Skimeister ze handmatig heeft gecontroleerd. Pas daarna verschijnt de badge op je profiel."
       />
 
       <div className="mb-8">
@@ -77,15 +82,16 @@ export default async function DocumentsPage() {
                 <p className="font-medium text-alpine-900">
                   {DOC_TYPE_LABELS[d.doc_type as DocType]}
                 </p>
-                <p className="text-xs text-alpine-500">
-                  Geüpload {formatDate(d.uploaded_at)}
-                  {d.expiry_date && ` · verloopt ${formatDate(d.expiry_date)}`}
-                  {" · "}
-                  {d.verified ? (
-                    <span className="text-green-700">geverifieerd ✓</span>
-                  ) : (
-                    <span className="text-piste-700">in afwachting van verificatie</span>
-                  )}
+                <p className="mt-1 flex flex-wrap items-center gap-2 text-xs text-alpine-500">
+                  <span
+                    className={`rounded-full px-2 py-0.5 font-medium ${DOC_STATUS_STIJL[documentStatus(d)]}`}
+                  >
+                    {DOC_STATUS_LABELS[documentStatus(d)]}
+                  </span>
+                  <span>
+                    Geüpload {formatDate(d.uploaded_at)}
+                    {d.expiry_date && ` · verloopt ${formatDate(d.expiry_date)}`}
+                  </span>
                 </p>
               </div>
               <div className="flex items-center gap-3">

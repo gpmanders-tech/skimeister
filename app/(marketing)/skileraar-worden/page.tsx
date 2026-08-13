@@ -37,9 +37,15 @@ export default function Page() {
     />
     <section className="py-16">
       <Container className="max-w-2xl">
-        <h2 className="mb-6 font-display text-2xl font-bold text-alpine-900">
+        <h2 className="mb-4 font-display text-2xl font-bold text-alpine-900">
           Nog niet gecertificeerd?
         </h2>
+        <p className="text-alpine-700">
+          Het minimumniveau om via Skimeister aan het werk te gaan is ÖSV
+          Schilehrer Anwärter of een vergelijkbaar diploma. Meld je alvast aan als
+          aspirant: dan volgen we je voortgang en kun je je certificaat uploaden
+          zodra je het hebt.
+        </p>
         <PartnerCard partner={TRAINING_PARTNER} />
       </Container>
     </section>

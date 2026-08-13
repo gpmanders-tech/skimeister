@@ -5,6 +5,8 @@ import { revalidatePath } from "next/cache";
 import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { REGISTERABLE_ROLES, ROLE_LABELS, type Role } from "@/lib/constants/options";
 import { notifyWelcome, notifyAdminSignupCopy } from "@/lib/email/notify";
+import { computeCompleteness } from "@/lib/profile/completeness";
+import { getCertById } from "@/lib/constants/certifications";
 import { checkFormGuards } from "@/lib/security/formGuard";
 import { checkEmailShape, checkEmailDomainExists } from "@/lib/security/emailCheck";
 import { clientIp, rateLimit } from "@/lib/security/rateLimit";
@@ -42,8 +44,12 @@ export async function signUpAction(
   const password = String(formData.get("password") ?? "");
   const role = String(formData.get("role") ?? "") as Role;
   const phoneRaw = String(formData.get("phone") ?? "").trim();
-  const city = String(formData.get("city") ?? "").trim();
   const ip = await clientIp();
+
+  // Waar de bezoeker na aanmelden heen gaat. Standaard het opdrachtenboard;
+  // kwam iemand via een specifieke opdracht binnen, dan terug naar die opdracht.
+  const gevraagd = String(formData.get("next") ?? "");
+  const bestemming = gevraagd.startsWith("/") ? gevraagd : "/opdrachten";
 
   // ── Bot-afweer: honeypot + ondertekend tijdstempel ───────────────────────
   const guard = checkFormGuards(formData);
@@ -76,13 +82,35 @@ export async function signUpAction(
     return { error: "Kies een geldig accounttype." };
   }
 
-  // ── Telefoonnummer en woonplaats ─────────────────────────────────────────
+  // ── Telefoonnummer ───────────────────────────────────────────────────────
   const phone = normaliseerTelefoon(phoneRaw);
   if (!phone) {
     return { error: "Vul een geldig telefoonnummer in, bijvoorbeeld 06 12345678." };
   }
-  if (city.length < 2 || city.length > 60) {
-    return { error: "Vul je woonplaats in." };
+
+  // ── Stap 1 voor instructeurs en aspiranten ───────────────────────────────
+  // Bewust minimaal: dit moet op een telefoon binnen drie minuten te doen zijn.
+  // Foto, gebieden, beschikbaarheid en documenten volgen in stap 2.
+  const isInstructeur = role === "instructor" || role === "aspirant";
+  const voornaam = String(formData.get("first_name") ?? "").trim();
+  const achternaam = String(formData.get("last_name") ?? "").trim();
+  const certificering = String(formData.get("certification") ?? "").trim();
+  const ervaring = Number(formData.get("years_experience") ?? "");
+  const talen = formData.getAll("languages").map(String).filter(Boolean);
+
+  if (isInstructeur) {
+    if (voornaam.length < 2 || achternaam.length < 2) {
+      return { error: "Vul je voor- en achternaam in." };
+    }
+    if (!getCertById(certificering)) {
+      return { error: "Kies je certificeringsniveau." };
+    }
+    if (!Number.isFinite(ervaring) || ervaring < 0 || ervaring > 60) {
+      return { error: "Vul in hoeveel jaar ervaring je hebt." };
+    }
+    if (talen.length === 0) {
+      return { error: "Kies minimaal één taal waarin je lesgeeft." };
+    }
   }
 
   // ── E-mailadres: vorm, wegwerpdiensten, bestaat het domein ───────────────
@@ -98,41 +126,89 @@ export async function signUpAction(
     return { error: domain.message };
   }
 
+  // Let op: redirect() gooit een speciale fout die NIET in een try/catch mag
+  // belanden. Daarom staat het aanmaken in een blok en de redirect erbuiten.
   try {
     // We maken de gebruiker direct bevestigd aan via de service-role (admin),
     // zodat Supabase GEEN bevestigingsmail stuurt (omzeilt de mail-limiet).
     // Zodra Resend/SMTP is gekoppeld, kan dit terug naar e-mailverificatie.
     const service = createServiceClient();
-    const { error } = await service.auth.admin.createUser({
+    const { data, error } = await service.auth.admin.createUser({
       email,
       password,
       email_confirm: true,
-      user_metadata: { role, phone, city },
+      user_metadata: { role, phone, voornaam, achternaam },
     });
 
     if (error) {
       return { error: vertaalAuthFout(error.message) };
     }
 
+    const userId = data?.user?.id;
+
+    // ── Stap 1 meteen in het profiel zetten ────────────────────────────────
+    if (userId && isInstructeur) {
+      const basis = {
+        user_id: userId,
+        first_name: voornaam,
+        last_name: achternaam,
+        phone,
+      };
+
+      if (role === "instructor") {
+        const certificaten = [{ cert_id: certificering }];
+        const { score } = computeCompleteness({
+          first_name: voornaam,
+          last_name: achternaam,
+          years_experience: ervaring,
+          languages: talen,
+          certifications: certificaten,
+        });
+
+        const { error: profielFout } = await service.from("instructor_profiles").insert({
+          ...basis,
+          years_experience: ervaring,
+          languages: talen,
+          certifications: certificaten,
+          profile_completeness: score,
+          // Zichtbaar in de zoekresultaten pas na foto, bio en goedkeuring.
+          is_active: false,
+        });
+        if (profielFout) {
+          console.error("Profiel aanmaken bij registratie mislukt:", profielFout.message);
+        }
+      } else {
+        const { error: aspirantFout } = await service.from("aspirants").insert(basis);
+        if (aspirantFout) {
+          console.error("Aspirant aanmaken bij registratie mislukt:", aspirantFout.message);
+        }
+      }
+    }
+
     // E-mails mogen de registratie nooit laten crashen.
     try {
       await notifyWelcome(email, ROLE_LABELS[role]);
-      // Kopie van de volledige aanmelding naar de beheerder.
       await notifyAdminSignupCopy({
         roleLabel: ROLE_LABELS[role],
         email,
         phone,
-        city,
+        naam: [voornaam, achternaam].filter(Boolean).join(" ") || "Niet opgegeven",
         ip,
       });
     } catch (e) {
       console.error("Registratie-mail mislukt (genegeerd):", e);
     }
 
-    return {
-      message:
-        "Account aangemaakt! Je kunt nu inloggen.",
-    };
+    // Direct inloggen, zodat niemand opnieuw hoeft in te typen.
+    const supabase = await createClient();
+    const { error: loginFout } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (loginFout) {
+      // Account bestaat wel; laat de bezoeker gewoon zelf inloggen.
+      return { message: "Je account is aangemaakt. Log in om verder te gaan." };
+    }
   } catch (e) {
     console.error("Registratie-fout:", e);
     return {
@@ -140,6 +216,10 @@ export async function signUpAction(
         "Er ging iets mis bij het aanmaken van je account. Probeer het opnieuw of neem contact op.",
     };
   }
+
+  revalidatePath("/", "layout");
+  // Meteen naar het werk, niet naar een leeg dashboard.
+  redirect(bestemming);
 }
 
 /** Inloggen met e-mail + wachtwoord. */

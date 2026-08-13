@@ -5,7 +5,13 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { getSessionUser } from "@/lib/auth/user";
 import { isOrgRole } from "@/lib/auth/roles";
-import { notifyNewApplication, notifyDecision, notifyMatchingInstructors } from "@/lib/email/notify";
+import {
+  notifyNewApplication,
+  notifyDecision,
+  notifyMatchingInstructors,
+  notifyAdminNewReaction,
+} from "@/lib/email/notify";
+import { MAX_MOTIVATIE } from "@/lib/constants/options";
 import { getResortById } from "@/lib/constants/resorts";
 
 export interface ProjectState {
@@ -96,12 +102,14 @@ export async function saveProjectAction(
   if (error) return { error: error.message };
 
   // Direct gepubliceerd? Matchende instructeurs op de hoogte stellen.
-  if (payload.status === "open" && payload.resort_id) {
-    await notifyMatchingInstructors(
-      payload.resort_id,
-      payload.name,
-      getResortById(payload.resort_id)?.name ?? "jouw gebied",
-    );
+  if (payload.status === "open") {
+    await notifyMatchingInstructors({
+      name: payload.name,
+      resort_id: payload.resort_id,
+      resortName: getResortById(payload.resort_id ?? "")?.name ?? "de Alpen",
+      start_date: payload.start_date,
+      end_date: payload.end_date,
+    });
   }
 
   revalidatePath("/projecten");
@@ -129,15 +137,17 @@ export async function setProjectStatusAction(formData: FormData): Promise<void> 
   if (status === "open") {
     const { data: proj } = await supabase
       .from("projects")
-      .select("name, resort_id")
+      .select("name, resort_id, start_date, end_date")
       .eq("id", id)
       .single();
-    if (proj?.resort_id) {
-      await notifyMatchingInstructors(
-        proj.resort_id,
-        proj.name,
-        getResortById(proj.resort_id)?.name ?? "jouw gebied",
-      );
+    if (proj) {
+      await notifyMatchingInstructors({
+        name: proj.name,
+        resort_id: proj.resort_id,
+        resortName: getResortById(proj.resort_id ?? "")?.name ?? "de Alpen",
+        start_date: proj.start_date,
+        end_date: proj.end_date,
+      });
     }
   }
 
@@ -156,11 +166,14 @@ export async function applyToProjectAction(
   const projectId = String(formData.get("project_id") ?? "");
   const motivation = str(formData.get("motivation"));
   if (!projectId) return { error: "Project ontbreekt." };
+  if (motivation && motivation.length > MAX_MOTIVATIE) {
+    return { error: `Houd je bericht onder de ${MAX_MOTIVATIE} tekens.` };
+  }
 
   const supabase = await createClient();
   const { data: profile } = await supabase
     .from("instructor_profiles")
-    .select("id")
+    .select("id, first_name, last_name")
     .eq("user_id", user.id)
     .single();
   if (!profile) return { error: "Profiel niet gevonden." };
@@ -189,11 +202,26 @@ export async function applyToProjectAction(
       .eq("id", proj.organization_id)
       .single();
     if (org) await notifyNewApplication(org.user_id, proj.name);
+
+    // De beheerder krijgt altijd een kopie, ook als de opdracht van een
+    // andere organisatie is. Mag de reactie nooit laten mislukken.
+    try {
+      const naam = [profile.first_name, profile.last_name].filter(Boolean).join(" ");
+      await notifyAdminNewReaction({
+        opdrachtNaam: proj.name,
+        opdrachtId: projectId,
+        instructeur: naam || user.email,
+        bericht: motivation,
+      });
+    } catch (e) {
+      console.error("Reactiemelding naar beheerder mislukt (genegeerd):", e);
+    }
   }
 
   revalidatePath(`/projecten/${projectId}`);
+  revalidatePath(`/opdrachten/${projectId}`);
   revalidatePath("/mijn-aanmeldingen");
-  return { message: "Je aanmelding is verstuurd." };
+  return { message: "Je reactie is verstuurd. De opdrachtgever neemt contact op." };
 }
 
 export async function withdrawApplicationAction(formData: FormData): Promise<void> {

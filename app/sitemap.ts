@@ -1,15 +1,17 @@
 import type { MetadataRoute } from "next";
 import { RESORTS } from "@/lib/constants/resorts";
 import { BLOG_POSTS } from "@/lib/constants/blog";
+import { getOpenOpdrachten } from "@/lib/opdrachten/queries";
 
 // Canonicale host: bewust hardcoded op www (waar de site naartoe redirect en
 // waar de Search Console-property op staat). Niet uit env, want die bevatte
 // spaties en de non-www-variant — dat brak de sitemap.
 const BASE = "https://www.skimeister.nl";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPaths = [
     "",
+    "/opdrachten",
     "/instructeurs",
     "/voor-skischolen",
     "/voor-reisorganisaties",
@@ -45,5 +47,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.5,
   }));
 
-  return [...staticEntries, ...resortEntries, ...blogEntries];
+  // Elke open opdracht is een eigen vindbare pagina.
+  const opdrachten = await getOpenOpdrachten({}, 500);
+  const opdrachtEntries: MetadataRoute.Sitemap = opdrachten.map((o) => ({
+    url: `${BASE}/opdrachten/${o.id}`,
+    lastModified: o.updated_at,
+    changeFrequency: "daily",
+    priority: 0.8,
+  }));
+
+  return [...staticEntries, ...opdrachtEntries, ...resortEntries, ...blogEntries];
 }

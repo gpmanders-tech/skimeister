@@ -3,6 +3,7 @@ import type { InstructorProfile } from "@/lib/types";
 import { getCertById } from "@/lib/constants/certifications";
 import { getResortById } from "@/lib/constants/resorts";
 import { SPECIALIZATIONS } from "@/lib/constants/options";
+import { badgeGeldig } from "@/lib/documents/status";
 import { euro } from "@/lib/utils";
 import { Stars } from "@/components/reviews/Stars";
 
@@ -79,10 +80,14 @@ export function InstructorCard({ p }: { p: InstructorProfile }) {
       )}
 
       <div className="mt-3 flex flex-wrap gap-1.5">
-        {p.vog_verified && <Badge>VOG ✓</Badge>}
-        {p.ehbo_verified && <Badge>EHBO ✓</Badge>}
-        {p.insurance_verified && <Badge>Verzekerd ✓</Badge>}
-        {p.school_group_experience && <Badge>Schoolgroepen</Badge>}
+        {/* Groen = door Skimeister gecontroleerd. Grijs = door de instructeur
+            zelf opgegeven. Die twee mogen er nooit hetzelfde uitzien. */}
+        {badgeGeldig(p.vog_verified, p.vog_expiry) && <Badge>VOG ✓</Badge>}
+        {badgeGeldig(p.ehbo_verified, p.ehbo_expiry) && <Badge>EHBO ✓</Badge>}
+        {badgeGeldig(p.insurance_verified, p.insurance_expiry) && (
+          <Badge>Verzekerd ✓</Badge>
+        )}
+        {p.school_group_experience && <EigenOpgave>Schoolgroepen</EigenOpgave>}
       </div>
 
       <div className="mt-auto pt-3">
@@ -101,9 +106,19 @@ export function InstructorCard({ p }: { p: InstructorProfile }) {
   );
 }
 
+/** Groen: door Skimeister handmatig gecontroleerd. */
 function Badge({ children }: { children: React.ReactNode }) {
   return (
     <span className="rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700">
+      {children}
+    </span>
+  );
+}
+
+/** Grijs: door de instructeur zelf opgegeven, niet gecontroleerd. */
+function EigenOpgave({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="rounded-full bg-alpine-50 px-2 py-0.5 text-xs font-medium text-alpine-700">
       {children}
     </span>
   );

@@ -87,6 +87,40 @@ export const PARTICIPANT_LEVELS = [
   { id: "mixed", label: "Gemengd" },
 ] as const;
 
+// ── Reageren op een opdracht ────────────────────────────────────────────────
+/** Maximale lengte van het optionele bericht bij een reactie. */
+export const MAX_MOTIVATIE = 500;
+
+/**
+ * Status van een reactie op een opdracht. De sleutels zijn de waarden in de
+ * database (zie migratie 0007); de labels zijn wat de beheerder leest.
+ * "withdrawn" zet alleen de instructeur zelf.
+ */
+export const REACTIE_STATUSSEN = [
+  { id: "pending", label: "Nieuw" },
+  { id: "in_gesprek", label: "In gesprek" },
+  { id: "selected", label: "Geplaatst" },
+  { id: "rejected", label: "Afgewezen" },
+] as const;
+
+export type ReactieStatus = (typeof REACTIE_STATUSSEN)[number]["id"] | "withdrawn";
+
+export const REACTIE_STATUS_LABELS: Record<ReactieStatus, string> = {
+  pending: "Nieuw",
+  in_gesprek: "In gesprek",
+  selected: "Geplaatst",
+  rejected: "Afgewezen",
+  withdrawn: "Ingetrokken",
+};
+
+/** Status van een opdracht zelf. */
+export const OPDRACHT_STATUS_LABELS: Record<string, string> = {
+  draft: "Concept",
+  open: "Open",
+  closed: "Gesloten",
+  completed: "Afgerond",
+};
+
 // ── Documenttypes ───────────────────────────────────────────────────────────
 export const DOC_TYPES = {
   vog: "vog",

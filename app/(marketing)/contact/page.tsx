@@ -13,7 +13,7 @@ export default function Page() {
       <PageHero
         eyebrow="Contact"
         title="Neem contact op"
-        description="Vragen over je profiel, een abonnement of een schoolreis? We helpen je graag."
+        description="Vragen over je profiel, een opdracht of een schoolreis? We helpen je graag."
       />
       <Container className="py-16">
         <div className="mx-auto max-w-xl rounded-2xl border border-alpine-100 bg-white p-8 shadow-sm">

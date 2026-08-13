@@ -9,10 +9,10 @@ export interface NavItem {
 export const DASHBOARD_NAV: Record<Role, NavItem[]> = {
   instructor: [
     { href: "/dashboard", label: "Overzicht" },
+    { href: "/opdrachten", label: "Opdrachten" },
     { href: "/profiel/bewerken", label: "Profiel" },
     { href: "/beschikbaarheid", label: "Beschikbaarheid" },
-    { href: "/projecten", label: "Projecten" },
-    { href: "/mijn-aanmeldingen", label: "Mijn aanmeldingen" },
+    { href: "/mijn-aanmeldingen", label: "Mijn reacties" },
     { href: "/berichten", label: "Berichten" },
     { href: "/documenten", label: "Documenten" },
     { href: "/reviews", label: "Reviews" },
@@ -30,7 +30,7 @@ export const DASHBOARD_NAV: Record<Role, NavItem[]> = {
     { href: "/contacten", label: "Contacten" },
     { href: "/contracten", label: "Contracten" },
     { href: "/berichten", label: "Berichten" },
-    { href: "/abonnement", label: "Abonnement" },
+    { href: "/abonnement", label: "Kosten" },
     { href: "/instellingen", label: "Instellingen" },
   ],
   travel_org: [
@@ -40,7 +40,7 @@ export const DASHBOARD_NAV: Record<Role, NavItem[]> = {
     { href: "/planning", label: "Planning" },
     { href: "/contracten", label: "Contracten" },
     { href: "/berichten", label: "Berichten" },
-    { href: "/abonnement", label: "Abonnement" },
+    { href: "/abonnement", label: "Kosten" },
     { href: "/instellingen", label: "Instellingen" },
   ],
   school_nl: [
@@ -54,10 +54,10 @@ export const DASHBOARD_NAV: Record<Role, NavItem[]> = {
   ],
   admin: [
     { href: "/admin/dashboard", label: "Overzicht" },
+    { href: "/admin/opdrachten", label: "Opdrachten" },
     { href: "/admin/gebruikers", label: "Gebruikers" },
     { href: "/admin/profielen", label: "Profielen" },
     { href: "/admin/documenten", label: "Documenten" },
-    { href: "/admin/projecten", label: "Projecten" },
     { href: "/admin/aspiranten", label: "Aspiranten" },
   ],
 };

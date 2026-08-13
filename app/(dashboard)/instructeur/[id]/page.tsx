@@ -9,6 +9,7 @@ import { getCertById } from "@/lib/constants/certifications";
 import { getResortById } from "@/lib/constants/resorts";
 import { SPECIALIZATIONS, LANGUAGES, AGE_GROUPS } from "@/lib/constants/options";
 import { euro, formatDate } from "@/lib/utils";
+import { badgeGeldig } from "@/lib/documents/status";
 import { Stars } from "@/components/reviews/Stars";
 import { ReviewForm } from "@/components/reviews/ReviewForm";
 import type { InstructorProfile, Review } from "@/lib/types";
@@ -174,9 +175,12 @@ export default async function InstructorDetailPage({
         <aside className="space-y-6">
           <Card title="Documenten">
             <ul className="space-y-1.5 text-sm">
-              <DocLine ok={p.vog_verified} label="VOG" />
-              <DocLine ok={p.ehbo_verified} label="EHBO" />
-              <DocLine ok={p.insurance_verified} label="Verzekering" />
+              <DocLine ok={badgeGeldig(p.vog_verified, p.vog_expiry)} label="VOG" />
+              <DocLine ok={badgeGeldig(p.ehbo_verified, p.ehbo_expiry)} label="EHBO" />
+              <DocLine
+                ok={badgeGeldig(p.insurance_verified, p.insurance_expiry)}
+                label="Verzekering"
+              />
             </ul>
           </Card>
 
@@ -229,9 +233,9 @@ function DocLine({ ok, label }: { ok: boolean; label: string }) {
     <li className="flex items-center justify-between">
       <span className="text-alpine-700">{label}</span>
       {ok ? (
-        <span className="text-green-700">geverifieerd ✓</span>
+        <span className="text-green-700">door Skimeister gecontroleerd ✓</span>
       ) : (
-        <span className="text-alpine-400">niet geverifieerd</span>
+        <span className="text-alpine-400">niet aangeleverd</span>
       )}
     </li>
   );

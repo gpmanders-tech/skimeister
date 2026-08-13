@@ -24,7 +24,7 @@ export interface SignupCopy {
   roleLabel: string;
   email: string;
   phone: string;
-  city: string;
+  naam: string;
   ip?: string;
 }
 
@@ -37,6 +37,21 @@ export async function notifyAdminSignupCopy(copy: SignupCopy): Promise<void> {
   const to = (process.env.ADMIN_EMAIL || "gpmanders@gmail.com").trim();
   if (!to) return;
   await sendEmail({ to, ...emailTemplates.signupCopy(copy) });
+}
+
+/**
+ * Beheerder krijgt bericht bij élke reactie op een opdracht, ongeacht wie de
+ * opdracht heeft geplaatst. Tijdens de pilot wil je dit zelf volgen.
+ */
+export async function notifyAdminNewReaction(c: {
+  opdrachtNaam: string;
+  opdrachtId: string;
+  instructeur: string;
+  bericht: string | null;
+}) {
+  const to = (process.env.ADMIN_EMAIL || "gpmanders@gmail.com").trim();
+  if (!to) return;
+  await sendEmail({ to, ...emailTemplates.adminNieuweReactie(c) });
 }
 
 export async function notifyNewMessage(receiverId: string, senderName: string) {
@@ -75,29 +90,70 @@ export async function notifyPaymentConfirmed(email: string, description: string)
   await sendEmail({ to: email, ...emailTemplates.paymentConfirmed(description) });
 }
 
+export interface OpdrachtMatch {
+  name: string;
+  resortName: string;
+  resort_id: string | null;
+  start_date: string | null;
+  end_date: string | null;
+}
+
 /**
- * Mailt instructeurs van wie het voorkeursgebied matcht met een nieuw
- * gepubliceerd project. Service role: nodig om e-mailadressen op te halen.
+ * Mailt instructeurs bij een nieuwe opdracht die past. Een match is:
+ *   - het skigebied staat in hun voorkeursgebieden, OF
+ *   - ze hebben zich beschikbaar gemeld in een week die overlapt.
+ *
+ * Bewust géén filter op goedgekeurd of actief: goedkeuring bepaalt of je
+ * publiek zichtbaar bent, niet of je van passend werk mag horen. Anders
+ * krijgt een net aangemelde instructeur nooit iets te zien.
  */
-export async function notifyMatchingInstructors(
-  resortId: string | null,
-  projectName: string,
-  resortName: string,
-) {
-  if (!resortId || !process.env.SUPABASE_SERVICE_ROLE_KEY) return;
+export async function notifyMatchingInstructors(opdracht: OpdrachtMatch) {
+  if (!process.env.SUPABASE_SERVICE_ROLE_KEY) return;
   const service = createServiceClient();
+  const adressen = new Set<string>();
 
-  const { data } = await service
-    .from("instructor_profiles")
-    .select("user:users(email)")
-    .contains("preferred_resorts", [resortId])
-    .eq("is_approved", true)
-    .eq("is_active", true)
-    .limit(200);
+  // ── Match op skigebied ───────────────────────────────────────────────────
+  if (opdracht.resort_id) {
+    const { data } = await service
+      .from("instructor_profiles")
+      .select("user:users(email)")
+      .contains("preferred_resorts", [opdracht.resort_id])
+      .limit(500);
 
-  const t = emailTemplates.newRelevantProject(projectName, resortName);
-  for (const row of data ?? []) {
-    const email = (row.user as { email?: string } | null)?.email;
-    if (email) await sendEmail({ to: email, ...t });
+    for (const row of data ?? []) {
+      const email = (row.user as { email?: string } | null)?.email;
+      if (email) adressen.add(email);
+    }
+  }
+
+  // ── Match op periode ─────────────────────────────────────────────────────
+  if (opdracht.start_date && opdracht.end_date) {
+    const { data: weken } = await service
+      .from("availability")
+      .select("instructor_id")
+      .eq("is_available", true)
+      .lte("week_start", opdracht.end_date)
+      .gte("week_end", opdracht.start_date)
+      .limit(1000);
+
+    const rijen = (weken ?? []) as { instructor_id: string }[];
+    const ids = [...new Set(rijen.map((w) => w.instructor_id))];
+    if (ids.length > 0) {
+      const { data } = await service
+        .from("instructor_profiles")
+        .select("user:users(email)")
+        .in("id", ids)
+        .limit(500);
+
+      for (const row of data ?? []) {
+        const email = (row.user as { email?: string } | null)?.email;
+        if (email) adressen.add(email);
+      }
+    }
+  }
+
+  const t = emailTemplates.newRelevantProject(opdracht.name, opdracht.resortName);
+  for (const email of adressen) {
+    await sendEmail({ to: email, ...t });
   }
 }

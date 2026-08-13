@@ -11,6 +11,11 @@ export const metadata: Metadata = {
 // dus niet statisch gecachet worden.
 export const dynamic = "force-dynamic";
 
-export default function RegisterPage() {
-  return <RegisterForm formToken={issueFormToken()} />;
+export default async function RegisterPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ next?: string }>;
+}) {
+  const { next } = await searchParams;
+  return <RegisterForm formToken={issueFormToken()} next={next} />;
 }

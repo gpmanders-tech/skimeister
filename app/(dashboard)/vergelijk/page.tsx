@@ -8,6 +8,7 @@ import { getCertById } from "@/lib/constants/certifications";
 import { getResortById } from "@/lib/constants/resorts";
 import { SPECIALIZATIONS, LANGUAGES, AGE_GROUPS } from "@/lib/constants/options";
 import { euro } from "@/lib/utils";
+import { badgeGeldig } from "@/lib/documents/status";
 import type { InstructorProfile } from "@/lib/types";
 
 export const metadata = { title: "Vergelijken" };
@@ -70,9 +71,12 @@ export default async function ComparePage({
     { label: "Talen", render: (p) => p.languages?.map((l) => lbl(LANGUAGES, l)).join(", ") || "—" },
     { label: "Specialisaties", render: (p) => p.specializations?.map((s) => lbl(SPECIALIZATIONS, s)).join(", ") || "—" },
     { label: "Leeftijdsgroepen", render: (p) => p.age_groups?.map((a) => lbl(AGE_GROUPS, a)).join(", ") || "—" },
-    { label: "VOG", render: (p) => (p.vog_verified ? "✓" : "—") },
-    { label: "EHBO", render: (p) => (p.ehbo_verified ? "✓" : "—") },
-    { label: "Verzekering", render: (p) => (p.insurance_verified ? "✓" : "—") },
+    { label: "VOG", render: (p) => (badgeGeldig(p.vog_verified, p.vog_expiry) ? "✓" : "—") },
+    { label: "EHBO", render: (p) => (badgeGeldig(p.ehbo_verified, p.ehbo_expiry) ? "✓" : "—") },
+    {
+      label: "Verzekering",
+      render: (p) => (badgeGeldig(p.insurance_verified, p.insurance_expiry) ? "✓" : "—"),
+    },
     { label: "Schoolgroepen", render: (p) => (p.school_group_experience ? "✓" : "—") },
     { label: "Dagtarief", render: (p) => (p.daily_rate ? euro(p.daily_rate) : "—") },
     {

@@ -1,7 +1,10 @@
-import { INSURANCE_PARTNER } from "@/lib/constants/partners";
+import { INSURANCE_PARTNER, PARTNERS_ACTIEF } from "@/lib/constants/partners";
 
 /** Callout op het instructeur-dashboard/documenten: verzekering via partner. */
 export function InsurancePromo() {
+  // Geen partner om naar te verwijzen? Dan tonen we ook niets.
+  if (!PARTNERS_ACTIEF) return null;
+
   return (
     <div className="rounded-2xl border border-piste-200 bg-piste-50 p-6">
       <h3 className="font-display text-lg font-bold text-alpine-900">

@@ -5,7 +5,9 @@ import { createClient } from "@/lib/supabase/server";
 import { getSessionUser } from "@/lib/auth/user";
 import { DASHBOARD_NAV } from "@/lib/constants/nav";
 import { ROLE_LABELS, ROLE_TAGLINES, type Role } from "@/lib/constants/options";
-import type { Aspirant } from "@/lib/types";
+import { ProfielVoortgang } from "@/components/profile/ProfielVoortgang";
+import { computeCompleteness, type CompletenessResult } from "@/lib/profile/completeness";
+import type { Aspirant, InstructorProfile } from "@/lib/types";
 
 const INTRO: Record<Exclude<Role, "admin">, string> = {
   instructor:
@@ -44,6 +46,17 @@ export default async function DashboardHome() {
     aspirant = (data as Aspirant) ?? null;
   }
 
+  let voortgang: CompletenessResult | null = null;
+  if (user.role === "instructor") {
+    const supabase = await createClient();
+    const { data } = await supabase
+      .from("instructor_profiles")
+      .select("*")
+      .eq("user_id", user.id)
+      .maybeSingle();
+    if (data) voortgang = computeCompleteness(data as InstructorProfile);
+  }
+
   return (
     <>
       <PageHeader
@@ -60,6 +73,21 @@ export default async function DashboardHome() {
             </Link>{" "}
             voor de volgende stap.
           </p>
+        </div>
+      ) : voortgang ? (
+        <div className="mb-8 space-y-4">
+          <Link
+            href="/opdrachten"
+            className="block rounded-2xl bg-alpine-600 p-6 text-white shadow-sm transition-colors hover:bg-alpine-700"
+          >
+            <span className="font-display text-lg font-bold">
+              Bekijk de open opdrachten
+            </span>
+            <span className="mt-1 block text-sm text-alpine-100">
+              Reageren kan met één klik. Je hebt er geen compleet profiel voor nodig.
+            </span>
+          </Link>
+          <ProfielVoortgang resultaat={voortgang} toonStappen />
         </div>
       ) : (
         <div className="mb-8 rounded-2xl border border-alpine-100 bg-white p-6 shadow-sm">

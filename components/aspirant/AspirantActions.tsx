@@ -6,7 +6,7 @@ import {
   uploadCertificateAction,
   type AspirantState,
 } from "@/lib/aspirant/actions";
-import { TRAINING_PARTNER } from "@/lib/constants/partners";
+import { TRAINING_PARTNER, PARTNERS_ACTIEF } from "@/lib/constants/partners";
 import { Button } from "@/components/ui/Button";
 import { Input, Label, FormError, FormMessage } from "@/components/ui/form";
 import type { Aspirant } from "@/lib/types";
@@ -37,16 +37,22 @@ export function AspirantActions({ aspirant }: { aspirant: Aspirant }) {
           <h3 className="font-display text-lg font-bold text-alpine-900">
             Schrijf je in bij de opleiding
           </h3>
-          <p className="mt-1 text-sm text-alpine-600">{TRAINING_PARTNER.tagline}</p>
+          <p className="mt-1 text-sm text-alpine-600">
+            {PARTNERS_ACTIEF
+              ? TRAINING_PARTNER.tagline
+              : "We werken aan een vaste opleidingspartner. Schrijf je in de tussentijd zelf in bij een erkende opleiding en geef hier aan wanneer dat gelukt is."}
+          </p>
           <div className="mt-4 flex flex-wrap gap-2">
-            <a
-              href={TRAINING_PARTNER.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-full bg-piste-500 px-5 py-2.5 text-sm font-medium text-white hover:bg-piste-600"
-            >
-              Naar de opleiding
-            </a>
+            {PARTNERS_ACTIEF ? (
+              <a
+                href={TRAINING_PARTNER.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-full bg-piste-500 px-5 py-2.5 text-sm font-medium text-white hover:bg-piste-600"
+              >
+                Naar de opleiding
+              </a>
+            ) : null}
             <form action={markEnrolledAction}>
               <Button type="submit" variant="outline">Ik heb me ingeschreven</Button>
             </form>

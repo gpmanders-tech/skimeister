@@ -30,8 +30,13 @@ export default function Page() {
           </p>
           <h2 className="font-display text-lg font-bold text-alpine-900">3. Betalingen</h2>
           <p>
-            Abonnementen en projectbetalingen verlopen via onze betaalpartner.
-            Facturen worden verstrekt voor je administratie.
+            Instructeurs en aspiranten betalen niets. Skischolen en
+            reisorganisaties plaatsen kosteloos opdrachten en ontvangen kosteloos
+            reacties; er is een vergoeding van € 195 per instructeur die
+            daadwerkelijk wordt geplaatst, die achteraf wordt gefactureerd.
+            Scholen betalen € 79 per project. Genoemde bedragen zijn exclusief
+            btw. Projectbetalingen verlopen via onze betaalpartner; voor alle
+            betalingen wordt een factuur verstrekt.
           </p>
           <h2 className="font-display text-lg font-bold text-alpine-900">4. Aansprakelijkheid</h2>
           <p>

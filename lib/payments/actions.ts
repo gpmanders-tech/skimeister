@@ -3,9 +3,8 @@
 import { redirect } from "next/navigation";
 import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { getSessionUser } from "@/lib/auth/user";
-import { isOrgRole } from "@/lib/auth/roles";
 import { getMollie, siteUrl } from "@/lib/mollie/client";
-import { PLANS } from "@/lib/constants/pricing";
+import { SCHOOL_PROJECT_PRIJS } from "@/lib/constants/pricing";
 
 export interface CheckoutState {
   error?: string;
@@ -23,49 +22,25 @@ function addPeriod(interval: "month" | "year" | "once"): string | null {
   return d.toISOString().slice(0, 10);
 }
 
-/** Start een Mollie-checkout voor een abonnement (skischool/reisorg). */
-export async function startSubscriptionCheckout(
-  _prev: CheckoutState,
-  formData: FormData,
-): Promise<CheckoutState> {
-  const user = await getSessionUser();
-  if (!user || !isOrgRole(user.role)) return { error: "Geen toegang." };
 
-  const planId = String(formData.get("plan_id") ?? "");
-  const interval = formData.get("interval") === "year" ? "year" : "month";
-  const plan = PLANS.find((p) => p.id === planId);
-  if (!plan || plan.priceMonthly == null) return { error: "Onbekend abonnement." };
-
-  const amount = interval === "year" ? plan.priceYearly! : plan.priceMonthly;
-  return createMolliePayment({
-    userId: user.id,
-    kind: "subscription",
-    planId: plan.id,
-    description: `Skimeister ${plan.name} (${interval === "year" ? "jaar" : "maand"})`,
-    amount,
-    interval,
-    redirectPath: "/abonnement?betaald=1",
-  });
-}
-
-/** Start een Mollie-checkout voor een eenmalige projectbetaling (school). */
+/**
+ * Start een Mollie-checkout voor een eenmalige projectbetaling (school).
+ * Dit is sinds seizoen 2026/27 de enige online betaling: abonnementen bestaan
+ * niet meer en de plaatsingsfee voor organisaties wordt achteraf gefactureerd.
+ */
 export async function startProjectCheckout(
   _prev: CheckoutState,
-  formData: FormData,
+  _formData: FormData,
 ): Promise<CheckoutState> {
   const user = await getSessionUser();
   if (!user || user.role !== "school_nl") return { error: "Geen toegang." };
 
-  const planId = String(formData.get("plan_id") ?? "school_project");
-  const plan = PLANS.find((p) => p.id === planId && p.audience === "school");
-  if (!plan || plan.priceOneOff == null) return { error: "Onbekend product." };
-
   return createMolliePayment({
     userId: user.id,
     kind: "project",
-    planId: plan.id,
-    description: `Skimeister ${plan.name}`,
-    amount: plan.priceOneOff,
+    planId: "school_project",
+    description: "Skimeister schoolreis-project",
+    amount: SCHOOL_PROJECT_PRIJS,
     interval: "once",
     redirectPath: "/betaling?betaald=1",
   });

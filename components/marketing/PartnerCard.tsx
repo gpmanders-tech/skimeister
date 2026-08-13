@@ -1,6 +1,9 @@
-import type { Partner } from "@/lib/constants/partners";
+import { PARTNERS_ACTIEF, type Partner } from "@/lib/constants/partners";
 
 export function PartnerCard({ partner }: { partner: Partner }) {
+  // Zolang er geen echte partner is, tonen we geen partnerblok.
+  if (!PARTNERS_ACTIEF) return null;
+
   return (
     <div className="rounded-2xl border border-alpine-100 bg-white p-7 shadow-sm">
       <h3 className="font-display text-xl font-bold text-alpine-900">{partner.name}</h3>

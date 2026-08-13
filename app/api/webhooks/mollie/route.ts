@@ -3,12 +3,13 @@ import { getMollie } from "@/lib/mollie/client";
 import { createServiceClient } from "@/lib/supabase/server";
 import { createWefactInvoice, wefactConfigured } from "@/lib/wefact/client";
 import { notifyPaymentConfirmed } from "@/lib/email/notify";
-import { PLANS } from "@/lib/constants/pricing";
 
 /**
  * Mollie roept deze webhook aan met het payment-id. Wij halen de status op,
- * werken de betaling bij en — bij 'paid' — activeren het abonnement/project
- * en maken een WeFact-factuur aan.
+ * werken de betaling bij en maken bij 'paid' een WeFact-factuur aan.
+ *
+ * Sinds seizoen 2026/27 bestaan er geen abonnementen meer: de enige online
+ * betaling is het schoolreis-project van een school.
  */
 export async function POST(request: Request) {
   const mollie = getMollie();
@@ -48,18 +49,6 @@ export async function POST(request: Request) {
         );
       }
 
-      // Abonnement activeren.
-      if (payment.kind === "subscription" && payment.organization_id) {
-        await service
-          .from("organizations")
-          .update({
-            subscription_status: "active",
-            subscription_tier: payment.plan_id,
-            subscription_end_date: payment.period_end,
-          })
-          .eq("id", payment.organization_id);
-      }
-
       // WeFact-factuur aanmaken.
       if (wefactConfigured() && !payment.wefact_invoice_id) {
         const { data: u } = await service
@@ -75,13 +64,12 @@ export async function POST(request: Request) {
               .single()
           : { data: null };
 
-        const plan = PLANS.find((p) => p.id === payment.plan_id);
         const invoiceCode = await createWefactInvoice({
           email: u?.email ?? "onbekend@skimeister.nl",
           companyName: org?.name ?? u?.email ?? "Skimeister-klant",
           lines: [
             {
-              Description: plan?.name ?? payment.description ?? "Skimeister",
+              Description: payment.description ?? "Skimeister",
               PriceExclVat: Number(payment.amount),
               Number: 1,
               TaxPercentage: 21,

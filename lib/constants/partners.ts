@@ -1,7 +1,12 @@
 /**
- * Externe partners (opleiding + verzekering). Pas naam/URL aan zodra de
- * definitieve partners bekend zijn. Referral-links bevatten een tracking-param.
+ * Externe partners (opleiding + verzekering).
+ *
+ * ⚠️ De gegevens hieronder zijn nog PLAATSHOUDERS met verzonnen URL's. Zolang
+ * PARTNERS_ACTIEF op false staat wordt er nergens een partner getoond: liever
+ * niets dan een partner die niet bestaat. Zet dit op true zodra de echte naam,
+ * URL en voorwaarden bekend zijn.
  */
+export const PARTNERS_ACTIEF = false;
 
 export interface Partner {
   name: string;

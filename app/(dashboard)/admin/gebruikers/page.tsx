@@ -14,7 +14,8 @@ interface UserRow {
 
 interface SignupDetails {
   phone?: string;
-  city?: string;
+  voornaam?: string;
+  achternaam?: string;
 }
 
 /**
@@ -34,7 +35,11 @@ async function signupDetailsById(
 
     for (const u of data.users) {
       const meta = (u.user_metadata ?? {}) as SignupDetails;
-      map.set(u.id, { phone: meta.phone, city: meta.city });
+      map.set(u.id, {
+        phone: meta.phone,
+        voornaam: meta.voornaam,
+        achternaam: meta.achternaam,
+      });
     }
     if (data.users.length < perPage) break;
   }
@@ -91,17 +96,22 @@ export default async function AdminUsersPage({
         <table className="w-full text-sm">
           <thead className="bg-alpine-50 text-left text-xs uppercase tracking-wide text-alpine-500">
             <tr>
+              <th className="p-3">Naam</th>
               <th className="p-3">E-mail</th>
               <th className="p-3">Rol</th>
               <th className="p-3">Telefoon</th>
-              <th className="p-3">Woonplaats</th>
               <th className="p-3">Aangemeld</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-alpine-50">
             {users.map((u) => (
               <tr key={u.id}>
-                <td className="p-3 text-alpine-900">{u.email}</td>
+                <td className="p-3 font-medium text-alpine-900">
+                  {[details.get(u.id)?.voornaam, details.get(u.id)?.achternaam]
+                    .filter(Boolean)
+                    .join(" ") || "–"}
+                </td>
+                <td className="p-3 text-alpine-700">{u.email}</td>
                 <td className="p-3">
                   <span className="rounded-full bg-alpine-50 px-2 py-0.5 text-xs font-medium text-alpine-700">
                     {ROLE_LABELS[u.role] ?? u.role}
@@ -109,9 +119,6 @@ export default async function AdminUsersPage({
                 </td>
                 <td className="p-3 text-alpine-700">
                   {details.get(u.id)?.phone ?? "–"}
-                </td>
-                <td className="p-3 text-alpine-700">
-                  {details.get(u.id)?.city ?? "–"}
                 </td>
                 <td className="p-3 text-alpine-500">{formatDate(u.created_at)}</td>
               </tr>
