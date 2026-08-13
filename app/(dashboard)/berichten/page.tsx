@@ -3,6 +3,7 @@ import { PageHeader } from "@/components/dashboard/PageHeader";
 import { createClient } from "@/lib/supabase/server";
 import { getSessionUser } from "@/lib/auth/user";
 import { resolveUserNames } from "@/lib/messages/names";
+import { taalVoorRol } from "@/lib/i18n/taal";
 import { formatDate } from "@/lib/utils";
 import type { Message } from "@/lib/types";
 
@@ -11,6 +12,8 @@ export const metadata = { title: "Berichten" };
 export default async function InboxPage() {
   const user = await getSessionUser();
   if (!user) return null;
+
+  const duits = taalVoorRol(user.role) === "de";
 
   const supabase = await createClient();
   const { data } = await supabase
@@ -42,11 +45,14 @@ export default async function InboxPage() {
 
   return (
     <>
-      <PageHeader title="Berichten" subtitle="Je gesprekken." />
+      <PageHeader
+        title={duits ? "Nachrichten" : "Berichten"}
+        subtitle={duits ? "Ihre Gespräche." : "Je gesprekken."}
+      />
 
       {convos.size === 0 ? (
         <p className="rounded-2xl border border-dashed border-alpine-200 bg-white p-10 text-center text-sm text-alpine-500">
-          Je hebt nog geen berichten.
+          {duits ? "Sie haben noch keine Nachrichten." : "Je hebt nog geen berichten."}
         </p>
       ) : (
         <div className="divide-y divide-alpine-100 overflow-hidden rounded-2xl border border-alpine-100 bg-white shadow-sm">
@@ -58,7 +64,7 @@ export default async function InboxPage() {
             >
               <div className="min-w-0">
                 <p className="font-medium text-alpine-900">
-                  {names.get(other) ?? "Gebruiker"}
+                  {names.get(other) ?? (duits ? "Benutzer" : "Gebruiker")}
                 </p>
                 <p className="truncate text-sm text-alpine-600">{last.content}</p>
               </div>

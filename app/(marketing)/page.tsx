@@ -208,7 +208,7 @@ function Audiences() {
   const links: Record<string, string> = {
     instructor: "/skileraar-worden",
     aspirant: "/skileraar-worden",
-    school_ski: "/voor-skischolen",
+    school_ski: "/fuer-skischulen",
     travel_org: "/voor-reisorganisaties",
     school_nl: "/voor-scholen",
   };

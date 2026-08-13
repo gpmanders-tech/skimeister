@@ -6,7 +6,7 @@ import { ButtonLink } from "@/components/ui/Button";
 /** Opdrachten staat bewust vooraan: dat is waar het platform om draait. */
 const NAV = [
   { href: "/opdrachten", label: "Opdrachten", primair: true },
-  { href: "/voor-skischolen", label: "Voor skischolen" },
+  { href: "/fuer-skischulen", label: "Für Skischulen" },
   { href: "/voor-reisorganisaties", label: "Voor reisorganisaties" },
   { href: "/voor-scholen", label: "Voor scholen" },
   { href: "/skileraar-worden", label: "Skileraar worden" },

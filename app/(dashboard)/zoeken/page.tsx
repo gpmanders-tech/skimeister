@@ -5,6 +5,8 @@ import { InstructorCard } from "@/components/search/InstructorCard";
 import { createClient } from "@/lib/supabase/server";
 import { getSessionUser } from "@/lib/auth/user";
 import { isOrgRole } from "@/lib/auth/roles";
+import { taalVoorRol } from "@/lib/i18n/taal";
+import { teksten } from "@/lib/i18n/teksten";
 import type { InstructorProfile } from "@/lib/types";
 
 export const metadata = { title: "Instructeurs zoeken" };
@@ -17,13 +19,10 @@ export default async function SearchPage({
   const user = await getSessionUser();
   if (!user) return null;
 
+  const t = teksten(taalVoorRol(user.role)).zoeken;
+
   if (!isOrgRole(user.role)) {
-    return (
-      <PageHeader
-        title="Instructeurs zoeken"
-        subtitle="Zoeken is beschikbaar voor skischolen, reisorganisaties en scholen."
-      />
-    );
+    return <PageHeader title={t.titel} subtitle={t.alleenOrganisaties} />;
   }
 
   const params = await searchParams;
@@ -71,24 +70,19 @@ export default async function SearchPage({
 
   return (
     <>
-      <PageHeader
-        title="Instructeurs zoeken"
-        subtitle="Filter op gebied, certificering, taal en meer."
-      />
+      <PageHeader title={t.titel} subtitle={t.subtitel} />
 
       <div className="grid gap-6 lg:grid-cols-[18rem_1fr]">
         <div className="space-y-4">
-          <SearchFilters params={params} />
-          <SavedSearches current={params} saved={saved} />
+          <SearchFilters params={params} taal={taalVoorRol(user.role)} />
+          <SavedSearches current={params} saved={saved} taal={taalVoorRol(user.role)} />
         </div>
 
         <div>
-          <p className="mb-4 text-sm text-alpine-600">
-            {results.length} instructeur{results.length === 1 ? "" : "s"} gevonden
-          </p>
+          <p className="mb-4 text-sm text-alpine-600">{t.gevonden(results.length)}</p>
           {results.length === 0 ? (
             <p className="rounded-2xl border border-dashed border-alpine-200 bg-white p-10 text-center text-sm text-alpine-500">
-              Geen instructeurs gevonden met deze filters.
+              {t.geenResultaten}
             </p>
           ) : (
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">

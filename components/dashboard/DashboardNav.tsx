@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { signOutAction } from "@/lib/auth/actions";
 import type { NavItem } from "@/lib/constants/nav";
 import { ROLE_LABELS, type Role } from "@/lib/constants/options";
+import { taalVoorRol } from "@/lib/i18n/taal";
 import { cn } from "@/lib/utils";
 
 export function DashboardNav({
@@ -17,12 +18,13 @@ export function DashboardNav({
   email: string;
 }) {
   const pathname = usePathname();
+  const duits = taalVoorRol(role) === "de";
 
   return (
     <div className="flex h-full flex-col">
       <div className="px-4 pb-4">
         <p className="text-xs font-semibold uppercase tracking-wide text-piste-600">
-          {ROLE_LABELS[role]}
+          {duits ? "Skischule" : ROLE_LABELS[role]}
         </p>
         <p className="truncate text-sm text-alpine-700" title={email}>
           {email}
@@ -58,7 +60,7 @@ export function DashboardNav({
           type="submit"
           className="block w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-alpine-600 hover:bg-alpine-50 hover:text-piste-600"
         >
-          Uitloggen
+          {duits ? "Abmelden" : "Uitloggen"}
         </button>
       </form>
     </div>

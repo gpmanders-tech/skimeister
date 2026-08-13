@@ -40,7 +40,7 @@ export default async function Page() {
             <ButtonLink href="/opdrachten" variant="accent">
               Bekijk de open opdrachten
             </ButtonLink>
-            <ButtonLink href="/voor-skischolen" variant="outline">
+            <ButtonLink href="/fuer-skischulen" variant="outline">
               Een opdracht plaatsen
             </ButtonLink>
           </div>

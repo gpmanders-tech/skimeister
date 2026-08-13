@@ -1,6 +1,19 @@
+import type { Taal } from "@/lib/i18n/taal";
+
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://skimeister.nl";
 
-function layout(title: string, body: string, cta?: { label: string; href: string }): string {
+/** Afsluitregel onder elke mail, in de taal van de ontvanger. */
+const SLOGAN: Record<Taal, string> = {
+  nl: "De verbinding tussen skileraren en de skipiste.",
+  de: "Die Verbindung zwischen Skilehrern und der Piste.",
+};
+
+function layout(
+  title: string,
+  body: string,
+  cta?: { label: string; href: string },
+  taal: Taal = "nl",
+): string {
   return `
   <div style="font-family:Inter,Arial,sans-serif;max-width:560px;margin:0 auto;color:#0b1930">
     <div style="background:#1b3a6b;padding:24px 28px;border-radius:16px 16px 0 0">
@@ -14,7 +27,7 @@ function layout(title: string, body: string, cta?: { label: string; href: string
           ? `<div style="margin-top:24px"><a href="${cta.href}" style="display:inline-block;background:#ff6b35;color:#fff;text-decoration:none;padding:12px 22px;border-radius:999px;font-weight:600">${cta.label}</a></div>`
           : ""
       }
-      <p style="margin-top:28px;font-size:12px;color:#7e8aa0">De verbinding tussen skileraren en de skipiste.</p>
+      <p style="margin-top:28px;font-size:12px;color:#7e8aa0">${SLOGAN[taal]}</p>
     </div>
   </div>`;
 }
@@ -28,18 +41,29 @@ function row(label: string, value: string): string {
 }
 
 export const emailTemplates = {
-  welcome: (role: string) => ({
-    subject: "Welkom bij Skimeister.nl 🎿",
-    html: layout(
-      "Welkom bij Skimeister!",
-      `Je account is aangemaakt als <strong>${role}</strong>. Log in en zet de eerste stappen — ${
-        role === "Instructeur"
-          ? "maak je profiel compleet om gevonden te worden."
-          : "ontdek wat het platform voor je kan doen."
-      }`,
-      { label: "Naar mijn dashboard", href: `${SITE}/dashboard` },
-    ),
-  }),
+  welcome: (role: string, taal: Taal = "nl") =>
+    taal === "de"
+      ? {
+          subject: "Willkommen bei Skimeister.nl 🎿",
+          html: layout(
+            "Willkommen bei Skimeister!",
+            `Ihr Konto wurde als <strong>Skischule</strong> angelegt. Schreiben Sie Ihren ersten Auftrag aus und erreichen Sie damit gezielt qualifizierte Skilehrerinnen und Skilehrer. Ausschreiben und Rückmeldungen erhalten ist kostenlos.`,
+            { label: "Zum Dashboard", href: `${SITE}/dashboard` },
+            "de",
+          ),
+        }
+      : {
+          subject: "Welkom bij Skimeister.nl 🎿",
+          html: layout(
+            "Welkom bij Skimeister!",
+            `Je account is aangemaakt als <strong>${role}</strong>. Log in en zet de eerste stappen — ${
+              role === "Instructeur"
+                ? "maak je profiel compleet om gevonden te worden."
+                : "ontdek wat het platform voor je kan doen."
+            }`,
+            { label: "Naar mijn dashboard", href: `${SITE}/dashboard` },
+          ),
+        },
 
   /** Kopie van de volledige aanmelding naar de beheerder. */
   signupCopy: (c: {
@@ -84,14 +108,25 @@ export const emailTemplates = {
     ),
   }),
 
-  newApplication: (projectName: string) => ({
-    subject: `Nieuwe aanmelding voor "${projectName}"`,
-    html: layout(
-      "Je hebt een nieuwe aanmelding",
-      `Een instructeur heeft zich aangemeld voor je project <strong>${projectName}</strong>. Bekijk de aanmelding en motivatie in je dashboard.`,
-      { label: "Bekijk aanmeldingen", href: `${SITE}/projecten` },
-    ),
-  }),
+  newApplication: (projectName: string, taal: Taal = "nl") =>
+    taal === "de"
+      ? {
+          subject: `Neue Rückmeldung auf "${projectName}"`,
+          html: layout(
+            "Sie haben eine neue Rückmeldung",
+            `Eine Skilehrerin oder ein Skilehrer hat sich auf Ihren Auftrag <strong>${projectName}</strong> gemeldet. Qualifikation, Erfahrung und geprüfte Nachweise sehen Sie in Ihrem Dashboard.`,
+            { label: "Rückmeldungen ansehen", href: `${SITE}/projecten` },
+            "de",
+          ),
+        }
+      : {
+          subject: `Nieuwe aanmelding voor "${projectName}"`,
+          html: layout(
+            "Je hebt een nieuwe aanmelding",
+            `Een instructeur heeft zich aangemeld voor je project <strong>${projectName}</strong>. Bekijk de aanmelding en motivatie in je dashboard.`,
+            { label: "Bekijk aanmeldingen", href: `${SITE}/projecten` },
+          ),
+        },
 
   selected: (projectName: string) => ({
     subject: `Je bent geselecteerd voor "${projectName}" 🎉`,
@@ -111,23 +146,45 @@ export const emailTemplates = {
     ),
   }),
 
-  newMessage: (fromName: string) => ({
-    subject: `Nieuw bericht van ${fromName}`,
-    html: layout(
-      "Je hebt een nieuw bericht",
-      `<strong>${fromName}</strong> heeft je een bericht gestuurd op Skimeister. Reageer via je inbox.`,
-      { label: "Open berichten", href: `${SITE}/berichten` },
-    ),
-  }),
+  newMessage: (fromName: string, taal: Taal = "nl") =>
+    taal === "de"
+      ? {
+          subject: `Neue Nachricht von ${fromName}`,
+          html: layout(
+            "Sie haben eine neue Nachricht",
+            `<strong>${fromName}</strong> hat Ihnen über Skimeister geschrieben. Antworten Sie direkt in Ihrem Postfach.`,
+            { label: "Nachrichten öffnen", href: `${SITE}/berichten` },
+            "de",
+          ),
+        }
+      : {
+          subject: `Nieuw bericht van ${fromName}`,
+          html: layout(
+            "Je hebt een nieuw bericht",
+            `<strong>${fromName}</strong> heeft je een bericht gestuurd op Skimeister. Reageer via je inbox.`,
+            { label: "Open berichten", href: `${SITE}/berichten` },
+          ),
+        },
 
-  paymentConfirmed: (description: string) => ({
-    subject: "Betaling ontvangen — bedankt!",
-    html: layout(
-      "Je betaling is ontvangen",
-      `We hebben je betaling voor <strong>${description}</strong> ontvangen. De factuur wordt je per e-mail toegestuurd.`,
-      { label: "Naar dashboard", href: `${SITE}/dashboard` },
-    ),
-  }),
+  paymentConfirmed: (description: string, taal: Taal = "nl") =>
+    taal === "de"
+      ? {
+          subject: "Zahlung erhalten — vielen Dank!",
+          html: layout(
+            "Ihre Zahlung ist eingegangen",
+            `Wir haben Ihre Zahlung für <strong>${description}</strong> erhalten. Die Rechnung erhalten Sie per E-Mail.`,
+            { label: "Zum Dashboard", href: `${SITE}/dashboard` },
+            "de",
+          ),
+        }
+      : {
+          subject: "Betaling ontvangen — bedankt!",
+          html: layout(
+            "Je betaling is ontvangen",
+            `We hebben je betaling voor <strong>${description}</strong> ontvangen. De factuur wordt je per e-mail toegestuurd.`,
+            { label: "Naar dashboard", href: `${SITE}/dashboard` },
+          ),
+        },
 
   profileApproved: () => ({
     subject: "Je profiel is goedgekeurd ✅",

@@ -1,21 +1,36 @@
 import { Container } from "@/components/ui/Container";
 import { ButtonLink } from "@/components/ui/Button";
 import { PageHero } from "@/components/marketing/PageHero";
+import { HTML_LANG, type Taal } from "@/lib/i18n/taal";
 
 export interface AudienceContent {
   eyebrow: string;
   title: string;
   description: string;
+  /** Kop boven de stappen. Standaard Nederlands. */
+  stepsTitle?: string;
   steps: { t: string; d: string }[];
+  /** Kop boven de voordelen. Standaard Nederlands. */
+  benefitsTitle?: string;
   benefits: { t: string; d: string }[];
   ctaTitle: string;
   ctaHref: string;
   ctaLabel: string;
 }
 
-export function AudiencePage({ content }: { content: AudienceContent }) {
+export function AudiencePage({
+  content,
+  lang = "nl",
+}: {
+  content: AudienceContent;
+  lang?: Taal;
+}) {
+  // Alleen zetten als de pagina afwijkt van de sitetaal, zodat schermlezers en
+  // zoekmachines de Duitse pagina als Duits herkennen.
+  const langAttr = lang === "nl" ? undefined : HTML_LANG[lang];
+
   return (
-    <>
+    <div lang={langAttr}>
       <PageHero
         eyebrow={content.eyebrow}
         title={content.title}
@@ -23,7 +38,9 @@ export function AudiencePage({ content }: { content: AudienceContent }) {
       />
 
       <Container className="py-16">
-        <h2 className="font-display text-2xl font-bold text-alpine-900">Hoe werkt het</h2>
+        <h2 className="font-display text-2xl font-bold text-alpine-900">
+          {content.stepsTitle ?? "Hoe werkt het"}
+        </h2>
         <div className="mt-8 grid gap-6 md:grid-cols-3">
           {content.steps.map((s, i) => (
             <div key={s.t} className="rounded-2xl border border-alpine-100 bg-white p-7 shadow-sm">
@@ -40,7 +57,7 @@ export function AudiencePage({ content }: { content: AudienceContent }) {
       <section className="bg-snow-texture py-16">
         <Container>
           <h2 className="font-display text-2xl font-bold text-alpine-900">
-            Waarom Skimeister
+            {content.benefitsTitle ?? "Waarom Skimeister"}
           </h2>
           <div className="mt-8 grid gap-6 sm:grid-cols-2">
             {content.benefits.map((b) => (
@@ -66,6 +83,6 @@ export function AudiencePage({ content }: { content: AudienceContent }) {
           </div>
         </div>
       </Container>
-    </>
+    </div>
   );
 }

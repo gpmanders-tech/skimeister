@@ -4,17 +4,48 @@ import { updateContactStatusAction } from "@/lib/contacts/actions";
 import { createClient } from "@/lib/supabase/server";
 import { getSessionUser } from "@/lib/auth/user";
 import { isOrgRole } from "@/lib/auth/roles";
+import { taalVoorRol, type Taal } from "@/lib/i18n/taal";
 import type { InstructorProfile, ContactStatus } from "@/lib/types";
 
 export const metadata = { title: "Contacten" };
 
-const STATUS_LABELS: Record<ContactStatus, string> = {
-  saved: "Bewaard",
-  contacted: "Benaderd",
-  in_gesprek: "In gesprek",
-  aangenomen: "Aangenomen",
-  afgewezen: "Afgewezen",
+const STATUS_LABELS: Record<Taal, Record<ContactStatus, string>> = {
+  nl: {
+    saved: "Bewaard",
+    contacted: "Benaderd",
+    in_gesprek: "In gesprek",
+    aangenomen: "Aangenomen",
+    afgewezen: "Afgewezen",
+  },
+  de: {
+    saved: "Gemerkt",
+    contacted: "Kontaktiert",
+    in_gesprek: "Im Gespräch",
+    aangenomen: "Zugesagt",
+    afgewezen: "Abgesagt",
+  },
 };
+
+const L = {
+  nl: {
+    titel: "Contacten",
+    subtitel: "Beheer de instructeurs die je hebt opgeslagen.",
+    alleenOrganisaties: "Alleen voor organisaties.",
+    vergelijk: "Vergelijk",
+    zoeken: "Instructeurs zoeken",
+    opslaan: "Opslaan",
+    seizoen: "seizoen",
+  },
+  de: {
+    titel: "Kontakte",
+    subtitel: "Verwalten Sie die von Ihnen gemerkten Skilehrer.",
+    alleenOrganisaties: "Nur für Organisationen.",
+    vergelijk: "Vergleichen",
+    zoeken: "Skilehrer suchen",
+    opslaan: "Speichern",
+    seizoen: "Saison",
+  },
+} as const;
 
 interface ContactRow {
   id: string;
@@ -26,8 +57,13 @@ interface ContactRow {
 export default async function ContactsPage() {
   const user = await getSessionUser();
   if (!user) return null;
+
+  const taal = taalVoorRol(user.role);
+  const t = L[taal];
+  const statusLabels = STATUS_LABELS[taal];
+
   if (!isOrgRole(user.role)) {
-    return <PageHeader title="Contacten" subtitle="Alleen voor organisaties." />;
+    return <PageHeader title={t.titel} subtitle={t.alleenOrganisaties} />;
   }
 
   const supabase = await createClient();
@@ -55,8 +91,8 @@ export default async function ContactsPage() {
   return (
     <>
       <PageHeader
-        title="Contacten"
-        subtitle="Beheer de instructeurs die je hebt opgeslagen."
+        title={t.titel}
+        subtitle={t.subtitel}
         action={
           <div className="flex gap-2">
             {compareIds.length >= 2 && (
@@ -64,14 +100,14 @@ export default async function ContactsPage() {
                 href={`/vergelijk?ids=${compareIds.join(",")}`}
                 className="rounded-full border border-alpine-200 px-5 py-2.5 text-sm font-medium text-alpine-700 hover:bg-alpine-50"
               >
-                Vergelijk ({compareIds.length})
+                {t.vergelijk} ({compareIds.length})
               </Link>
             )}
             <Link
               href="/zoeken"
               className="rounded-full bg-piste-500 px-5 py-2.5 text-sm font-medium text-white hover:bg-piste-600"
             >
-              Instructeurs zoeken
+              {t.zoeken}
             </Link>
           </div>
         }
@@ -79,7 +115,9 @@ export default async function ContactsPage() {
 
       {contacts.length === 0 ? (
         <p className="rounded-2xl border border-dashed border-alpine-200 bg-white p-10 text-center text-sm text-alpine-500">
-          Nog geen contacten. Zoek instructeurs en bewaar ze hier.
+          {taal === "de"
+            ? "Noch keine Kontakte. Suchen Sie Skilehrer und merken Sie sie hier vor."
+            : "Nog geen contacten. Zoek instructeurs en bewaar ze hier."}
         </p>
       ) : (
         <div className="space-y-3">
@@ -105,7 +143,7 @@ export default async function ContactsPage() {
                     <span className="font-medium text-alpine-900">{name}</span>
                   )}
                   <p className="text-xs text-alpine-500">
-                    {p?.city ?? ""} {c.season ? `· seizoen ${c.season}` : ""}
+                    {p?.city ?? ""} {c.season ? `· ${t.seizoen} ${c.season}` : ""}
                   </p>
                 </div>
                 <form action={updateContactStatusAction} className="flex items-center gap-2">
@@ -115,9 +153,9 @@ export default async function ContactsPage() {
                     defaultValue={c.status}
                     className="rounded-lg border border-alpine-200 px-3 py-1.5 text-sm"
                   >
-                    {(Object.keys(STATUS_LABELS) as ContactStatus[]).map((s) => (
+                    {(Object.keys(statusLabels) as ContactStatus[]).map((s) => (
                       <option key={s} value={s}>
-                        {STATUS_LABELS[s]}
+                        {statusLabels[s]}
                       </option>
                     ))}
                   </select>
@@ -125,7 +163,7 @@ export default async function ContactsPage() {
                     type="submit"
                     className="rounded-lg border border-alpine-200 px-3 py-1.5 text-sm font-medium text-alpine-700 hover:bg-alpine-50"
                   >
-                    Opslaan
+                    {t.opslaan}
                   </button>
                 </form>
               </div>

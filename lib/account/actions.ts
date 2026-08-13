@@ -37,8 +37,9 @@ export async function deleteAccountAction(formData: FormData): Promise<void> {
   const user = await getSessionUser();
   if (!user) return;
 
-  const confirm = String(formData.get("confirm") ?? "");
-  if (confirm !== "VERWIJDER") return;
+  // Duitstalige gebruikers (skischolen) typen LÖSCHEN, zie lib/i18n/taal.ts.
+  const confirm = String(formData.get("confirm") ?? "").trim().toUpperCase();
+  if (confirm !== "VERWIJDER" && confirm !== "LÖSCHEN") return;
 
   const supabase = await createClient();
   await supabase.auth.signOut();

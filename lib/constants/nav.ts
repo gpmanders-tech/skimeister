@@ -24,14 +24,15 @@ export const DASHBOARD_NAV: Record<Role, NavItem[]> = {
     { href: "/documenten", label: "Documenten" },
     { href: "/instellingen", label: "Instellingen" },
   ],
+  // Skischolen zijn Duitstalig; zie lib/i18n/taal.ts.
   school_ski: [
-    { href: "/dashboard", label: "Overzicht" },
-    { href: "/zoeken", label: "Instructeurs zoeken" },
-    { href: "/contacten", label: "Contacten" },
-    { href: "/contracten", label: "Contracten" },
-    { href: "/berichten", label: "Berichten" },
+    { href: "/dashboard", label: "Übersicht" },
+    { href: "/zoeken", label: "Skilehrer suchen" },
+    { href: "/contacten", label: "Kontakte" },
+    { href: "/contracten", label: "Verträge" },
+    { href: "/berichten", label: "Nachrichten" },
     { href: "/abonnement", label: "Kosten" },
-    { href: "/instellingen", label: "Instellingen" },
+    { href: "/instellingen", label: "Einstellungen" },
   ],
   travel_org: [
     { href: "/dashboard", label: "Overzicht" },

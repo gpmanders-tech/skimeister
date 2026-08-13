@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Input, Label, Textarea, Select } from "@/components/ui/form";
 import { Button } from "@/components/ui/Button";
 import { RESORTS } from "@/lib/constants/resorts";
+import type { Taal } from "@/lib/i18n/taal";
 
 const TEMPLATES: Record<string, { title: string; party1: string }> = {
   ski_school: { title: "Overeenkomst skischool – skileraar", party1: "Skischool" },
@@ -24,7 +25,13 @@ interface Fields {
   date: string;
 }
 
-export function ContractGenerator({ defaultOrgName }: { defaultOrgName?: string }) {
+export function ContractGenerator({
+  defaultOrgName,
+  taal = "nl",
+}: {
+  defaultOrgName?: string;
+  taal?: Taal;
+}) {
   const [f, setF] = useState<Fields>({
     template: "ski_school",
     orgName: defaultOrgName ?? "",
@@ -54,6 +61,17 @@ export function ContractGenerator({ defaultOrgName }: { defaultOrgName?: string 
 
   return (
     <div className="grid gap-6 lg:grid-cols-2">
+      {/* De contracttekst zelf is Nederlands. Een Duitse juridische versie is
+          geen vertaalklus maar een inhoudelijke; tot die er is zeggen we dat
+          eerlijk in plaats van een machinevertaling te tonen. */}
+      {taal === "de" && (
+        <p className="rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-800 lg:col-span-2">
+          Hinweis: Die Vertragsvorlage ist derzeit nur auf Niederländisch
+          verfügbar. Eine deutschsprachige Fassung wird vorbereitet. Bitte lassen
+          Sie den Vertrag vor Verwendung rechtlich prüfen.
+        </p>
+      )}
+
       {/* Formulier */}
       <div className="space-y-4 rounded-2xl border border-alpine-100 bg-white p-6 shadow-sm">
         <div>

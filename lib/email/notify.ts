@@ -2,21 +2,37 @@ import { createServiceClient } from "@/lib/supabase/server";
 import { sendEmail } from "@/lib/email/client";
 import { emailTemplates } from "@/lib/email/templates";
 import { ROLE_LABELS, type Role } from "@/lib/constants/options";
+import { taalVoorRol, type Taal } from "@/lib/i18n/taal";
 
 /** Zoekt het e-mailadres bij een user-id (service role; omzeilt RLS). */
 async function emailFor(userId: string): Promise<string | null> {
-  if (!process.env.SUPABASE_SERVICE_ROLE_KEY) return null;
+  return (await ontvanger(userId)).email;
+}
+
+/**
+ * Haalt adres én taal van de ontvanger op. De taal van een mail hangt af van
+ * wie 'm leest, niet van wie de actie uitvoert: een skischool krijgt Duits,
+ * ook als een Nederlandse instructeur de mail veroorzaakt.
+ */
+async function ontvanger(
+  userId: string,
+): Promise<{ email: string | null; taal: Taal }> {
+  if (!process.env.SUPABASE_SERVICE_ROLE_KEY) return { email: null, taal: "nl" };
   const service = createServiceClient();
   const { data } = await service
     .from("users")
-    .select("email")
+    .select("email, role")
     .eq("id", userId)
     .maybeSingle();
-  return data?.email ?? null;
+
+  return {
+    email: data?.email ?? null,
+    taal: taalVoorRol(data?.role as Role | undefined),
+  };
 }
 
-export async function notifyWelcome(email: string, roleLabel: string) {
-  const t = emailTemplates.welcome(roleLabel);
+export async function notifyWelcome(email: string, roleLabel: string, taal: Taal = "nl") {
+  const t = emailTemplates.welcome(roleLabel, taal);
   await sendEmail({ to: email, ...t });
 }
 
@@ -55,15 +71,15 @@ export async function notifyAdminNewReaction(c: {
 }
 
 export async function notifyNewMessage(receiverId: string, senderName: string) {
-  const to = await emailFor(receiverId);
-  if (!to) return;
-  await sendEmail({ to, ...emailTemplates.newMessage(senderName) });
+  const { email, taal } = await ontvanger(receiverId);
+  if (!email) return;
+  await sendEmail({ to: email, ...emailTemplates.newMessage(senderName, taal) });
 }
 
 export async function notifyNewApplication(orgUserId: string, projectName: string) {
-  const to = await emailFor(orgUserId);
-  if (!to) return;
-  await sendEmail({ to, ...emailTemplates.newApplication(projectName) });
+  const { email, taal } = await ontvanger(orgUserId);
+  if (!email) return;
+  await sendEmail({ to: email, ...emailTemplates.newApplication(projectName, taal) });
 }
 
 export async function notifyDecision(
@@ -86,8 +102,12 @@ export async function notifyProfileApproved(instructorUserId: string) {
   await sendEmail({ to, ...emailTemplates.profileApproved() });
 }
 
-export async function notifyPaymentConfirmed(email: string, description: string) {
-  await sendEmail({ to: email, ...emailTemplates.paymentConfirmed(description) });
+export async function notifyPaymentConfirmed(
+  email: string,
+  description: string,
+  taal: Taal = "nl",
+) {
+  await sendEmail({ to: email, ...emailTemplates.paymentConfirmed(description, taal) });
 }
 
 export interface OpdrachtMatch {

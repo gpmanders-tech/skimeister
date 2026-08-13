@@ -6,7 +6,7 @@ const COLUMNS = [
   {
     title: "Doelgroepen",
     links: [
-      { href: "/voor-skischolen", label: "Skischolen" },
+      { href: "/fuer-skischulen", label: "Für Skischulen" },
       { href: "/voor-reisorganisaties", label: "Reisorganisaties" },
       { href: "/voor-scholen", label: "Scholen" },
       { href: "/skileraar-worden", label: "Skileraar worden" },

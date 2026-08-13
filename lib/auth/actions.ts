@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { REGISTERABLE_ROLES, ROLE_LABELS, type Role } from "@/lib/constants/options";
 import { notifyWelcome, notifyAdminSignupCopy } from "@/lib/email/notify";
+import { taalVoorRol } from "@/lib/i18n/taal";
 import { computeCompleteness } from "@/lib/profile/completeness";
 import { getCertById } from "@/lib/constants/certifications";
 import { checkFormGuards } from "@/lib/security/formGuard";
@@ -187,7 +188,7 @@ export async function signUpAction(
 
     // E-mails mogen de registratie nooit laten crashen.
     try {
-      await notifyWelcome(email, ROLE_LABELS[role]);
+      await notifyWelcome(email, ROLE_LABELS[role], taalVoorRol(role));
       await notifyAdminSignupCopy({
         roleLabel: ROLE_LABELS[role],
         email,

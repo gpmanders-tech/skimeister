@@ -3,6 +3,7 @@ import { getMollie } from "@/lib/mollie/client";
 import { createServiceClient } from "@/lib/supabase/server";
 import { createWefactInvoice, wefactConfigured } from "@/lib/wefact/client";
 import { notifyPaymentConfirmed } from "@/lib/email/notify";
+import { taalVoorRol } from "@/lib/i18n/taal";
 
 /**
  * Mollie roept deze webhook aan met het payment-id. Wij halen de status op,
@@ -39,13 +40,14 @@ export async function POST(request: Request) {
       // E-mailadres van de klant ophalen voor bevestiging + factuur.
       const { data: payer } = await service
         .from("users")
-        .select("email")
+        .select("email, role")
         .eq("id", payment.user_id)
         .single();
       if (payer?.email) {
         await notifyPaymentConfirmed(
           payer.email,
           payment.description ?? "je Skimeister-betaling",
+          taalVoorRol(payer.role),
         );
       }
 

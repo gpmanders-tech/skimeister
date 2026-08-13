@@ -6,6 +6,8 @@ import { getSessionUser } from "@/lib/auth/user";
 import { DASHBOARD_NAV } from "@/lib/constants/nav";
 import { ROLE_LABELS, ROLE_TAGLINES, type Role } from "@/lib/constants/options";
 import { ProfielVoortgang } from "@/components/profile/ProfielVoortgang";
+import { taalVoorRol } from "@/lib/i18n/taal";
+import { teksten } from "@/lib/i18n/teksten";
 import { computeCompleteness, type CompletenessResult } from "@/lib/profile/completeness";
 import type { Aspirant, InstructorProfile } from "@/lib/types";
 
@@ -57,11 +59,18 @@ export default async function DashboardHome() {
     if (data) voortgang = computeCompleteness(data as InstructorProfile);
   }
 
+  const taal = taalVoorRol(user.role);
+  const t = teksten(taal);
+
   return (
     <>
       <PageHeader
-        title={`Welkom, ${ROLE_LABELS[user.role]}`}
-        subtitle={ROLE_TAGLINES[user.role]}
+        title={
+          taal === "de"
+            ? `${t.dashboard.welkom}, Skischule`
+            : `Welkom, ${ROLE_LABELS[user.role]}`
+        }
+        subtitle={taal === "de" ? t.dashboard.intro : ROLE_TAGLINES[user.role]}
       />
       {aspirant ? (
         <div className="mb-8">
@@ -91,18 +100,20 @@ export default async function DashboardHome() {
         </div>
       ) : (
         <div className="mb-8 rounded-2xl border border-alpine-100 bg-white p-6 shadow-sm">
-          <p className="text-alpine-700">{INTRO[user.role]}</p>
+          <p className="text-alpine-700">
+            {taal === "de" ? t.dashboard.intro : INTRO[user.role]}
+          </p>
         </div>
       )}
       <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-alpine-500">
-        Snel naar
+        {t.algemeen.snelNaar}
       </h2>
-      <QuickLinks role={user.role} />
+      <QuickLinks role={user.role} openen={t.algemeen.openen} />
     </>
   );
 }
 
-function QuickLinks({ role }: { role: Role }) {
+function QuickLinks({ role, openen = "Openen →" }: { role: Role; openen?: string }) {
   const items = DASHBOARD_NAV[role].filter(
     (i) => i.href !== "/dashboard" && i.href !== "/admin/dashboard",
   );
@@ -115,7 +126,7 @@ function QuickLinks({ role }: { role: Role }) {
           className="rounded-xl border border-alpine-100 bg-white p-5 shadow-sm transition-shadow hover:shadow-md"
         >
           <span className="font-medium text-alpine-900">{item.label}</span>
-          <span className="mt-1 block text-sm text-piste-600">Openen →</span>
+          <span className="mt-1 block text-sm text-piste-600">{openen}</span>
         </Link>
       ))}
     </div>

@@ -13,7 +13,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "",
     "/opdrachten",
     "/instructeurs",
-    "/voor-skischolen",
+    "/fuer-skischulen",
     "/voor-reisorganisaties",
     "/voor-scholen",
     "/skileraar-worden",
