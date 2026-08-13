@@ -112,13 +112,18 @@ function Hero() {
 function HeroVisual() {
   return (
     <div className="relative">
-      {/* Alpenfoto */}
+      {/*
+        Foto: skiles op de piste, van afstand gefotografeerd. Bewust geen
+        herkenbare gezichten, dus geen portretrecht- of privacykwestie.
+        Bron: Pexels (foto 35923083), Pexels-licentie, vrij voor commercieel
+        gebruik zonder naamsvermelding. Uitgesneden naar 3:2.
+      */}
       <div className="overflow-hidden rounded-3xl shadow-2xl ring-1 ring-white/10">
         <div className="relative aspect-[3/2]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/hero-alps.jpg"
-            alt="Besneeuwde Alpentop tegen een blauwe lucht"
+            src="/hero-skiles.jpg"
+            alt="Een skileraar geeft les aan een groep op een besneeuwde piste, van een afstand gefotografeerd"
             className="h-full w-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-tr from-alpine-900/45 via-alpine-900/5 to-transparent" />
