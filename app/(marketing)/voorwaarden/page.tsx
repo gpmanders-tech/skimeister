@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import { canoniek } from "@/lib/seo";
 import { Container } from "@/components/ui/Container";
 import { PageHero } from "@/components/marketing/PageHero";
 
 export const metadata: Metadata = {
+  ...canoniek("/voorwaarden"),
   title: "Algemene voorwaarden",
   description: "De algemene voorwaarden voor het gebruik van Skimeister.nl.",
 };

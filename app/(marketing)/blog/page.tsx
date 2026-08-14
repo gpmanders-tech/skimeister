@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { canoniek } from "@/lib/seo";
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { PageHero } from "@/components/marketing/PageHero";
@@ -6,6 +7,7 @@ import { BLOG_POSTS } from "@/lib/constants/blog";
 import { formatDate } from "@/lib/utils";
 
 export const metadata: Metadata = {
+  ...canoniek("/blog"),
   title: "Blog",
   description:
     "Tips en achtergrond over skileraar worden, verdiensten en de beste skigebieden om in te werken.",

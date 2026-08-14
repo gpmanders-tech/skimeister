@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import { canoniek } from "@/lib/seo";
 import { Container } from "@/components/ui/Container";
 import { PageHero } from "@/components/marketing/PageHero";
 
 export const metadata: Metadata = {
+  ...canoniek("/faq"),
   title: "Veelgestelde vragen",
   description: "Antwoorden op de meest gestelde vragen over Skimeister.nl.",
 };

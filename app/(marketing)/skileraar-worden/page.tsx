@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
+import { canoniek } from "@/lib/seo";
 import { AudiencePage } from "@/components/marketing/AudiencePage";
 import { Container } from "@/components/ui/Container";
 import { PartnerCard } from "@/components/marketing/PartnerCard";
 import { TRAINING_PARTNER } from "@/lib/constants/partners";
 
 export const metadata: Metadata = {
+  ...canoniek("/skileraar-worden"),
   title: "Skileraar worden",
   description:
     "Start jouw carrière op de piste. Word skileraar, behaal je certificaat en vind werk via Skimeister.nl.",

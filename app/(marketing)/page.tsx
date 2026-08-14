@@ -1,4 +1,6 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import { canoniek, SITE } from "@/lib/seo";
 import { Container } from "@/components/ui/Container";
 import { ButtonLink } from "@/components/ui/Button";
 import { OpdrachtKaart } from "@/components/opdrachten/OpdrachtKaart";
@@ -10,24 +12,41 @@ import { REGISTERABLE_ROLES, ROLE_LABELS, ROLE_TAGLINES } from "@/lib/constants/
 // Homepage blijft statisch, maar haalt elke 5 minuten verse opdrachten op.
 export const revalidate = 300;
 
-const SITE = "https://www.skimeister.nl";
+export const metadata: Metadata = {
+  ...canoniek("/"),
+  title: "Skimeister.nl — Opdrachten voor gecontroleerde skileraren",
+  description:
+    "Open opdrachten van skischolen, reisorganisaties en scholen in Oostenrijk, Zwitserland en Frankrijk. VOG en EHBO handmatig gecontroleerd. Gratis voor skileraren.",
+};
 
 const JSON_LD = {
   "@context": "https://schema.org",
   "@graph": [
     {
       "@type": "Organization",
+      "@id": `${SITE}/#organisatie`,
       name: "Skimeister.nl",
       url: SITE,
+      logo: `${SITE}/og-skimeister.jpg`,
+      image: `${SITE}/og-skimeister.jpg`,
       description:
-        "Marktplaats die skileraren verbindt met skischolen, reisorganisaties en scholen.",
-      areaServed: ["NL", "BE", "AT"],
+        "Platform waar skischolen, reisorganisaties en scholen opdrachten plaatsen voor skileraren. VOG en EHBO worden handmatig gecontroleerd.",
+      areaServed: ["NL", "BE", "AT", "CH", "FR"],
+      knowsLanguage: ["nl", "de"],
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "customer support",
+        url: `${SITE}/contact`,
+        availableLanguage: ["Dutch", "German"],
+      },
     },
     {
       "@type": "WebSite",
+      "@id": `${SITE}/#website`,
       name: "Skimeister.nl",
       url: SITE,
       inLanguage: "nl-NL",
+      publisher: { "@id": `${SITE}/#organisatie` },
     },
   ],
 };

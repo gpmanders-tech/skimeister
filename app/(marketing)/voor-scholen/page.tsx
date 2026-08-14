@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import { canoniek } from "@/lib/seo";
 import { AudiencePage } from "@/components/marketing/AudiencePage";
 import { Container } from "@/components/ui/Container";
 import { RatioCalculator } from "@/components/RatioCalculator";
 
 export const metadata: Metadata = {
+  ...canoniek("/voor-scholen"),
   title: "Voor scholen",
   description:
     "Gegarandeerd de juiste skileraar voor jouw schoolreis. Plaats eenvoudig een project en betaal per reis.",

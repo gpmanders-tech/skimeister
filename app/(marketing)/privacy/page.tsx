@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import { canoniek } from "@/lib/seo";
 import { Container } from "@/components/ui/Container";
 import { PageHero } from "@/components/marketing/PageHero";
 
 export const metadata: Metadata = {
+  ...canoniek("/privacy"),
   title: "Privacybeleid",
   description: "Hoe Skimeister.nl omgaat met je persoonsgegevens (AVG/GDPR).",
 };

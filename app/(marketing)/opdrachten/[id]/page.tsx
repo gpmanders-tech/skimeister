@@ -13,6 +13,8 @@ import {
   skigebiedLabel,
 } from "@/lib/opdrachten/presentatie";
 import { LANGUAGES, PARTICIPANT_LEVELS } from "@/lib/constants/options";
+import { jobPostingJsonLd } from "@/lib/opdrachten/jsonld";
+import { canoniek, SITE } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
@@ -26,13 +28,20 @@ export async function generateMetadata({
   if (!o) return { title: "Opdracht niet gevonden" };
 
   const titel = opdrachtTitel(o);
+  const omschrijving =
+    o.description?.trim().slice(0, 155) ??
+    `${instructeursLabel(o.instructors_needed)} in ${skigebiedLabel(o.resort_id)}. ${periodeLabel(o)}.`;
+
   return {
     title: titel,
-    description:
-      o.description?.slice(0, 155) ??
-      `${instructeursLabel(o.instructors_needed)} in ${skigebiedLabel(o.resort_id)}. ${periodeLabel(o)}.`,
-    alternates: { canonical: `/opdrachten/${id}` },
-    openGraph: { title: titel, type: "article" },
+    description: omschrijving,
+    ...canoniek(`/opdrachten/${id}`),
+    openGraph: {
+      title: titel,
+      description: omschrijving,
+      type: "article",
+      url: `${SITE}/opdrachten/${id}`,
+    },
   };
 }
 
@@ -53,6 +62,12 @@ export default async function OpdrachtPage({
 
   return (
     <>
+      {/* JobPosting voor Google for Jobs. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jobPostingJsonLd(o)) }}
+      />
+
       <section className="bg-alpine-600 py-10 text-white sm:py-14">
         <Container>
           <Link

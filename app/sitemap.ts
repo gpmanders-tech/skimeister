@@ -9,6 +9,9 @@ import { getOpenOpdrachten } from "@/lib/opdrachten/queries";
 const BASE = "https://www.skimeister.nl";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  // Elke open opdracht is een eigen vindbare pagina.
+  const opdrachten = await getOpenOpdrachten({}, 500);
+
   const staticPaths = [
     "",
     "/opdrachten",
@@ -34,9 +37,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: p === "" ? 1 : 0.7,
   }));
 
-  const resortEntries: MetadataRoute.Sitemap = RESORTS.map((r) => ({
+  // Alleen skigebieden met echte inhoud (minstens één open opdracht). De rest
+  // staat op noindex, en wat je niet geïndexeerd wilt hebben hoort ook niet in
+  // je sitemap.
+  const gebiedenMetWerk = new Set(
+    opdrachten.map((o) => o.resort_id).filter((id): id is string => Boolean(id)),
+  );
+  const resortEntries: MetadataRoute.Sitemap = RESORTS.filter((r) =>
+    gebiedenMetWerk.has(r.id),
+  ).map((r) => ({
     url: `${BASE}/skigebied/${r.slug}`,
-    changeFrequency: "weekly",
+    changeFrequency: "daily",
     priority: 0.6,
   }));
 
@@ -47,8 +58,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.5,
   }));
 
-  // Elke open opdracht is een eigen vindbare pagina.
-  const opdrachten = await getOpenOpdrachten({}, 500);
   const opdrachtEntries: MetadataRoute.Sitemap = opdrachten.map((o) => ({
     url: `${BASE}/opdrachten/${o.id}`,
     lastModified: o.updated_at,

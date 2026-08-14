@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import { canoniek } from "@/lib/seo";
 import { Container } from "@/components/ui/Container";
 import { PageHero } from "@/components/marketing/PageHero";
 
 export const metadata: Metadata = {
+  ...canoniek("/over-ons"),
   title: "Over ons",
   description: "Het verhaal achter Skimeister.nl — de verbinding tussen skileraren en de skipiste.",
 };

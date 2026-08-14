@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { canoniek } from "@/lib/seo";
 import { AudiencePage } from "@/components/marketing/AudiencePage";
 
 export const metadata: Metadata = {
+  ...canoniek("/voor-reisorganisaties"),
   title: "Voor reisorganisaties",
   description:
     "Plan je hele skiseizoen op één plek. Plaats projecten, ontvang aanmeldingen en beheer je instructeurs per reis.",

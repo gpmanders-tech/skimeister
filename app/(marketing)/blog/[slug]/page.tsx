@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { ButtonLink } from "@/components/ui/Button";
 import { BLOG_POSTS, getPostBySlug } from "@/lib/constants/blog";
+import { canoniek, SITE } from "@/lib/seo";
 import { formatDate } from "@/lib/utils";
 
 export function generateStaticParams() {
@@ -21,11 +22,13 @@ export async function generateMetadata({
   return {
     title: post.title,
     description: post.excerpt,
+    ...canoniek(`/blog/${post.slug}`),
     openGraph: {
       type: "article",
       title: post.title,
       description: post.excerpt,
       publishedTime: post.date,
+      url: `${SITE}/blog/${post.slug}`,
     },
   };
 }
