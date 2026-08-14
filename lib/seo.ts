@@ -10,13 +10,16 @@ import type { Metadata } from "next";
 
 export const SITE = "https://www.skimeister.nl";
 
-/** Canonical + og:url voor één pagina. Pad begint met een slash. */
+/**
+ * Canonical voor één pagina. Pad begint met een slash.
+ *
+ * Zet hier bewust GEEN openGraph in: een openGraph op paginaniveau vervangt
+ * die van de root-layout volledig in plaats van 'm aan te vullen. Doe je dat
+ * wel, dan verliest de pagina og:image, og:site_name, og:type en og:locale.
+ * Pagina's die zelf een openGraph nodig hebben, nemen OG_IMAGE expliciet mee.
+ */
 export function canoniek(pad: string): Metadata {
-  const url = pad === "/" ? SITE : `${SITE}${pad}`;
-  return {
-    alternates: { canonical: pad },
-    openGraph: { url },
-  };
+  return { alternates: { canonical: pad } };
 }
 
 /** Standaard deelafbeelding (1200x630). */

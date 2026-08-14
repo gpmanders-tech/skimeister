@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { AudiencePage } from "@/components/marketing/AudiencePage";
+import { SITE, OG_IMAGE } from "@/lib/seo";
 
 /**
  * Duitstalige pagina voor skischolen. Bewust een eigen Duitse URL in plaats van
@@ -17,7 +18,18 @@ export const metadata: Metadata = {
       "nl-NL": "/voor-reisorganisaties",
     },
   },
-  openGraph: { locale: "de_DE" },
+  // Volledig uitgeschreven: een openGraph op paginaniveau vervangt die van de
+  // root-layout, dus siteName, type en de afbeelding moeten hier ook staan.
+  openGraph: {
+    type: "website",
+    locale: "de_DE",
+    siteName: "Skimeister.nl",
+    url: `${SITE}/fuer-skischulen`,
+    title: "Für Skischulen — Geprüfte Skilehrer für Ihre Saison",
+    description:
+      "Schreiben Sie Ihren Bedarf kostenlos aus und erreichen Sie gezielt qualifizierte Skilehrer. Sie zahlen erst bei einer bestätigten Vermittlung.",
+    images: [OG_IMAGE],
+  },
 };
 
 export default function Page() {

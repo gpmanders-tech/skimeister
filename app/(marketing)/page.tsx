@@ -14,7 +14,8 @@ export const revalidate = 300;
 
 export const metadata: Metadata = {
   ...canoniek("/"),
-  title: "Skimeister.nl — Opdrachten voor gecontroleerde skileraren",
+  // absolute: anders plakt de titelsjabloon er nog eens "· Skimeister.nl" achter.
+  title: { absolute: "Skimeister.nl — Opdrachten voor gecontroleerde skileraren" },
   description:
     "Open opdrachten van skischolen, reisorganisaties en scholen in Oostenrijk, Zwitserland en Frankrijk. VOG en EHBO handmatig gecontroleerd. Gratis voor skileraren.",
 };

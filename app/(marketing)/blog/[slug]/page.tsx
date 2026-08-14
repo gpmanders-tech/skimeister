@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { ButtonLink } from "@/components/ui/Button";
 import { BLOG_POSTS, getPostBySlug } from "@/lib/constants/blog";
-import { canoniek, SITE } from "@/lib/seo";
+import { canoniek, SITE, OG_IMAGE } from "@/lib/seo";
 import { formatDate } from "@/lib/utils";
 
 export function generateStaticParams() {
@@ -29,6 +29,9 @@ export async function generateMetadata({
       description: post.excerpt,
       publishedTime: post.date,
       url: `${SITE}/blog/${post.slug}`,
+      siteName: "Skimeister.nl",
+      locale: "nl_NL",
+      images: [OG_IMAGE],
     },
   };
 }

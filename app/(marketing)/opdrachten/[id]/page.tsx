@@ -14,7 +14,7 @@ import {
 } from "@/lib/opdrachten/presentatie";
 import { LANGUAGES, PARTICIPANT_LEVELS } from "@/lib/constants/options";
 import { jobPostingJsonLd } from "@/lib/opdrachten/jsonld";
-import { canoniek, SITE } from "@/lib/seo";
+import { canoniek, SITE, OG_IMAGE } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
@@ -41,6 +41,10 @@ export async function generateMetadata({
       description: omschrijving,
       type: "article",
       url: `${SITE}/opdrachten/${id}`,
+      siteName: "Skimeister.nl",
+      locale: "nl_NL",
+      // Expliciet: een openGraph op paginaniveau vervangt die van de layout.
+      images: [OG_IMAGE],
     },
   };
 }
