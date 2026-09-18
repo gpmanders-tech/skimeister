@@ -5,7 +5,7 @@ import { Container } from "@/components/ui/Container";
 import { ButtonLink } from "@/components/ui/Button";
 import { OpdrachtKaart } from "@/components/opdrachten/OpdrachtKaart";
 import { Band } from "@/components/huisstijl/Band";
-import { Pistekaart } from "@/components/huisstijl/Pistekaart";
+import { Hoogtelijnen } from "@/components/huisstijl/Hoogtelijnen";
 import { RondeSticker, Sticker } from "@/components/huisstijl/Sticker";
 import { getRecenteOpdrachten } from "@/lib/opdrachten/queries";
 import { getLiveCijfers, type LiveCijfers } from "@/lib/stats";
@@ -97,8 +97,8 @@ function Hero() {
         }}
         aria-hidden
       />
-      {/* Pistekaart als watermerk, gegevens van OpenStreetMap */}
-      <Pistekaart className="absolute inset-0 h-full w-full opacity-40 [mask-image:radial-gradient(ellipse_at_50%_45%,black_48%,transparent_92%)]" />
+      {/* Hoogtelijnen rond Zermatt als watermerk */}
+      <Hoogtelijnen className="absolute inset-0 h-full w-full opacity-40 [mask-image:radial-gradient(ellipse_at_50%_50%,black_60%,transparent_100%)]" />
       <Container className="relative grid gap-10 pb-16 pt-20 lg:grid-cols-2 lg:items-center lg:pb-20 lg:pt-28">
         <div>
           <Sticker kleur="zon" className="mb-5">
