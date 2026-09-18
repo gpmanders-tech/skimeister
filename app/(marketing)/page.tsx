@@ -5,6 +5,7 @@ import { Container } from "@/components/ui/Container";
 import { ButtonLink } from "@/components/ui/Button";
 import { OpdrachtKaart } from "@/components/opdrachten/OpdrachtKaart";
 import { Band } from "@/components/huisstijl/Band";
+import { Pistekaart } from "@/components/huisstijl/Pistekaart";
 import { RondeSticker, Sticker } from "@/components/huisstijl/Sticker";
 import { getRecenteOpdrachten } from "@/lib/opdrachten/queries";
 import { getLiveCijfers, type LiveCijfers } from "@/lib/stats";
@@ -67,7 +68,7 @@ export default async function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
       />
       <Hero />
-      <div className="-mt-4">
+      <div className="-mt-7 mb-4 sm:-mt-9">
         <Band
           woorden={["Oostenrijk", "Zwitserland", "Frankrijk", "VOG gecontroleerd", "EHBO gecontroleerd", "Gratis voor skileraren"]}
           kleur="bg-piste-500 text-alpine-900"
@@ -96,7 +97,9 @@ function Hero() {
         }}
         aria-hidden
       />
-      <Container className="relative grid gap-10 py-20 lg:grid-cols-2 lg:items-center lg:py-28">
+      {/* Pistekaart als watermerk, gegevens van OpenStreetMap */}
+      <Pistekaart className="absolute inset-0 h-full w-full opacity-40 [mask-image:radial-gradient(ellipse_at_50%_45%,black_48%,transparent_92%)]" />
+      <Container className="relative grid gap-10 pb-16 pt-20 lg:grid-cols-2 lg:items-center lg:pb-20 lg:pt-28">
         <div>
           <Sticker kleur="zon" className="mb-5">
             In opbouw voor seizoen 2026/27
@@ -138,35 +141,62 @@ function Hero() {
 
 function HeroVisual() {
   return (
-    <div className="relative">
+    <div className="relative mx-auto w-full max-w-[19rem] sm:max-w-sm lg:ml-auto lg:mr-4">
       {/*
-        Foto: skiles op de piste, van afstand gefotografeerd. Bewust geen
-        herkenbare gezichten, dus geen portretrecht- of privacykwestie.
-        Bron: Pexels (foto 35923083), Pexels-licentie, vrij voor commercieel
-        gebruik zonder naamsvermelding. Uitgesneden naar 3:2.
+        Trosje polaroids, dezelfde indeling als op tuindorpskiet.nl en
+        dagjeutrecht.nl: een grote foto met twee kleinere er schuin overheen.
+
+        Grote foto: vier lachende mensen in skikleding op de piste, van dichtbij.
+        De vorige foto was bewust van afstand genomen zonder herkenbare
+        gezichten; de gebruiker vond die te ver weg en te saai (18-09-2026).
+        Bron: Pexels (foto 6699199), Pexels-licentie, vrij voor commercieel
+        gebruik zonder naamsvermelding.
+        Let op: de licentie dekt het gebruik, maar deze mensen zijn geen
+        Skimeister-instructeurs. Daarom staat er geen tekst bij die suggereert
+        dat dit onze skileraren zijn.
       */}
-      <div aria-hidden className="absolute -bottom-6 -left-6 z-10">
-        <RondeSticker boven="Gratis" midden="voor" onder="skileraren" className="zweef" />
-      </div>
-      <div className="kantel polaroid rotate-2 overflow-hidden rounded-sm shadow-2xl transition-transform hover:rotate-0">
+      <div className="kantel polaroid -rotate-3 overflow-hidden rounded-sm transition-transform hover:rotate-0">
         <div className="relative aspect-[3/2]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/hero-skiles.jpg"
-            alt="Een skileraar geeft les aan een groep op een besneeuwde piste, van een afstand gefotografeerd"
+            src="/hero-skileraren.jpg"
+            alt="Vier lachende mensen in skikleding met ski's en snowboards op de piste, met besneeuwde bergen erachter"
             className="h-full w-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-tr from-alpine-900/45 via-alpine-900/5 to-transparent" />
         </div>
       </div>
 
-      {/* Zwevende verificatie-badge */}
-      <div className="absolute -right-4 top-6 rounded-xl bg-white px-3 py-2 shadow-lg ring-1 ring-alpine-100">
-        <p className="flex items-center gap-1.5 text-sm font-semibold text-alpine-900">
-          <span className="text-green-600">✓</span> VOG &amp; EHBO
-        </p>
-        <p className="text-xs text-alpine-500">handmatig gecontroleerd</p>
+      {/* Skiles op de piste, van afstand gefotografeerd, dus geen herkenbare
+          gezichten. Bron: Pexels (foto 35923083), Pexels-licentie. */}
+      <div className="kantel polaroid absolute -bottom-16 -left-12 w-32 rotate-6 overflow-hidden rounded-sm sm:w-36">
+        <div className="relative aspect-square">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/hero-skiles.jpg"
+            alt="Een skileraar geeft les aan een groep op een besneeuwde piste"
+            className="h-full w-full object-cover"
+          />
+        </div>
       </div>
+
+      {/* Bergpanorama. Bron: Pexels, Pexels-licentie. */}
+      <div className="kantel polaroid absolute -right-10 -top-12 hidden w-32 -rotate-6 overflow-hidden rounded-sm sm:block sm:w-36">
+        <div className="relative aspect-[4/3]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/hero-alps.jpg"
+            alt="Besneeuwde bergtoppen boven een skigebied"
+            className="h-full w-full object-cover"
+          />
+        </div>
+      </div>
+
+      <RondeSticker
+        boven="Gratis"
+        midden="voor"
+        onder="skileraren"
+        className="absolute -bottom-10 -right-6 sm:-right-10"
+      />
     </div>
   );
 }
