@@ -1,18 +1,14 @@
 import type { Metadata } from "next";
-import { Poppins, Inter } from "next/font/google";
+import { Geist } from "next/font/google";
 import "./globals.css";
 import { CookieBanner } from "@/components/CookieBanner";
 import { SITE, OG_IMAGE } from "@/lib/seo";
 
-const display = Poppins({
-  variable: "--font-display",
-  weight: ["500", "600", "700", "800"],
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const body = Inter({
-  variable: "--font-body",
+// Eén letter voor de hele familie sites. De twee variabelenamen blijven
+// bestaan, zodat de 50 pagina's die font-display of font-sans gebruiken niets
+// hoeven te veranderen.
+const geist = Geist({
+  variable: "--font-geist-sans",
   subsets: ["latin"],
   display: "swap",
 });
@@ -55,7 +51,7 @@ export default function RootLayout({
   return (
     <html
       lang="nl"
-      className={`${display.variable} ${body.variable} h-full antialiased`}
+      className={`${geist.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-snow text-alpine-900">
         {children}

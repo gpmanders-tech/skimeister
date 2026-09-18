@@ -1,27 +1,56 @@
 import { Container } from "@/components/ui/Container";
+import { Sticker } from "@/components/huisstijl/Sticker";
 
+const kleuren = {
+  alpine: "bg-alpine-600 text-white",
+  piste: "bg-piste-500 text-white",
+  zon: "bg-piste-300 text-alpine-900",
+  donker: "bg-alpine-900 text-white",
+};
+
+/**
+ * Paginakop in de huisstijl van de familie sites: een gekleurd vlak, een
+ * schuine sticker als bovenlabel en een titel in hoofdletters.
+ */
 export function PageHero({
   eyebrow,
   title,
   description,
+  kleur = "alpine",
 }: {
   eyebrow?: string;
   title: string;
   description?: string;
+  kleur?: keyof typeof kleuren;
 }) {
+  // Alleen "zon" is licht genoeg voor donkere letters.
+  const donker = kleur !== "zon";
+
   return (
-    <section className="border-b border-alpine-100 bg-snow-texture">
-      <Container className="py-16 sm:py-20">
+    <section
+      className={`relative overflow-hidden ${kleuren[kleur]} ${donker ? "op-donker" : ""}`}
+    >
+      <div
+        aria-hidden="true"
+        className="absolute -left-20 -top-24 h-64 w-64 rounded-full bg-white/20 blur-2xl"
+      />
+      <Container className="relative py-14 sm:py-20">
         {eyebrow && (
-          <p className="text-sm font-semibold uppercase tracking-wide text-piste-600">
+          <Sticker kleur={donker ? "zon" : "wit"} className="mb-4">
             {eyebrow}
-          </p>
+          </Sticker>
         )}
-        <h1 className="mt-2 max-w-3xl font-display text-4xl font-extrabold text-alpine-900 sm:text-5xl">
+        <h1 className="max-w-3xl text-4xl font-black uppercase leading-[0.95] tracking-tight sm:text-5xl">
           {title}
         </h1>
         {description && (
-          <p className="mt-4 max-w-2xl text-lg text-alpine-700">{description}</p>
+          <p
+            className={`mt-5 max-w-2xl text-lg leading-relaxed ${
+              donker ? "text-white/90" : "text-alpine-900"
+            }`}
+          >
+            {description}
+          </p>
         )}
       </Container>
     </section>

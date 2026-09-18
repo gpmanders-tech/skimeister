@@ -15,20 +15,21 @@ const NAV = [
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 border-b border-alpine-100 bg-snow/90 backdrop-blur">
+    <header className="sticky top-0 z-40 bg-white/95 shadow-sm backdrop-blur">
+      <div className="h-1.5 bg-gradient-to-r from-alpine-400 via-piste-300 to-piste-500" />
       <Container className="flex h-16 items-center justify-between gap-3">
         <Logo />
 
         {/* Volledige navigatie vanaf desktop */}
-        <nav className="hidden items-center gap-6 lg:flex">
+        <nav className="hidden items-center gap-4 lg:flex">
           {NAV.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               className={
                 item.primair
-                  ? "text-sm font-semibold text-piste-600 hover:text-piste-700"
-                  : "text-sm font-medium text-alpine-800 hover:text-piste-600"
+                  ? "whitespace-nowrap text-sm font-bold text-piste-600 hover:text-piste-700"
+                  : "whitespace-nowrap text-sm font-semibold text-alpine-800 hover:text-piste-600"
               }
             >
               {item.label}
@@ -44,7 +45,7 @@ export function SiteHeader() {
           >
             Opdrachten
           </Link>
-          <ButtonLink href="/login" variant="ghost" size="sm" className="hidden sm:inline-flex">
+          <ButtonLink href="/login" variant="ghost" size="sm" className="hidden xl:inline-flex">
             Inloggen
           </ButtonLink>
           <ButtonLink href="/register" variant="accent" size="sm">

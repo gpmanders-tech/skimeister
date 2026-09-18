@@ -34,23 +34,24 @@ const COLUMNS = [
 
 export function SiteFooter() {
   return (
-    <footer className="mt-auto border-t border-alpine-100 bg-white">
+    <footer className="op-donker mt-auto bg-alpine-900 text-alpine-100">
+      <div className="h-1.5 bg-gradient-to-r from-piste-500 via-piste-300 to-alpine-400" />
       <Container className="grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-4">
         <div className="space-y-4">
-          <Logo />
-          <p className="max-w-xs text-sm text-alpine-700">
+          <Logo variant="light" />
+          <p className="max-w-xs text-sm text-alpine-100">
             De verbinding tussen skileraren en de skipiste.
           </p>
         </div>
         {COLUMNS.map((col) => (
           <div key={col.title}>
-            <h3 className="text-sm font-semibold text-alpine-900">{col.title}</h3>
+            <h3 className="text-sm font-extrabold uppercase tracking-wide text-piste-300">{col.title}</h3>
             <ul className="mt-4 space-y-2">
               {col.links.map((l) => (
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-sm text-alpine-700 hover:text-piste-600"
+                    className="text-sm underline-offset-4 hover:text-white hover:underline"
                   >
                     {l.label}
                   </Link>
@@ -60,8 +61,8 @@ export function SiteFooter() {
           </div>
         ))}
       </Container>
-      <div className="border-t border-alpine-100 py-6">
-        <Container className="flex flex-col items-center justify-between gap-2 text-xs text-alpine-600 sm:flex-row">
+      <div className="border-t border-white/15 py-6">
+        <Container className="flex flex-col items-center justify-between gap-2 text-xs text-alpine-100/70 sm:flex-row">
           <p>© {new Date().getFullYear()} Skimeister.nl — Alle rechten voorbehouden.</p>
           <p>Gemaakt voor de piste 🏔️</p>
         </Container>

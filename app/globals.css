@@ -31,9 +31,43 @@
   --color-snow: #fbfcfe;
   --color-snow-200: #eef1f6;
 
+
+  /* ---------------------------------------------------------------------
+     Huisstijl van de familie sites (stepverhuurutrecht, dagjeutrecht,
+     tuindorpskiet, skimeister). De tokennamen zijn op alle sites gelijk,
+     zodat de componenten uitwisselbaar zijn. Hier wijzen ze naar het eigen
+     accentpaar van Skimeister: alpine-blauw en piste-oranje.
+     --------------------------------------------------------------------- */
+  --color-zee-50: #eef3fa;
+  --color-zee-100: #d4e0f1;
+  --color-zee-200: #a9c1e3;
+  --color-zee-300: #7ea2d5;
+  --color-zee-400: #4f7ec0;
+  --color-zee-500: #2f5a98;
+  --color-zee-600: #1b3a6b;
+  --color-zee-700: #163057;
+
+  --color-vlam-50: #fff3ee;
+  --color-vlam-100: #ffe0d2;
+  --color-vlam-200: #ffc1a6;
+  --color-vlam-400: #ff6b35;
+  --color-vlam-500: #e85420;
+  --color-vlam-600: #c04116;
+  --color-vlam-700: #9c340f;
+
+  --color-zon-100: #ffe6d2;
+  --color-zon-300: #ffab70;
+  --color-vlam-300: #ff9d72;
+  --color-zon-400: #ff8f4d;
+
+  --color-inkt: #0b1930;
+  --color-inkt-700: #163057;
+  --color-grijs: #55627a;
+  --color-rood: #b42318;
+
   /* Fonts (gekoppeld in layout.tsx) */
-  --font-display: var(--font-display), "Segoe UI", sans-serif;
-  --font-sans: var(--font-body), "Segoe UI", sans-serif;
+  --font-display: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
 :root {
@@ -59,4 +93,68 @@ body {
 h1, h2, h3, h4, .font-display {
   font-family: var(--font-display);
   letter-spacing: -0.01em;
+}
+
+/* ---------------------------------------------------------------------------
+   Huisstijl: beweging en vormtaal. Gelijk aan de andere sites in de familie.
+   --------------------------------------------------------------------------- */
+
+:focus-visible {
+  outline: 3px solid var(--color-vlam-600);
+  outline-offset: 2px;
+}
+
+.op-donker :focus-visible {
+  outline-color: var(--color-zon-300);
+}
+
+/* Lopende band met woorden. De tekst staat er twee keer in, daarom -50%. */
+@keyframes schuif {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.band-inhoud {
+  animation: schuif 40s linear infinite;
+  will-change: transform;
+}
+
+/* Foto's als opgeplakte polaroids */
+.polaroid {
+  border: 8px solid #ffffff;
+  box-shadow: 0 18px 40px rgb(15 39 64 / 0.35);
+}
+
+/* Zachte zweef-animatie voor stickers */
+@keyframes zweef {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -6px;
+  }
+}
+
+.zweef {
+  animation: zweef 4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .band-inhoud,
+  .zweef {
+    animation: none;
+  }
+
+  .kantel {
+    transform: none !important;
+  }
 }

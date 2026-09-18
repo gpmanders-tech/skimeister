@@ -1,17 +1,20 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-type Variant = "primary" | "accent" | "outline" | "ghost";
+type Variant = "primary" | "accent" | "outline" | "ghost" | "opFoto";
 type Size = "sm" | "md" | "lg";
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-full font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-alpine-400 disabled:opacity-50 disabled:pointer-events-none";
+  "inline-flex items-center justify-center gap-2 rounded-full font-extrabold uppercase tracking-wide transition-transform hover:-translate-y-0.5 disabled:opacity-50 disabled:pointer-events-none disabled:hover:translate-y-0";
 
 const variants: Record<Variant, string> = {
-  primary: "bg-alpine-600 text-white hover:bg-alpine-700",
-  accent: "bg-piste-500 text-white hover:bg-piste-600",
-  outline: "border border-alpine-200 text-alpine-700 hover:bg-alpine-50",
+  primary: "bg-alpine-600 text-white hover:bg-alpine-700 shadow-lg shadow-alpine-600/25",
+  accent: "bg-piste-500 text-white hover:bg-piste-600 shadow-lg shadow-piste-600/25",
+  outline: "border-2 border-alpine-600 text-alpine-700 hover:bg-alpine-50",
   ghost: "text-alpine-700 hover:bg-alpine-50",
+  // Voor gebruik op een foto of een donker vlak. Als losse variant, want
+  // klassen meegeven aan "outline" verliest het van de variant zelf.
+  opFoto: "border-2 border-white text-white hover:bg-white hover:text-alpine-700",
 };
 
 const sizes: Record<Size, string> = {

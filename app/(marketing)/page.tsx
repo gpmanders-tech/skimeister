@@ -4,6 +4,8 @@ import { canoniek, SITE } from "@/lib/seo";
 import { Container } from "@/components/ui/Container";
 import { ButtonLink } from "@/components/ui/Button";
 import { OpdrachtKaart } from "@/components/opdrachten/OpdrachtKaart";
+import { Band } from "@/components/huisstijl/Band";
+import { RondeSticker, Sticker } from "@/components/huisstijl/Sticker";
 import { getRecenteOpdrachten } from "@/lib/opdrachten/queries";
 import { getLiveCijfers, type LiveCijfers } from "@/lib/stats";
 import { RESORTS_BY_COUNTRY } from "@/lib/constants/resorts";
@@ -65,6 +67,12 @@ export default async function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
       />
       <Hero />
+      <div className="-mt-4">
+        <Band
+          woorden={["Oostenrijk", "Zwitserland", "Frankrijk", "VOG gecontroleerd", "EHBO gecontroleerd", "Gratis voor skileraren"]}
+          kleur="bg-piste-500 text-alpine-900"
+        />
+      </div>
       <OpenOpdrachten opdrachten={opdrachten} />
       <HowItWorks />
       <Audiences />
@@ -90,12 +98,12 @@ function Hero() {
       />
       <Container className="relative grid gap-10 py-20 lg:grid-cols-2 lg:items-center lg:py-28">
         <div>
-          <p className="mb-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-sm font-medium text-piste-200">
-            <span className="h-1.5 w-1.5 rounded-full bg-piste-300" />
+          <Sticker kleur="zon" className="mb-5">
             In opbouw voor seizoen 2026/27
-          </p>
-          <h1 className="font-display text-4xl font-extrabold leading-tight sm:text-5xl">
-            Echte opdrachten voor gecontroleerde skileraren
+          </Sticker>
+          <h1 className="text-4xl font-black uppercase leading-[0.95] tracking-tight [overflow-wrap:anywhere] sm:text-5xl">
+            Echte opdrachten voor{" "}
+            <span className="text-piste-300">gecontroleerde</span> skileraren
           </h1>
           <p className="mt-5 max-w-xl text-lg text-alpine-100">
             Skischolen, reisorganisaties en scholen plaatsen hun opdrachten
@@ -108,9 +116,8 @@ function Hero() {
             </ButtonLink>
             <ButtonLink
               href="/register"
-              variant="outline"
+              variant="opFoto"
               size="lg"
-              className="border-white/30 text-white hover:bg-white/10"
             >
               Maak een gratis profiel aan
             </ButtonLink>
@@ -138,7 +145,10 @@ function HeroVisual() {
         Bron: Pexels (foto 35923083), Pexels-licentie, vrij voor commercieel
         gebruik zonder naamsvermelding. Uitgesneden naar 3:2.
       */}
-      <div className="overflow-hidden rounded-3xl shadow-2xl ring-1 ring-white/10">
+      <div aria-hidden className="absolute -bottom-6 -left-6 z-10">
+        <RondeSticker boven="Gratis" midden="voor" onder="skileraren" className="zweef" />
+      </div>
+      <div className="kantel polaroid rotate-2 overflow-hidden rounded-sm shadow-2xl transition-transform hover:rotate-0">
         <div className="relative aspect-[3/2]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -373,9 +383,8 @@ function FinalCta() {
             </ButtonLink>
             <ButtonLink
               href="/register"
-              variant="outline"
+              variant="opFoto"
               size="lg"
-              className="border-white/30 text-white hover:bg-white/10"
             >
               Maak een gratis profiel aan
             </ButtonLink>
