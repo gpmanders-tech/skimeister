@@ -22,6 +22,21 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+
+  // De site is ook bereikbaar op de vercel.app-adressen van het project. Google
+  // vindt die kopie en meldt "alternatieve pagina met correcte canonieke tag".
+  // De canonical wijst goed, maar het kost crawlbudget, dus zetten we elk
+  // vercel.app-adres op noindex. De hostregex kan alleen op *.vercel.app
+  // matchen, nooit op skimeister.nl of www.skimeister.nl.
+  async headers() {
+    return [
+      {
+        source: "/:pad*",
+        has: [{ type: "host", value: ".*\.vercel\.app" }],
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
