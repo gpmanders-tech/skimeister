@@ -4,13 +4,45 @@ import { Container } from "@/components/ui/Container";
 import { OpdrachtKaart } from "@/components/opdrachten/OpdrachtKaart";
 import { OpdrachtFilters } from "@/components/opdrachten/OpdrachtFilters";
 import { getOpenOpdrachten } from "@/lib/opdrachten/queries";
+import { Broodkruimels } from "@/components/marketing/Broodkruimels";
+import { Tekstblokken } from "@/components/marketing/Tekstblokken";
+import { Veelgesteld } from "@/components/marketing/Veelgesteld";
+import { LeesOok } from "@/components/marketing/LeesOok";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { webpaginaJsonLd } from "@/lib/seo";
 
+const OMSCHRIJVING =
+  "Vacatures voor skileraren in de Alpen: skigebied, periode, certificering en vergoeding per opdracht. Vrij te bekijken, reageren met een gratis profiel.";
+
+// Doelterm van deze pagina: "vacature skileraar" (zie plan.json van de SEO Agent).
 export const metadata: Metadata = {
-  title: "Opdrachten voor skileraren",
-  description:
-    "Alle open opdrachten voor skileraren in de Alpen: skigebied, periode, gevraagde certificering en vergoeding. Vrij te bekijken, reageren kan met een gratis profiel.",
+  title: "Vacatures skileraar: open opdrachten in de Alpen",
+  description: OMSCHRIJVING,
   alternates: { canonical: "/opdrachten" },
 };
+
+const VRAGEN = [
+  {
+    v: "Wat voor vacatures voor skileraren staan hier?",
+    a: "Opdrachten van skischolen in de Alpen, van reisorganisaties die met groepen op wintersport gaan en van scholen in Nederland en België met een schoolreis. Per opdracht zie je het skigebied, de periode, de gevraagde certificering en de vergoeding.",
+  },
+  {
+    v: "Hoe reageer ik op een vacature als skileraar?",
+    a: "Maak een gratis profiel aan en reageer met één klik op de opdracht die bij je past. Een bericht erbij mag, maar hoeft niet. De opdrachtgever neemt daarna zelf contact met je op.",
+  },
+  {
+    v: "Welk diploma heb ik minimaal nodig?",
+    a: "Het minimumniveau om via Skimeister aan het werk te gaan is ÖSV Schilehrer Anwärter of een vergelijkbaar diploma. Per opdracht staat welke certificering de opdrachtgever vraagt.",
+  },
+  {
+    v: "Kost reageren op een opdracht geld?",
+    a: "Nee. Voor skileraren en aspiranten is Skimeister altijd gratis, ook het reageren op opdrachten.",
+  },
+  {
+    v: "Hoor ik het als er een nieuwe opdracht bijkomt?",
+    a: "Ja. Leg in je profiel vast wanneer je beschikbaar bent, dan krijg je een mail zodra er een opdracht binnenkomt die bij je past.",
+  },
+];
 
 // Het board moet altijd de actuele stand tonen, niet een gecachte versie.
 export const dynamic = "force-dynamic";
@@ -26,10 +58,19 @@ export default async function OpdrachtenPage({
 
   return (
     <>
+      <JsonLd
+        data={webpaginaJsonLd({
+          pad: "/opdrachten",
+          naam: "Vacatures en opdrachten voor skileraren",
+          omschrijving: OMSCHRIJVING,
+          type: "CollectionPage",
+        })}
+      />
       <section className="bg-alpine-600 py-12 text-white sm:py-16">
         <Container>
+          <Broodkruimels kruimels={[{ naam: "Opdrachten", pad: "/opdrachten" }]} />
           <h1 className="font-display text-3xl font-extrabold sm:text-4xl">
-            Opdrachten voor skileraren
+            Vacatures en opdrachten voor skileraren
           </h1>
           <p className="mt-3 max-w-2xl text-alpine-100">
             Echte opdrachten van skischolen, reisorganisaties en scholen. Alles is
@@ -61,6 +102,46 @@ export default async function OpdrachtenPage({
           )}
         </Container>
       </section>
+
+      <Tekstblokken
+        blokken={[
+          {
+            kop: "Een vacature als skileraar, zonder omwegen",
+            alineas: [
+              "Op dit board staan de opdrachten van skischolen, reisorganisaties en scholen die een skileraar zoeken. Alles staat open en volledig zichtbaar: je hoeft geen account te hebben om te zien waar het werk is, wanneer het is en wat het oplevert. Zo kies je zelf wat bij je past.",
+              "Filter op skigebied, periode of certificering om snel te vinden wat past bij je diploma en je agenda. Reageren gaat met één klik vanuit je gratis profiel. De opdrachtgever ziet je certificering en je gecontroleerde documenten en neemt daarna zelf contact met je op.",
+            ],
+          },
+          {
+            kop: "Waarom opdrachtgevers hier zoeken",
+            alineas: [
+              "Skimeister controleert de VOG en het EHBO-certificaat van elke skileraar handmatig. Pas daarna verschijnt er een badge op het profiel. Voor opdrachtgevers die met groepen of kinderen werken is dat precies wat ze willen weten, en voor jou betekent het dat je die papieren niet voor elke opdracht opnieuw hoeft op te sturen.",
+            ],
+          },
+        ]}
+      />
+
+      <Veelgesteld titel="Veelgestelde vragen over vacatures voor skileraren" vragen={VRAGEN} />
+
+      <LeesOok
+        links={[
+          {
+            href: "/werken-als-skileraar",
+            titel: "Werken als skileraar",
+            tekst: "Voor wie je werkt, welke diploma's je nodig hebt en hoe een seizoen werkt.",
+          },
+          {
+            href: "/skileraar-worden",
+            titel: "Skileraar worden",
+            tekst: "Nog geen diploma? Zo begin je aan de opleiding.",
+          },
+          {
+            href: "/skileraar-inhuren",
+            titel: "Zelf een skileraar zoeken?",
+            tekst: "Plaats gratis een opdracht voor je skischool, reis of schoolreis.",
+          },
+        ]}
+      />
     </>
   );
 }

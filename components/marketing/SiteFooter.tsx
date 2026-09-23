@@ -13,9 +13,17 @@ const COLUMNS = [
     ],
   },
   {
+    title: "Gidsen",
+    links: [
+      { href: "/opdrachten", label: "Vacatures skileraar" },
+      { href: "/werken-als-skileraar", label: "Werken als skileraar" },
+      { href: "/skileraar-inhuren", label: "Skileraar inhuren" },
+      { href: "/instructeurs", label: "Skileraar zoeken" },
+    ],
+  },
+  {
     title: "Platform",
     links: [
-      { href: "/instructeurs", label: "Instructeurs" },
       { href: "/prijzen", label: "Prijzen" },
       { href: "/blog", label: "Blog" },
       { href: "/over-ons", label: "Over ons" },
@@ -36,7 +44,7 @@ export function SiteFooter() {
   return (
     <footer className="op-donker mt-auto bg-alpine-900 text-alpine-100">
       <div className="h-1.5 bg-gradient-to-r from-piste-500 via-piste-300 to-alpine-400" />
-      <Container className="grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-4">
+      <Container className="grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-5">
         <div className="space-y-4">
           <Logo variant="light" />
           <p className="max-w-xs text-sm text-alpine-100">
@@ -63,7 +71,7 @@ export function SiteFooter() {
       </Container>
       <div className="border-t border-white/15 py-6">
         <Container className="flex flex-col items-center justify-between gap-2 text-xs text-alpine-100/70 sm:flex-row">
-          <p>© {new Date().getFullYear()} Skimeister.nl — Alle rechten voorbehouden.</p>
+          <p>© {new Date().getFullYear()} Skimeister.nl. Alle rechten voorbehouden.</p>
           <p>Gemaakt voor de piste 🏔️</p>
         </Container>
       </div>

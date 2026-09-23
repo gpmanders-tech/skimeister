@@ -2,6 +2,7 @@ import { Container } from "@/components/ui/Container";
 import { ButtonLink } from "@/components/ui/Button";
 import { PageHero } from "@/components/marketing/PageHero";
 import { HTML_LANG, type Taal } from "@/lib/i18n/taal";
+import type { Kruimel } from "@/lib/seo";
 
 export interface AudienceContent {
   eyebrow: string;
@@ -21,9 +22,15 @@ export interface AudienceContent {
 export function AudiencePage({
   content,
   lang = "nl",
+  kruimels,
+  children,
 }: {
   content: AudienceContent;
   lang?: Taal;
+  /** Broodkruimelpad zonder de homepage. */
+  kruimels?: Kruimel[];
+  /** Extra inhoud (uitleg, veelgestelde vragen) tussen de voordelen en de afsluiter. */
+  children?: React.ReactNode;
 }) {
   // Alleen zetten als de pagina afwijkt van de sitetaal, zodat schermlezers en
   // zoekmachines de Duitse pagina als Duits herkennen.
@@ -35,6 +42,8 @@ export function AudiencePage({
         eyebrow={content.eyebrow}
         title={content.title}
         description={content.description}
+        kruimels={kruimels}
+        home={lang === "de" ? "Startseite" : undefined}
       />
 
       <Container className="py-16">
@@ -72,6 +81,8 @@ export function AudiencePage({
           </div>
         </Container>
       </section>
+
+      {children}
 
       <Container className="py-16">
         <div className="rounded-3xl bg-alpine-600 px-8 py-12 text-center text-white">

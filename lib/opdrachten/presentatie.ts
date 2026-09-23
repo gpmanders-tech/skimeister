@@ -47,5 +47,5 @@ export function instructeursLabel(aantal: number | null): string {
 
 /** Titel voor de detailpagina en de SEO-title. */
 export function opdrachtTitel(o: Opdracht): string {
-  return `Skileraar gezocht — ${skigebiedLabel(o.resort_id)}, ${periodeKort(o)}`;
+  return `Skileraar gezocht in ${skigebiedLabel(o.resort_id)}, ${periodeKort(o)}`;
 }

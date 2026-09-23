@@ -6,13 +6,14 @@ import { PageHero } from "@/components/marketing/PageHero";
 export const metadata: Metadata = {
   ...canoniek("/privacy"),
   title: "Privacybeleid",
-  description: "Hoe Skimeister.nl omgaat met je persoonsgegevens (AVG/GDPR).",
+  description:
+    "Hoe Skimeister.nl omgaat met je persoonsgegevens (AVG/GDPR): welke gegevens we verwerken, waar ze staan, welke cookies we gebruiken en je rechten.",
 };
 
 export default function Page() {
   return (
     <>
-      <PageHero eyebrow="Juridisch" title="Privacybeleid" />
+      <PageHero eyebrow="Juridisch" title="Privacybeleid" kruimels={[{ naam: "Privacybeleid", pad: "/privacy" }]} />
       <Container className="py-16">
         <div className="mx-auto max-w-2xl space-y-5 text-sm text-alpine-800">
           <p className="rounded-lg bg-piste-50 p-4 text-piste-700">

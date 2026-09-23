@@ -86,7 +86,7 @@ export const CERTIFICATIONS: Certification[] = [
   { id: "fsba-federal", body: "FSBA", name: "Moniteur fédéral", tooltip: "Belgisch federaal niveau." },
 
   // 🌍 Internationaal
-  { id: "isia-stamp", body: "INTL", name: "ISIA Stamp", tooltip: "Internationaal erkend — vereist voor werken buiten eigen land.", isiaHighlight: true },
+  { id: "isia-stamp", body: "INTL", name: "ISIA Stamp", tooltip: "Internationaal erkend, vereist voor werken buiten eigen land.", isiaHighlight: true },
   { id: "isb-sb-1", body: "INTL", name: "ISB Snowboard Level 1", tooltip: "Internationaal snowboard niveau 1." },
   { id: "isb-sb-2", body: "INTL", name: "ISB Snowboard Level 2", tooltip: "Internationaal snowboard niveau 2." },
   { id: "isb-sb-3", body: "INTL", name: "ISB Snowboard Level 3", tooltip: "Internationaal snowboard niveau 3." },

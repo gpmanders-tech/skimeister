@@ -6,6 +6,27 @@ import { ButtonLink } from "@/components/ui/Button";
 import { BLOG_POSTS, getPostBySlug } from "@/lib/constants/blog";
 import { canoniek, SITE, OG_IMAGE } from "@/lib/seo";
 import { formatDate } from "@/lib/utils";
+import { Broodkruimels } from "@/components/marketing/Broodkruimels";
+import { LeesOok } from "@/components/marketing/LeesOok";
+
+/** Gidsen die bij elk artikel passen, als interne links onder het artikel. */
+const GIDSEN = [
+  {
+    href: "/werken-als-skileraar",
+    titel: "Werken als skileraar",
+    tekst: "Voor wie je werkt, welke diploma's je nodig hebt en hoe je opdrachten vindt.",
+  },
+  {
+    href: "/skileraar-worden",
+    titel: "Skileraar worden",
+    tekst: "De route van goed skiën naar je eerste diploma en je eerste opdracht.",
+  },
+  {
+    href: "/opdrachten",
+    titel: "Vacatures voor skileraren",
+    tekst: "Bekijk de opdrachten van skischolen, reisorganisaties en scholen.",
+  },
+];
 
 export function generateStaticParams() {
   return BLOG_POSTS.map((p) => ({ slug: p.slug }));
@@ -45,14 +66,26 @@ export default async function BlogPostPage({
   const post = getPostBySlug(slug);
   if (!post) notFound();
 
+  const url = `${SITE}/blog/${post.slug}`;
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: post.title,
     description: post.excerpt,
     datePublished: post.date,
-    author: { "@type": "Organization", name: "Skimeister.nl" },
-    publisher: { "@type": "Organization", name: "Skimeister.nl" },
+    dateModified: post.date,
+    inLanguage: "nl-NL",
+    url,
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    image: [OG_IMAGE.url],
+    author: { "@type": "Organization", name: "Skimeister.nl", url: SITE },
+    publisher: {
+      "@type": "Organization",
+      "@id": `${SITE}/#organisatie`,
+      name: "Skimeister.nl",
+      url: SITE,
+      logo: { "@type": "ImageObject", url: OG_IMAGE.url },
+    },
   };
 
   return (
@@ -63,6 +96,13 @@ export default async function BlogPostPage({
       />
       <div className="border-b border-alpine-100 bg-snow-texture">
         <Container className="py-16">
+          <Broodkruimels
+            licht={false}
+            kruimels={[
+              { naam: "Blog", pad: "/blog" },
+              { naam: post.title, pad: `/blog/${post.slug}` },
+            ]}
+          />
           <Link href="/blog" className="text-sm font-medium text-piste-600 hover:underline">
             ← Alle artikelen
           </Link>
@@ -99,6 +139,7 @@ export default async function BlogPostPage({
           </div>
         </div>
       </Container>
+      <LeesOok titel="Verder lezen" links={GIDSEN} />
     </article>
   );
 }

@@ -71,6 +71,10 @@ export default async function ResortPage({
             ? `Er ${opdrachten.length === 1 ? "staat" : "staan"} nu ${opdrachten.length} open ${opdrachten.length === 1 ? "opdracht" : "opdrachten"} in ${resort.name}. Alles is vrij te bekijken; reageren kan met een gratis profiel.`
             : `Er staan op dit moment geen open opdrachten in ${resort.name}. Maak een profiel aan, dan krijg je bericht zodra er een binnenkomt.`
         }
+        kruimels={[
+          { naam: "Opdrachten", pad: "/opdrachten" },
+          { naam: resort.name, pad: `/skigebied/${resort.slug}` },
+        ]}
       />
 
       <Container className="py-12 sm:py-16">
@@ -106,7 +110,11 @@ export default async function ResortPage({
             <p className="mt-3 text-sm text-alpine-600">
               Skimeister controleert VOG en EHBO-certificaat handmatig voordat er
               een badge op een profiel verschijnt. Diploma&apos;s voeg je zelf toe
-              aan je profiel.
+              aan je profiel. Meer uitleg staat in de gids{" "}
+              <Link href="/werken-als-skileraar" className="font-semibold text-piste-600 hover:underline">
+                werken als skileraar
+              </Link>
+              .
             </p>
           </section>
         ) : null}

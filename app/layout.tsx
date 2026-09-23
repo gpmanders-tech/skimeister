@@ -25,7 +25,7 @@ export const metadata: Metadata = {
       "kaWRgUaBbKFikBZ7WZHE3HLLRhRZihjhNBzG75BWXMc",
   },
   title: {
-    default: "Skimeister.nl — Opdrachten voor gecontroleerde skileraren",
+    default: "Skimeister.nl: opdrachten en vacatures voor skileraren",
     template: "%s · Skimeister.nl",
   },
   description:
