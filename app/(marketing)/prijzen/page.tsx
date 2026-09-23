@@ -4,21 +4,33 @@ import { ButtonLink } from "@/components/ui/Button";
 import { PageHero } from "@/components/marketing/PageHero";
 import { PRIJSBLOKKEN, LANCERINGSACTIE, type PrijsBlok } from "@/lib/constants/pricing";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { faqJsonLd, webpaginaJsonLd } from "@/lib/seo";
+
+const OMSCHRIJVING =
+  "Gratis voor instructeurs. Skischolen en reisorganisaties plaatsen gratis een opdracht en betalen pas bij een bevestigde plaatsing. Scholen betalen per project.";
 
 export const metadata: Metadata = {
-  title: "Prijzen",
-  description:
-    "Gratis voor instructeurs. Skischolen en reisorganisaties plaatsen gratis een opdracht en betalen pas bij een bevestigde plaatsing. Scholen betalen per project.",
+  title: "Prijzen voor skischolen, reizen en scholen",
+  description: OMSCHRIJVING,
   alternates: { canonical: "/prijzen" },
 };
 
 export default function PricingPage() {
   return (
     <>
+      <JsonLd
+        data={[
+          webpaginaJsonLd({ pad: "/prijzen", naam: "Prijzen van Skimeister", omschrijving: OMSCHRIJVING }),
+          faqJsonLd(PRIJSVRAGEN),
+        ]}
+      />
       <PageHero
         eyebrow="Prijzen"
         title="Je betaalt pas als het werkt"
         description="Geen abonnement en geen kosten vooraf. Instructeurs gebruiken Skimeister altijd gratis. Organisaties betalen alleen als er iemand daadwerkelijk geplaatst is."
+        kruimels={[{ naam: "Prijzen", pad: "/prijzen" }]}
       />
 
       <Container className="space-y-10 py-12 sm:py-16">
@@ -99,8 +111,7 @@ function PrijsKaart({ blok }: { blok: PrijsBlok }) {
   );
 }
 
-function VeelGesteld() {
-  const vragen = [
+const PRIJSVRAGEN = [
     {
       v: "Wanneer betaal ik als skischool of reisorganisatie?",
       a: "Pas als je met een instructeur tot overeenstemming komt en die de opdracht aanneemt. Plaatsen, reacties bekijken en gesprekken voeren kost niets.",
@@ -117,8 +128,10 @@ function VeelGesteld() {
       v: "Zit er btw bij de genoemde bedragen?",
       a: "De genoemde bedragen zijn exclusief btw. Je ontvangt een factuur met btw-specificatie.",
     },
-  ];
+];
 
+function VeelGesteld() {
+  const vragen = PRIJSVRAGEN;
   return (
     <div>
       <h2 className="mb-6 font-display text-2xl font-bold text-alpine-900">
@@ -137,6 +150,17 @@ function VeelGesteld() {
           </details>
         ))}
       </div>
+      <p className="mt-6 text-sm text-alpine-700">
+        Meer uitleg over hoe het werkt lees je op{" "}
+        <Link href="/skileraar-inhuren" className="font-semibold text-piste-600 hover:underline">
+          skileraar inhuren
+        </Link>
+        {" "}en bij de{" "}
+        <Link href="/faq" className="font-semibold text-piste-600 hover:underline">
+          veelgestelde vragen
+        </Link>
+        .
+      </p>
     </div>
   );
 }

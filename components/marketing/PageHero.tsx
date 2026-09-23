@@ -1,5 +1,7 @@
 import { Container } from "@/components/ui/Container";
 import { Sticker } from "@/components/huisstijl/Sticker";
+import { Broodkruimels } from "@/components/marketing/Broodkruimels";
+import type { Kruimel } from "@/lib/seo";
 
 const kleuren = {
   alpine: "bg-alpine-600 text-white",
@@ -17,11 +19,17 @@ export function PageHero({
   title,
   description,
   kleur = "alpine",
+  kruimels,
+  home,
 }: {
   eyebrow?: string;
   title: string;
   description?: string;
   kleur?: keyof typeof kleuren;
+  /** Broodkruimelpad zonder de homepage; die zet het component er zelf voor. */
+  kruimels?: Kruimel[];
+  /** Naam van de homepage in het pad, bijvoorbeeld "Startseite". */
+  home?: string;
 }) {
   // Alleen "zon" is licht genoeg voor donkere letters.
   const donker = kleur !== "zon";
@@ -35,6 +43,14 @@ export function PageHero({
         className="absolute -left-20 -top-24 h-64 w-64 rounded-full bg-white/20 blur-2xl"
       />
       <Container className="relative py-14 sm:py-20">
+        {kruimels?.length ? (
+          <Broodkruimels
+            kruimels={kruimels}
+            home={home}
+            label={home === "Startseite" ? "Brotkrümelnavigation" : undefined}
+            licht={donker}
+          />
+        ) : null}
         {eyebrow && (
           <Sticker kleur={donker ? "zon" : "wit"} className="mb-4">
             {eyebrow}

@@ -6,13 +6,14 @@ import { PageHero } from "@/components/marketing/PageHero";
 export const metadata: Metadata = {
   ...canoniek("/voorwaarden"),
   title: "Algemene voorwaarden",
-  description: "De algemene voorwaarden voor het gebruik van Skimeister.nl.",
+  description:
+    "De algemene voorwaarden voor het gebruik van Skimeister.nl door skileraren, aspiranten, skischolen, reisorganisaties en scholen.",
 };
 
 export default function Page() {
   return (
     <>
-      <PageHero eyebrow="Juridisch" title="Algemene voorwaarden" />
+      <PageHero eyebrow="Juridisch" title="Algemene voorwaarden" kruimels={[{ naam: "Algemene voorwaarden", pad: "/voorwaarden" }]} />
       <Container className="py-16">
         <div className="mx-auto max-w-2xl space-y-5 text-sm text-alpine-800">
           <p className="rounded-lg bg-piste-50 p-4 text-piste-700">

@@ -11,6 +11,27 @@ import { getRecenteOpdrachten } from "@/lib/opdrachten/queries";
 import { getLiveCijfers, type LiveCijfers } from "@/lib/stats";
 import { RESORTS_BY_COUNTRY } from "@/lib/constants/resorts";
 import { REGISTERABLE_ROLES, ROLE_LABELS, ROLE_TAGLINES } from "@/lib/constants/options";
+import { Veelgesteld } from "@/components/marketing/Veelgesteld";
+import { LeesOok } from "@/components/marketing/LeesOok";
+
+const HOME_VRAGEN = [
+  {
+    v: "Wat is Skimeister?",
+    a: "Skimeister is een platform waar skischolen, reisorganisaties en scholen opdrachten plaatsen voor skileraren. Alle opdrachten staan open en zichtbaar, en wij controleren VOG en EHBO handmatig.",
+  },
+  {
+    v: "Hoe vind ik een vacature als skileraar?",
+    a: "Bekijk de opdrachten op het board, ook zonder account. Past er een bij je, dan reageer je met één klik vanuit je gratis profiel. De opdrachtgever neemt daarna zelf contact op.",
+  },
+  {
+    v: "Hoe huur ik een skileraar in?",
+    a: "Plaats gratis een opdracht met skigebied, periode, gevraagde certificering en vergoeding. Skileraren die beschikbaar zijn reageren zelf. Skischolen en reisorganisaties betalen pas bij een bevestigde plaatsing.",
+  },
+  {
+    v: "Is Skimeister gratis voor skileraren?",
+    a: "Ja. Skileraren en aspiranten betalen nooit iets, niet voor hun profiel en niet voor reageren op opdrachten.",
+  },
+];
 
 // Homepage blijft statisch, maar haalt elke 5 minuten verse opdrachten op.
 export const revalidate = 300;
@@ -18,9 +39,9 @@ export const revalidate = 300;
 export const metadata: Metadata = {
   ...canoniek("/"),
   // absolute: anders plakt de titelsjabloon er nog eens "· Skimeister.nl" achter.
-  title: { absolute: "Skimeister.nl — Opdrachten voor gecontroleerde skileraren" },
+  title: { absolute: "Skimeister.nl: opdrachten en vacatures voor skileraren" },
   description:
-    "Open opdrachten van skischolen, reisorganisaties en scholen in Oostenrijk, Zwitserland en Frankrijk. VOG en EHBO handmatig gecontroleerd. Gratis voor skileraren.",
+    "Vacatures en opdrachten voor skileraren van skischolen, reisorganisaties en scholen in de Alpen. VOG en EHBO handmatig gecontroleerd. Gratis voor skileraren.",
 };
 
 const JSON_LD = {
@@ -35,6 +56,7 @@ const JSON_LD = {
       image: `${SITE}/og-skimeister.jpg`,
       description:
         "Platform waar skischolen, reisorganisaties en scholen opdrachten plaatsen voor skileraren. VOG en EHBO worden handmatig gecontroleerd.",
+      email: "info@skimeister.nl",
       areaServed: ["NL", "BE", "AT", "CH", "FR"],
       knowsLanguage: ["nl", "de"],
       contactPoint: {
@@ -80,6 +102,27 @@ export default async function HomePage() {
       <Cijfers cijfers={cijfers} />
       <ResortsSection />
       <PricingTeaser />
+      <LeesOok
+        titel="Gidsen voor skileraren en opdrachtgevers"
+        links={[
+          {
+            href: "/werken-als-skileraar",
+            titel: "Werken als skileraar",
+            tekst: "Voor wie je werkt, welke diploma's je nodig hebt en hoe je opdrachten vindt in de Alpen.",
+          },
+          {
+            href: "/skileraar-worden",
+            titel: "Skileraar worden",
+            tekst: "De route van goed skiën naar je eerste diploma en je eerste opdracht.",
+          },
+          {
+            href: "/skileraar-inhuren",
+            titel: "Skileraar inhuren",
+            tekst: "Zo vind je een gecontroleerde skileraar voor je skischool, reis of schoolreis.",
+          },
+        ]}
+      />
+      <Veelgesteld vragen={HOME_VRAGEN} />
       <FinalCta />
     </>
   );

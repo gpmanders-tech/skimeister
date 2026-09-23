@@ -27,7 +27,7 @@ export const OG_IMAGE = {
   url: `${SITE}/og-skimeister.jpg`,
   width: 1200,
   height: 630,
-  alt: "Skimeister.nl — opdrachten voor gecontroleerde skileraren",
+  alt: "Skimeister.nl: opdrachten voor gecontroleerde skileraren",
 };
 
 /**
@@ -51,3 +51,73 @@ export const CERT_PER_LAND: Record<string, { instituut: string; toelichting: str
       "Frankrijk stelt de zwaarste eisen van de Alpenlanden: voor betaald lesgeven is in de praktijk een Diplôme d'État of een gelijkwaardige erkenning met ISIA-stamp nodig.",
   },
 };
+
+/** Eén stap in een broodkruimelpad. Pad begint met een slash. */
+export interface Kruimel {
+  naam: string;
+  pad: string;
+}
+
+/** BreadcrumbList voor structured data. De homepage staat er altijd vooraan. */
+export function broodkruimelJsonLd(kruimels: Kruimel[], home = "Home") {
+  const pad = [{ naam: home, pad: "/" }, ...kruimels];
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: pad.map((k, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: k.naam,
+      item: `${SITE}${k.pad === "/" ? "" : k.pad}`,
+    })),
+  };
+}
+
+/** Eén vraag met antwoord, zoals die zichtbaar op de pagina staat. */
+export interface Vraag {
+  v: string;
+  a: string;
+}
+
+/**
+ * FAQPage voor structured data. Gebruik alleen vragen die ook echt zichtbaar
+ * op dezelfde pagina staan, anders negeert Google de markering.
+ */
+export function faqJsonLd(vragen: Vraag[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: vragen.map((q) => ({
+      "@type": "Question",
+      name: q.v,
+      acceptedAnswer: { "@type": "Answer", text: q.a },
+    })),
+  };
+}
+
+/** WebPage (of een subtype) met verwijzing naar de site en de organisatie. */
+export function webpaginaJsonLd({
+  pad,
+  naam,
+  omschrijving,
+  type = "WebPage",
+  taal = "nl-NL",
+}: {
+  pad: string;
+  naam: string;
+  omschrijving: string;
+  type?: "WebPage" | "CollectionPage" | "AboutPage" | "ContactPage" | "FAQPage";
+  taal?: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": type,
+    "@id": `${SITE}${pad}#pagina`,
+    url: `${SITE}${pad}`,
+    name: naam,
+    description: omschrijving,
+    inLanguage: taal,
+    isPartOf: { "@id": `${SITE}/#website` },
+    publisher: { "@id": `${SITE}/#organisatie` },
+  };
+}

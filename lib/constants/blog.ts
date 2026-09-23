@@ -42,6 +42,14 @@ export const BLOG_POSTS: BlogPost[] = [
         heading: "4. Vind werk",
         body: "Met je certificaat op zak kun je je aanmelden bij skischolen, reisorganisaties en scholen. Op Skimeister.nl maak je gratis een profiel aan en word je gevonden door partijen die instructeurs zoeken.",
       },
+      {
+        heading: "5. Regel je VOG en EHBO",
+        body: "Wie met groepen werkt, en zeker met kinderen, heeft naast een diploma een geldige VOG en een EHBO-certificaat nodig. Bij groepen met kinderen is een VOG verplicht. Op Skimeister upload je beide documenten één keer; wij controleren ze handmatig en zetten daarna een badge op je profiel.",
+      },
+      {
+        heading: "Nog niet gecertificeerd?",
+        body: "Meld je dan alvast gratis aan als aspirant. Dan volgen we je voortgang en kun je je certificaat uploaden zodra je het hebt. Zo sta je klaar zodra de opdrachten voor het nieuwe seizoen binnenkomen.",
+      },
     ],
   },
   {
@@ -61,11 +69,19 @@ export const BLOG_POSTS: BlogPost[] = [
       },
       {
         heading: "Seizoenscontracten",
-        body: "Veel skischolen en reisorganisaties werken met seizoenscontracten, vaak inclusief reis en verblijf. Dat maakt een vergelijking op kaal uurloon lastig — kijk altijd naar het totaalplaatje.",
+        body: "Veel skischolen en reisorganisaties werken met seizoenscontracten, vaak inclusief reis en verblijf. Dat maakt een vergelijking op kaal uurloon lastig. Kijk altijd naar het totaalplaatje.",
       },
       {
         heading: "Hoe verhoog je je waarde?",
-        body: "Hogere certificeringen, meerdere talen, ervaring met kinderen of schoolgroepen, en goede reviews maken je aantrekkelijker — en daarmee beter betaald.",
+        body: "Hogere certificeringen, meerdere talen, ervaring met kinderen of schoolgroepen, en goede reviews maken je aantrekkelijker, en daarmee beter betaald.",
+      },
+      {
+        heading: "Waar let je op bij het vergelijken?",
+        body: "Kijk niet alleen naar het bedrag, maar ook naar wat erbij hoort: is reis en verblijf geregeld, om hoeveel dagen gaat het en voor welke groep sta je? Een week met een schoolgroep vraagt iets anders dan een heel seizoen bij een skischool.",
+      },
+      {
+        heading: "De vergoeding staat er gewoon bij",
+        body: "Op Skimeister staat bij elke opdracht de vergoeding vermeld, naast het skigebied, de periode en de gevraagde certificering. Zo weet je vooraf waar je aan toe bent en hoef je niet te solliciteren om erachter te komen wat een opdracht oplevert. Voor skileraren is het platform altijd gratis.",
       },
     ],
   },
@@ -82,7 +98,7 @@ export const BLOG_POSTS: BlogPost[] = [
       },
       {
         heading: "Sneeuwzekere klassiekers",
-        body: "Gebieden als St. Anton, Ischgl en Sölden staan bekend om hun sneeuwzekerheid en uitgestrekte pistes — ideaal voor een heel seizoen werk.",
+        body: "Gebieden als St. Anton, Ischgl en Sölden staan bekend om hun sneeuwzekerheid en uitgestrekte pistes: ideaal voor een heel seizoen werk.",
       },
       {
         heading: "Familievriendelijk",
@@ -91,6 +107,14 @@ export const BLOG_POSTS: BlogPost[] = [
       {
         heading: "Vind werk per gebied",
         body: "Op Skimeister.nl heeft elk skigebied een eigen pagina waar organisaties instructeurs zoeken. Geef je voorkeursgebieden op in je profiel om gericht gevonden te worden.",
+      },
+      {
+        heading: "Welk diploma vraagt men per land?",
+        body: "In Oostenrijk werkt vrijwel elke skischool met de ÖSV-niveaus, van Anwärter tot Staatlich geprüfter Schilehrer; Nederlandse NEVSKI-diploma's en de ISIA-stamp worden daarnaast breed geaccepteerd. Zwitserse skischolen werken met Swiss Snowsports, en voor buitenlandse instructeurs is de ISIA-stamp daar vaak doorslaggevend. Frankrijk stelt de zwaarste eisen: voor betaald lesgeven is in de praktijk een Diplôme d'État of een gelijkwaardige erkenning met ISIA-stamp nodig.",
+      },
+      {
+        heading: "Kies wat bij je past",
+        body: "Wil je een heel seizoen op één plek staan, dan telt sneeuwzekerheid zwaar. Werk je liever een paar weken met groepen, dan zijn de familiegebieden met veel Nederlandse en Belgische gasten een logische keuze. Bekijk de open opdrachten om te zien waar nu vraag is.",
       },
     ],
   },
