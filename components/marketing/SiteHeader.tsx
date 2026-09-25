@@ -3,15 +3,16 @@ import { Logo } from "@/components/Logo";
 import { Container } from "@/components/ui/Container";
 import { ButtonLink } from "@/components/ui/Button";
 
-/** Opdrachten staat bewust vooraan: dat is waar het platform om draait. */
+/**
+ * De site is voor skileraren (keuze Ger 25-9-2026). Pagina's voor skischolen,
+ * reisorganisaties en scholen staan alleen nog in de voet.
+ */
 const NAV = [
   { href: "/opdrachten", label: "Opdrachten", primair: true },
   { href: "/crew", label: "De crew" },
-  { href: "/fuer-skischulen", label: "Für Skischulen" },
-  { href: "/voor-reisorganisaties", label: "Voor reisorganisaties" },
-  { href: "/voor-scholen", label: "Voor scholen" },
+  { href: "/werken-als-skileraar", label: "Werken als skileraar" },
   { href: "/skileraar-worden", label: "Skileraar worden" },
-  { href: "/prijzen", label: "Prijzen" },
+  { href: "/blog", label: "Blog" },
 ];
 
 export function SiteHeader() {
@@ -21,7 +22,7 @@ export function SiteHeader() {
         <span className="h-1 bg-piste-500" />
         <span className="h-1 bg-amber-400" />
       </div>
-      <Container className="flex h-16 items-center justify-between gap-3">
+      <Container className="flex h-20 items-center justify-between gap-3">
         <Logo />
 
         {/* Volledige navigatie vanaf desktop */}

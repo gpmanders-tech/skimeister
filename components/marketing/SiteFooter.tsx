@@ -4,31 +4,32 @@ import { Container } from "@/components/ui/Container";
 
 const COLUMNS = [
   {
-    title: "Doelgroepen",
+    title: "Voor skileraren",
     links: [
-      { href: "/fuer-skischulen", label: "Für Skischulen" },
-      { href: "/voor-reisorganisaties", label: "Reisorganisaties" },
-      { href: "/voor-scholen", label: "Scholen" },
+      { href: "/opdrachten", label: "Opdrachten" },
+      { href: "/crew", label: "De crew" },
+      { href: "/werken-als-skileraar", label: "Werken als skileraar" },
       { href: "/skileraar-worden", label: "Skileraar worden" },
     ],
   },
   {
-    title: "Gidsen",
+    title: "Meer",
     links: [
-      { href: "/opdrachten", label: "Vacatures skileraar" },
-      { href: "/werken-als-skileraar", label: "Werken als skileraar" },
-      { href: "/skileraar-inhuren", label: "Skileraar inhuren" },
-      { href: "/instructeurs", label: "Skileraar zoeken" },
+      { href: "/blog", label: "Blog" },
+      { href: "/faq", label: "Veelgestelde vragen" },
+      { href: "/over-ons", label: "Over ons" },
+      { href: "/contact", label: "Contact" },
     ],
   },
   {
-    title: "Platform",
+    title: "Voor opdrachtgevers",
     links: [
-      { href: "/crew", label: "De crew" },
+      { href: "/fuer-skischulen", label: "Für Skischulen" },
+      { href: "/voor-reisorganisaties", label: "Reisorganisaties" },
+      { href: "/voor-scholen", label: "Scholen" },
+      { href: "/skileraar-inhuren", label: "Skileraar inhuren" },
+      { href: "/instructeurs", label: "Skileraar zoeken" },
       { href: "/prijzen", label: "Prijzen" },
-      { href: "/blog", label: "Blog" },
-      { href: "/over-ons", label: "Over ons" },
-      { href: "/faq", label: "Veelgestelde vragen" },
     ],
   },
   {
@@ -36,7 +37,6 @@ const COLUMNS = [
     links: [
       { href: "/privacy", label: "Privacy" },
       { href: "/voorwaarden", label: "Voorwaarden" },
-      { href: "/contact", label: "Contact" },
     ],
   },
 ];

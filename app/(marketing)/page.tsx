@@ -6,7 +6,9 @@ import { ButtonLink } from "@/components/ui/Button";
 import { OpdrachtKaart } from "@/components/opdrachten/OpdrachtKaart";
 import { Band } from "@/components/huisstijl/Band";
 import { Hoogtelijnen } from "@/components/huisstijl/Hoogtelijnen";
-import { RondeSticker, Sticker } from "@/components/huisstijl/Sticker";
+import { Sticker } from "@/components/huisstijl/Sticker";
+import { SkileraarInPak, BorstBadge } from "@/components/huisstijl/SkileraarInPak";
+import { Woordmerk } from "@/components/Logo";
 import { Strepen } from "@/components/huisstijl/Strepen";
 import { getRecenteOpdrachten } from "@/lib/opdrachten/queries";
 import { getLiveCijfers, type LiveCijfers } from "@/lib/stats";
@@ -26,10 +28,6 @@ const HOME_VRAGEN = [
   {
     v: "Hoe vind ik een vacature als skileraar?",
     a: "Bekijk de opdrachten op het board, ook zonder account. Past er een bij je, dan reageer je met één klik vanuit je gratis profiel. De opdrachtgever neemt daarna zelf contact op.",
-  },
-  {
-    v: "Hoe huur ik een skileraar in?",
-    a: "Plaats gratis een opdracht met skigebied, periode, gevraagde certificering en vergoeding. Skileraren die beschikbaar zijn reageren zelf. Skischolen en reisorganisaties betalen pas bij een bevestigde plaatsing.",
   },
   {
     v: "Is Skimeister gratis voor skileraren?",
@@ -106,7 +104,7 @@ export default async function HomePage() {
       <Cijfers cijfers={cijfers} />
       <ResortsSection />
       <LeesOok
-        titel="Gidsen voor skileraren en opdrachtgevers"
+        titel="Gidsen voor skileraren"
         links={[
           {
             href: "/werken-als-skileraar",
@@ -119,13 +117,12 @@ export default async function HomePage() {
             tekst: "De route van goed skiën naar je eerste diploma en je eerste opdracht.",
           },
           {
-            href: "/skileraar-inhuren",
-            titel: "Skileraar inhuren",
-            tekst: "Zo vind je een gecontroleerde skileraar voor je skischool, reis of schoolreis.",
+            href: "/crew",
+            titel: "De Skimeister crew",
+            tekst: "Wat erbij hoort, waar de crew voor staat en hoe je lid wordt.",
           },
         ]}
       />
-      <VoorOpdrachtgevers />
       <Veelgesteld vragen={HOME_VRAGEN} />
       <FinalCta />
     </>
@@ -135,32 +132,30 @@ export default async function HomePage() {
 /* ── Hero ──────────────────────────────────────────────────────────────────*/
 function Hero() {
   return (
-    <section className="relative overflow-hidden bg-alpine-600 text-white">
+    <section className="op-donker relative overflow-hidden bg-alpine-900 text-white">
       {/* Hoogtelijnen rond Zermatt als watermerk */}
-      <Hoogtelijnen className="absolute inset-0 h-full w-full opacity-40 [mask-image:radial-gradient(ellipse_at_50%_50%,black_60%,transparent_100%)]" />
-      <Container className="relative grid gap-10 pb-16 pt-20 lg:grid-cols-2 lg:items-center lg:pb-20 lg:pt-28">
+      <Hoogtelijnen className="absolute inset-0 h-full w-full opacity-30 [mask-image:radial-gradient(ellipse_at_50%_50%,black_60%,transparent_100%)]" />
+      <Container className="relative grid gap-10 pb-20 pt-12 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:pb-24 lg:pt-16">
         <div>
-          <Sticker kleur="zon" className="mb-5">
+          <Sticker kleur="zon" className="mb-6">
             Crew 26/27
           </Sticker>
-          <h1 className="text-4xl font-black uppercase leading-[0.95] tracking-tight [overflow-wrap:anywhere] sm:text-5xl">
+          {/* Het logo groot: dit is het merk, net als op de rug van het pak */}
+          <Woordmerk variant="light" label="Skimeister" className="w-full max-w-[36rem]" />
+          <h1 className="mt-8 text-2xl uppercase leading-tight sm:text-3xl">
             De crew van{" "}
             <span className="text-piste-300">Nederlandstalige</span> skileraren
           </h1>
-          <p className="mt-5 max-w-xl text-lg text-alpine-100">
-            Skimeister is de club voor skileraren die in de Alpen lesgeven in
-            het Nederlands. Hier vind je je opdrachten, je collega&apos;s voor
-            het seizoen en alles wat je moet weten.
+          <p className="mt-4 max-w-xl text-lg text-alpine-100">
+            Voor skileraren die in de Alpen lesgeven in het Nederlands. Hier
+            vind je je opdrachten, je collega&apos;s voor het seizoen en het
+            zwarte Skimeister-pak.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <ButtonLink href="/register" variant="accent" size="lg">
               Word crewlid
             </ButtonLink>
-            <ButtonLink
-              href="/opdrachten"
-              variant="opFoto"
-              size="lg"
-            >
+            <ButtonLink href="/opdrachten" variant="opFoto" size="lg">
               Bekijk de opdrachten
             </ButtonLink>
           </div>
@@ -170,73 +165,12 @@ function Hero() {
             <span>✓ Reageren in één klik</span>
           </p>
         </div>
-        <div className="relative hidden lg:block">
-          <HeroVisual />
+        <div className="relative mx-auto w-full max-w-md lg:max-w-none">
+          <SkileraarInPak className="w-full" />
+          <BorstBadge className="kantel absolute -right-2 top-2 h-24 w-24 rotate-12 drop-shadow-xl sm:h-28 sm:w-28" />
         </div>
       </Container>
     </section>
-  );
-}
-
-function HeroVisual() {
-  return (
-    <div className="relative mx-auto w-full max-w-[19rem] sm:max-w-sm lg:ml-auto lg:mr-4">
-      {/*
-        Trosje polaroids, dezelfde indeling als op tuindorpskiet.nl en
-        dagjeutrecht.nl: een grote foto met twee kleinere er schuin overheen.
-
-        Grote foto: vier lachende mensen in skikleding op de piste, van dichtbij.
-        De vorige foto was bewust van afstand genomen zonder herkenbare
-        gezichten; de gebruiker vond die te ver weg en te saai (18-09-2026).
-        Bron: Pexels (foto 6699199), Pexels-licentie, vrij voor commercieel
-        gebruik zonder naamsvermelding.
-        Let op: de licentie dekt het gebruik, maar deze mensen zijn geen
-        Skimeister-instructeurs. Daarom staat er geen tekst bij die suggereert
-        dat dit onze skileraren zijn.
-      */}
-      <div className="kantel polaroid -rotate-3 overflow-hidden rounded-sm transition-transform hover:rotate-0">
-        <div className="relative aspect-[3/2]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/hero-skileraren.jpg"
-            alt="Vier lachende mensen in skikleding met ski's en snowboards op de piste, met besneeuwde bergen erachter"
-            className="h-full w-full object-cover"
-          />
-        </div>
-      </div>
-
-      {/* Skiles op de piste, van afstand gefotografeerd, dus geen herkenbare
-          gezichten. Bron: Pexels (foto 35923083), Pexels-licentie. */}
-      <div className="kantel polaroid absolute -bottom-16 -left-12 w-32 rotate-6 overflow-hidden rounded-sm sm:w-36">
-        <div className="relative aspect-square">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/hero-skiles.jpg"
-            alt="Een skileraar geeft les aan een groep op een besneeuwde piste"
-            className="h-full w-full object-cover"
-          />
-        </div>
-      </div>
-
-      {/* Bergpanorama. Bron: Pexels, Pexels-licentie. */}
-      <div className="kantel polaroid absolute -right-10 -top-12 hidden w-32 -rotate-6 overflow-hidden rounded-sm sm:block sm:w-36">
-        <div className="relative aspect-[4/3]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/hero-alps.jpg"
-            alt="Besneeuwde bergtoppen boven een skigebied"
-            className="h-full w-full object-cover"
-          />
-        </div>
-      </div>
-
-      <RondeSticker
-        boven="Crew"
-        midden="26/27"
-        onder="seizoen"
-        className="absolute -bottom-10 -right-6 sm:-right-10"
-      />
-    </div>
   );
 }
 
@@ -413,49 +347,6 @@ function ResortsSection() {
               </div>
             ),
           )}
-        </div>
-      </Container>
-    </section>
-  );
-}
-
-/* ── Opdrachtgevers ────────────────────────────────────────────────────────*/
-function VoorOpdrachtgevers() {
-  const links = [
-    { href: "/fuer-skischulen", label: "Für Skischulen" },
-    { href: "/voor-reisorganisaties", label: "Reisorganisaties" },
-    { href: "/voor-scholen", label: "Scholen" },
-    { href: "/prijzen", label: "Prijzen" },
-  ];
-  return (
-    <section className="py-16">
-      <Container>
-        <div className="grid gap-8 rounded-3xl border-2 border-alpine-900 bg-white p-8 sm:p-12 lg:grid-cols-[1.4fr_1fr] lg:items-center">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-wide text-piste-600">
-              Voor opdrachtgevers
-            </p>
-            <h2 className="mt-2 text-3xl text-alpine-900 sm:text-4xl">Skileraren nodig?</h2>
-            <p className="mt-4 max-w-xl text-alpine-700">
-              Skischolen, reisorganisaties en scholen vinden in de crew
-              gecontroleerde, Nederlandstalige skileraren. Een opdracht plaatsen
-              is gratis; skischolen en reisorganisaties betalen pas bij een
-              bevestigde plaatsing.
-            </p>
-          </div>
-          <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
-            {links.map((l) => (
-              <li key={l.href}>
-                <Link
-                  href={l.href}
-                  className="flex items-center justify-between rounded-xl bg-snow px-5 py-3 font-semibold text-alpine-900 hover:bg-amber-100"
-                >
-                  {l.label}
-                  <span aria-hidden="true" className="text-piste-600">→</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
         </div>
       </Container>
     </section>
