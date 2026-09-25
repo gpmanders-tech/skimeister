@@ -6,6 +6,7 @@ import { ButtonLink } from "@/components/ui/Button";
 /** Opdrachten staat bewust vooraan: dat is waar het platform om draait. */
 const NAV = [
   { href: "/opdrachten", label: "Opdrachten", primair: true },
+  { href: "/crew", label: "De crew" },
   { href: "/fuer-skischulen", label: "Für Skischulen" },
   { href: "/voor-reisorganisaties", label: "Voor reisorganisaties" },
   { href: "/voor-scholen", label: "Voor scholen" },
@@ -52,7 +53,7 @@ export function SiteHeader() {
             Inloggen
           </ButtonLink>
           <ButtonLink href="/register" variant="accent" size="sm" className="max-sm:hidden">
-            Aanmelden
+            Word lid
           </ButtonLink>
           <MobielMenu />
         </div>
@@ -101,7 +102,7 @@ function MobielMenu() {
           href="/register"
           className="block rounded-xl px-3 py-2.5 text-sm font-bold text-piste-600 hover:bg-alpine-50 sm:hidden"
         >
-          Aanmelden
+          Word lid
         </Link>
         <Link
           href="/login"

@@ -24,6 +24,7 @@ const COLUMNS = [
   {
     title: "Platform",
     links: [
+      { href: "/crew", label: "De crew" },
       { href: "/prijzen", label: "Prijzen" },
       { href: "/blog", label: "Blog" },
       { href: "/over-ons", label: "Over ons" },
@@ -51,7 +52,7 @@ export function SiteFooter() {
         <div className="space-y-4">
           <Logo variant="light" />
           <p className="max-w-xs text-sm text-alpine-100">
-            De verbinding tussen skileraren en de skipiste.
+            De crew van Nederlandstalige skileraren.
           </p>
         </div>
         {COLUMNS.map((col) => (
