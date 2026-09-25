@@ -3,7 +3,7 @@ import type { ReactNode } from 'react'
 const kleuren = {
   zon: 'bg-zon-400 text-inkt',
   vlam: 'bg-vlam-400 text-inkt',
-  zee: 'bg-zee-400 text-inkt',
+  zee: 'bg-inkt text-white',
   wit: 'bg-white text-inkt',
 }
 

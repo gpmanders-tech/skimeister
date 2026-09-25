@@ -15,8 +15,11 @@ const NAV = [
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 bg-white/95 shadow-sm backdrop-blur">
-      <div className="h-1.5 bg-gradient-to-r from-alpine-400 via-piste-300 to-piste-500" />
+    <header className="sticky top-0 z-40 bg-snow/95 shadow-sm backdrop-blur">
+      <div aria-hidden="true" className="flex flex-col">
+        <span className="h-1 bg-piste-500" />
+        <span className="h-1 bg-amber-400" />
+      </div>
       <Container className="flex h-16 items-center justify-between gap-3">
         <Logo />
 
