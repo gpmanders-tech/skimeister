@@ -43,7 +43,10 @@ const COLUMNS = [
 export function SiteFooter() {
   return (
     <footer className="op-donker mt-auto bg-alpine-900 text-alpine-100">
-      <div className="h-1.5 bg-gradient-to-r from-piste-500 via-piste-300 to-alpine-400" />
+      <div aria-hidden="true" className="flex flex-col">
+        <span className="h-1 bg-piste-500" />
+        <span className="h-1 bg-amber-400" />
+      </div>
       <Container className="grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-5">
         <div className="space-y-4">
           <Logo variant="light" />
@@ -72,7 +75,7 @@ export function SiteFooter() {
       <div className="border-t border-white/15 py-6">
         <Container className="flex flex-col items-center justify-between gap-2 text-xs text-alpine-100/70 sm:flex-row">
           <p>© {new Date().getFullYear()} Skimeister.nl. Alle rechten voorbehouden.</p>
-          <p>Gemaakt voor de piste 🏔️</p>
+          <p>Gemaakt voor de piste</p>
         </Container>
       </div>
     </footer>

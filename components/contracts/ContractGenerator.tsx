@@ -155,7 +155,7 @@ function contractHtml(f: Fields, title: string, party1: string, resortName: stri
   return `<!doctype html><html lang="nl"><head><meta charset="utf-8"><title>${esc(title)}</title>
   <style>
     body{font-family:Georgia,'Times New Roman',serif;color:#111;max-width:720px;margin:40px auto;padding:0 24px;line-height:1.6}
-    h1{font-size:22px;border-bottom:2px solid #1b3a6b;padding-bottom:8px;color:#1b3a6b}
+    h1{font-size:22px;border-bottom:2px solid #ff6b35;padding-bottom:8px;color:#0b0a09}
     .row{margin:8px 0}.label{font-weight:bold;display:inline-block;width:160px}
     .sig{margin-top:64px;display:flex;justify-content:space-between}
     .sig div{width:45%;border-top:1px solid #333;padding-top:6px;font-size:13px}

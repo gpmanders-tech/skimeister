@@ -132,14 +132,6 @@ export default async function HomePage() {
 function Hero() {
   return (
     <section className="relative overflow-hidden bg-alpine-600 text-white">
-      <div
-        className="absolute inset-0 opacity-20"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 15% 20%, rgba(255,255,255,.4) 0, transparent 25%), radial-gradient(circle at 85% 10%, rgba(255,107,53,.5) 0, transparent 30%)",
-        }}
-        aria-hidden
-      />
       {/* Hoogtelijnen rond Zermatt als watermerk */}
       <Hoogtelijnen className="absolute inset-0 h-full w-full opacity-40 [mask-image:radial-gradient(ellipse_at_50%_50%,black_60%,transparent_100%)]" />
       <Container className="relative grid gap-10 pb-16 pt-20 lg:grid-cols-2 lg:items-center lg:pb-20 lg:pt-28">

@@ -1,12 +1,13 @@
 import { Container } from "@/components/ui/Container";
 import { Sticker } from "@/components/huisstijl/Sticker";
 import { Broodkruimels } from "@/components/marketing/Broodkruimels";
+import { Strepen } from "@/components/huisstijl/Strepen";
 import type { Kruimel } from "@/lib/seo";
 
 const kleuren = {
   alpine: "bg-alpine-600 text-white",
   piste: "bg-piste-500 text-white",
-  zon: "bg-piste-300 text-alpine-900",
+  zon: "bg-amber-400 text-alpine-900",
   donker: "bg-alpine-900 text-white",
 };
 
@@ -38,10 +39,6 @@ export function PageHero({
     <section
       className={`relative overflow-hidden ${kleuren[kleur]} ${donker ? "op-donker" : ""}`}
     >
-      <div
-        aria-hidden="true"
-        className="absolute -left-20 -top-24 h-64 w-64 rounded-full bg-white/20 blur-2xl"
-      />
       <Container className="relative py-14 sm:py-20">
         {kruimels?.length ? (
           <Broodkruimels
@@ -68,6 +65,7 @@ export function PageHero({
             {description}
           </p>
         )}
+        <Strepen className="mt-8 w-28" licht={!donker} />
       </Container>
     </section>
   );

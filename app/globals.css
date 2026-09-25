@@ -5,19 +5,26 @@
    Alpine-blauw + sneeuwwit + energiek oranje
    =========================================================================== */
 @theme {
-  /* Primair — alpine-blauw */
-  --color-alpine-50: #eef3fa;
-  --color-alpine-100: #d4e0f1;
-  --color-alpine-200: #a9c1e3;
-  --color-alpine-300: #7ea2d5;
-  --color-alpine-400: #4f7ec0;
-  --color-alpine-500: #2f5a98;
-  --color-alpine-600: #1b3a6b; /* primaire huisstijlkleur */
-  --color-alpine-700: #163057;
-  --color-alpine-800: #112543;
-  --color-alpine-900: #0b1930;
+  /* ---------------------------------------------------------------------
+     Retro-huisstijl sinds 25-9-2026, afgeleid van het logo (richting F):
+     zwart zoals de skipakken, oranje en amber zoals de strepen, crème als
+     papier. De tokennamen "alpine" en "piste" blijven bestaan zodat de
+     vele pagina's niet hoeven te veranderen; "alpine" is nu de inktschaal.
+     --------------------------------------------------------------------- */
 
-  /* Accent — energiek oranje */
+  /* Inkt: warm zwart tot crème (voorheen alpine-blauw) */
+  --color-alpine-50: #f6f0e4;
+  --color-alpine-100: #ebe2d0;
+  --color-alpine-200: #d6cab3;
+  --color-alpine-300: #b3a78f;
+  --color-alpine-400: #857b6a;
+  --color-alpine-500: #5a5247;
+  --color-alpine-600: #1a1816; /* primaire huisstijlkleur: pakzwart */
+  --color-alpine-700: #121110;
+  --color-alpine-800: #0e0d0c;
+  --color-alpine-900: #0b0a09;
+
+  /* Accent: oranje van de bovenste streep */
   --color-piste-50: #fff3ee;
   --color-piste-100: #ffe0d2;
   --color-piste-200: #ffc1a6;
@@ -27,25 +34,25 @@
   --color-piste-600: #e85420;
   --color-piste-700: #c04116;
 
-  /* Sneeuw / neutralen */
-  --color-snow: #fbfcfe;
-  --color-snow-200: #eef1f6;
+  /* Amber van de middelste streep */
+  --color-amber-100: #ffecc9;
+  --color-amber-300: #ffc56b;
+  --color-amber-400: #ffb347;
+  --color-amber-500: #f09a1a;
 
+  /* Papier */
+  --color-snow: #faf6ee;
+  --color-snow-200: #f1eadb;
 
-  /* ---------------------------------------------------------------------
-     Huisstijl van de familie sites (stepverhuurutrecht, dagjeutrecht,
-     tuindorpskiet, skimeister). De tokennamen zijn op alle sites gelijk,
-     zodat de componenten uitwisselbaar zijn. Hier wijzen ze naar het eigen
-     accentpaar van Skimeister: alpine-blauw en piste-oranje.
-     --------------------------------------------------------------------- */
-  --color-zee-50: #eef3fa;
-  --color-zee-100: #d4e0f1;
-  --color-zee-200: #a9c1e3;
-  --color-zee-300: #7ea2d5;
-  --color-zee-400: #4f7ec0;
-  --color-zee-500: #2f5a98;
-  --color-zee-600: #1b3a6b;
-  --color-zee-700: #163057;
+  /* Familie-tokens (gedeelde componenten), hier naar de retro-kleuren */
+  --color-zee-50: #f6f0e4;
+  --color-zee-100: #ebe2d0;
+  --color-zee-200: #d6cab3;
+  --color-zee-300: #b3a78f;
+  --color-zee-400: #ffb347;
+  --color-zee-500: #5a5247;
+  --color-zee-600: #1a1816;
+  --color-zee-700: #121110;
 
   --color-vlam-50: #fff3ee;
   --color-vlam-100: #ffe0d2;
@@ -55,24 +62,24 @@
   --color-vlam-600: #c04116;
   --color-vlam-700: #9c340f;
 
-  --color-zon-100: #ffe6d2;
-  --color-zon-300: #ffab70;
+  --color-zon-100: #ffecc9;
+  --color-zon-300: #ffc56b;
   --color-vlam-300: #ff9d72;
-  --color-zon-400: #ff8f4d;
+  --color-zon-400: #ffb347;
 
-  --color-inkt: #0b1930;
-  --color-inkt-700: #163057;
-  --color-grijs: #55627a;
+  --color-inkt: #0b0a09;
+  --color-inkt-700: #121110;
+  --color-grijs: #5a5247;
   --color-rood: #b42318;
 
-  /* Fonts (gekoppeld in layout.tsx) */
-  --font-display: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  /* Fonts (gekoppeld in layout.tsx): Titan One voor koppen, Archivo voor tekst */
+  --font-display: var(--font-titan), ui-rounded, system-ui, sans-serif;
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
 }
 
 :root {
-  --background: #fbfcfe;
-  --foreground: #0b1930;
+  --background: #faf6ee;
+  --foreground: #0b0a09;
 }
 
 body {
@@ -85,14 +92,34 @@ body {
 .bg-snow-texture {
   background-color: var(--color-snow);
   background-image:
-    radial-gradient(circle at 20% 15%, rgba(27, 58, 107, 0.04) 0, transparent 35%),
-    radial-gradient(circle at 80% 0%, rgba(255, 107, 53, 0.05) 0, transparent 30%);
+    radial-gradient(circle at 20% 15%, rgba(11, 10, 9, 0.03) 0, transparent 35%),
+    radial-gradient(circle at 80% 0%, rgba(255, 179, 71, 0.06) 0, transparent 30%);
 }
 
 /* Berg-silhouet als SVG-achtergrond kan per sectie worden toegevoegd */
-h1, h2, h3, h4, .font-display {
+/* Titan One heeft maar één gewicht; geen nep-vet laten maken door de browser. */
+h1, h2, .font-display {
   font-family: var(--font-display);
+  font-weight: 400;
+  font-synthesis-weight: none;
+  letter-spacing: 0;
+}
+
+h3, h4 {
+  font-family: var(--font-sans);
   letter-spacing: -0.01em;
+}
+
+/* De drie strepen uit het logo: oranje, amber, crème */
+.strepen {
+  display: grid;
+  gap: 4px;
+}
+
+.strepen > span {
+  display: block;
+  height: 5px;
+  border-radius: 999px;
 }
 
 /* ---------------------------------------------------------------------------
