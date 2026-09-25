@@ -24,6 +24,7 @@ const COLUMNS = [
   {
     title: "Platform",
     links: [
+      { href: "/crew", label: "De crew" },
       { href: "/prijzen", label: "Prijzen" },
       { href: "/blog", label: "Blog" },
       { href: "/over-ons", label: "Over ons" },

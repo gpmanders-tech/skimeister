@@ -7,17 +7,21 @@ import { OpdrachtKaart } from "@/components/opdrachten/OpdrachtKaart";
 import { Band } from "@/components/huisstijl/Band";
 import { Hoogtelijnen } from "@/components/huisstijl/Hoogtelijnen";
 import { RondeSticker, Sticker } from "@/components/huisstijl/Sticker";
+import { Strepen } from "@/components/huisstijl/Strepen";
 import { getRecenteOpdrachten } from "@/lib/opdrachten/queries";
 import { getLiveCijfers, type LiveCijfers } from "@/lib/stats";
 import { RESORTS_BY_COUNTRY } from "@/lib/constants/resorts";
-import { REGISTERABLE_ROLES, ROLE_LABELS, ROLE_TAGLINES } from "@/lib/constants/options";
 import { Veelgesteld } from "@/components/marketing/Veelgesteld";
 import { LeesOok } from "@/components/marketing/LeesOok";
 
 const HOME_VRAGEN = [
   {
     v: "Wat is Skimeister?",
-    a: "Skimeister is een platform waar skischolen, reisorganisaties en scholen opdrachten plaatsen voor skileraren. Alle opdrachten staan open en zichtbaar, en wij controleren VOG en EHBO handmatig.",
+    a: "Skimeister is de crew van Nederlandstalige skileraren die in de Alpen lesgeven. Je vindt hier je opdrachten van skischolen, reisorganisaties en scholen, je collega's voor het seizoen en de kennis die je nodig hebt. Wij controleren VOG en EHBO handmatig.",
+  },
+  {
+    v: "Hoe word ik lid van de crew?",
+    a: "Maak een gratis profiel aan met je diploma's en de gebieden waar je wilt lesgeven. Zodra we je VOG en EHBO hebben gecontroleerd, kun je met één klik reageren op opdrachten.",
   },
   {
     v: "Hoe vind ik een vacature als skileraar?",
@@ -92,16 +96,15 @@ export default async function HomePage() {
       <Hero />
       <div className="-mt-7 mb-4 sm:-mt-9">
         <Band
-          woorden={["Oostenrijk", "Zwitserland", "Frankrijk", "VOG gecontroleerd", "EHBO gecontroleerd", "Gratis voor skileraren"]}
+          woorden={["De crew", "Nederlandstalig", "Oostenrijk", "Zwitserland", "Frankrijk", "VOG en EHBO gecontroleerd", "Samen het seizoen in"]}
           kleur="bg-piste-500 text-alpine-900"
         />
       </div>
+      <CrewVoordelen />
       <OpenOpdrachten opdrachten={opdrachten} />
       <HowItWorks />
-      <Audiences />
       <Cijfers cijfers={cijfers} />
       <ResortsSection />
-      <PricingTeaser />
       <LeesOok
         titel="Gidsen voor skileraren en opdrachtgevers"
         links={[
@@ -122,6 +125,7 @@ export default async function HomePage() {
           },
         ]}
       />
+      <VoorOpdrachtgevers />
       <Veelgesteld vragen={HOME_VRAGEN} />
       <FinalCta />
     </>
@@ -137,32 +141,32 @@ function Hero() {
       <Container className="relative grid gap-10 pb-16 pt-20 lg:grid-cols-2 lg:items-center lg:pb-20 lg:pt-28">
         <div>
           <Sticker kleur="zon" className="mb-5">
-            In opbouw voor seizoen 2026/27
+            Crew 26/27
           </Sticker>
           <h1 className="text-4xl font-black uppercase leading-[0.95] tracking-tight [overflow-wrap:anywhere] sm:text-5xl">
-            Echte opdrachten voor{" "}
-            <span className="text-piste-300">gecontroleerde</span> skileraren
+            De crew van{" "}
+            <span className="text-piste-300">Nederlandstalige</span> skileraren
           </h1>
           <p className="mt-5 max-w-xl text-lg text-alpine-100">
-            Skischolen, reisorganisaties en scholen plaatsen hun opdrachten
-            open en zichtbaar. Wij controleren VOG en EHBO handmatig, zodat je
-            weet wie er voor je groep staat.
+            Skimeister is de club voor skileraren die in de Alpen lesgeven in
+            het Nederlands. Hier vind je je opdrachten, je collega&apos;s voor
+            het seizoen en alles wat je moet weten.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <ButtonLink href="/opdrachten" variant="accent" size="lg">
-              Bekijk de opdrachten
+            <ButtonLink href="/register" variant="accent" size="lg">
+              Word crewlid
             </ButtonLink>
             <ButtonLink
-              href="/register"
+              href="/opdrachten"
               variant="opFoto"
               size="lg"
             >
-              Maak een gratis profiel aan
+              Bekijk de opdrachten
             </ButtonLink>
           </div>
           <p className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-alpine-100">
+            <span>✓ Gratis lid</span>
             <span>✓ VOG &amp; EHBO handmatig gecontroleerd</span>
-            <span>✓ Gratis voor instructeurs</span>
             <span>✓ Reageren in één klik</span>
           </p>
         </div>
@@ -227,9 +231,9 @@ function HeroVisual() {
       </div>
 
       <RondeSticker
-        boven="Gratis"
-        midden="voor"
-        onder="skileraren"
+        boven="Crew"
+        midden="26/27"
+        onder="seizoen"
         className="absolute -bottom-10 -right-6 sm:-right-10"
       />
     </div>
@@ -242,7 +246,7 @@ function OpenOpdrachten({ opdrachten }: { opdrachten: Awaited<ReturnType<typeof 
     <section className="border-b border-alpine-100 bg-snow-texture py-14 sm:py-16">
       <Container>
         <div className="flex flex-wrap items-end justify-between gap-4">
-          <SectionHeading eyebrow="Open opdrachten" title="Werk dat nu klaarstaat" />
+          <SectionHeading eyebrow="Seizoen 26/27" title="Hier gaat de crew deze winter heen" />
           <Link
             href="/opdrachten"
             className="text-sm font-semibold text-piste-600 hover:underline"
@@ -279,14 +283,14 @@ function OpenOpdrachten({ opdrachten }: { opdrachten: Awaited<ReturnType<typeof 
 /* ── Hoe werkt het ─────────────────────────────────────────────────────────*/
 function HowItWorks() {
   const steps = [
-    { n: 1, t: "Bekijk de opdrachten", d: "Alle opdrachten staan open en volledig zichtbaar, ook zonder account." },
-    { n: 2, t: "Reageer in één klik", d: "Maak een gratis profiel aan en reageer op wat bij je past. Een bericht erbij mag, hoeft niet." },
-    { n: 3, t: "Gecontroleerd aan het werk", d: "Wij controleren VOG en EHBO handmatig. De opdrachtgever neemt daarna zelf contact op." },
+    { n: 1, t: "Maak je profiel", d: "Gratis, met je diploma's, je talen en de gebieden waar je wilt lesgeven." },
+    { n: 2, t: "Wij checken je papieren", d: "We controleren je VOG en EHBO met de hand. Daarna hoor je bij de crew." },
+    { n: 3, t: "Reageer en ga mee", d: "Kies een opdracht die bij je past en reageer in één klik. De opdrachtgever neemt zelf contact op." },
   ];
   return (
     <section className="py-20">
       <Container>
-        <SectionHeading eyebrow="Hoe werkt het" title="In drie stappen geregeld" />
+        <SectionHeading eyebrow="Lid worden" title="Zo word je crewlid" />
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {steps.map((s) => (
             <div key={s.n} className="rounded-2xl border border-alpine-100 bg-white p-8 shadow-sm">
@@ -303,34 +307,45 @@ function HowItWorks() {
   );
 }
 
-/* ── Doelgroepen ───────────────────────────────────────────────────────────*/
-function Audiences() {
-  const links: Record<string, string> = {
-    instructor: "/skileraar-worden",
-    aspirant: "/skileraar-worden",
-    school_ski: "/fuer-skischulen",
-    travel_org: "/voor-reisorganisaties",
-    school_nl: "/voor-scholen",
-  };
+/* ── Crew ──────────────────────────────────────────────────────────────────*/
+function CrewVoordelen() {
+  const voordelen = [
+    {
+      t: "Opdrachten eerst",
+      d: "Nieuwe opdrachten in jouw gebieden komen in je mail. Reageren doe je in één klik.",
+    },
+    {
+      t: "Samen op pad",
+      d: "Bij veel opdrachten gaan meerdere skileraren tegelijk, zoals zes in Fügen. Je staat er niet alleen voor.",
+    },
+    {
+      t: "Het crewpak",
+      d: "De crew rijdt in het zwarte Skimeister-pak. Herkenbaar op de piste, van Bramberg tot Fügen.",
+    },
+    {
+      t: "Kennis voor je seizoen",
+      d: "Gidsen over diploma's, werken in Oostenrijk en je eerste seizoen als skileraar.",
+    },
+  ];
   return (
-    <section className="bg-snow-texture py-20">
+    <section className="py-16 sm:py-20">
       <Container>
-        <SectionHeading eyebrow="Voor wie" title="Eén platform, vijf doelgroepen" />
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {REGISTERABLE_ROLES.map((role) => (
-            <Link
-              key={role}
-              href={links[role]}
-              className="group rounded-2xl border border-alpine-100 bg-white p-7 transition-shadow hover:shadow-md"
-            >
-              <h3 className="text-lg font-semibold text-alpine-900 group-hover:text-piste-600">
-                {ROLE_LABELS[role]}
-              </h3>
-              <p className="mt-2 text-sm text-alpine-700">{ROLE_TAGLINES[role]}</p>
-              <span className="mt-4 inline-block text-sm font-medium text-piste-600">
-                Meer weten →
-              </span>
-            </Link>
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <SectionHeading eyebrow="De crew" title="Meer dan een vacaturebank" />
+          <Link href="/crew" className="text-sm font-semibold text-piste-600 hover:underline">
+            Over de crew →
+          </Link>
+        </div>
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {voordelen.map((v, i) => (
+            <div key={v.t} className="rounded-2xl bg-alpine-900 p-7 text-snow">
+              <Strepen className="w-12" />
+              <p className="mt-5 text-xs font-bold uppercase tracking-widest text-amber-400">
+                {String(i + 1).padStart(2, "0")}
+              </p>
+              <h3 className="mt-1 text-lg font-extrabold">{v.t}</h3>
+              <p className="mt-2 text-sm text-alpine-200">{v.d}</p>
+            </div>
           ))}
         </div>
       </Container>
@@ -404,25 +419,43 @@ function ResortsSection() {
   );
 }
 
-/* ── Pricing teaser ────────────────────────────────────────────────────────*/
-function PricingTeaser() {
+/* ── Opdrachtgevers ────────────────────────────────────────────────────────*/
+function VoorOpdrachtgevers() {
+  const links = [
+    { href: "/fuer-skischulen", label: "Für Skischulen" },
+    { href: "/voor-reisorganisaties", label: "Reisorganisaties" },
+    { href: "/voor-scholen", label: "Scholen" },
+    { href: "/prijzen", label: "Prijzen" },
+  ];
   return (
-    <section className="bg-snow-texture py-20">
-      <Container className="text-center">
-        <SectionHeading
-          eyebrow="Prijzen"
-          title="Gratis voor instructeurs, geen risico voor organisaties"
-          center
-        />
-        <p className="mx-auto mt-4 max-w-2xl text-alpine-700">
-          Instructeurs en aspiranten gebruiken Skimeister altijd gratis. Skischolen
-          en reisorganisaties plaatsen gratis een opdracht en betalen pas bij een
-          bevestigde plaatsing. Scholen betalen per project.
-        </p>
-        <div className="mt-8">
-          <ButtonLink href="/prijzen" variant="primary" size="lg">
-            Bekijk alle prijzen
-          </ButtonLink>
+    <section className="py-16">
+      <Container>
+        <div className="grid gap-8 rounded-3xl border-2 border-alpine-900 bg-white p-8 sm:p-12 lg:grid-cols-[1.4fr_1fr] lg:items-center">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-wide text-piste-600">
+              Voor opdrachtgevers
+            </p>
+            <h2 className="mt-2 text-3xl text-alpine-900 sm:text-4xl">Skileraren nodig?</h2>
+            <p className="mt-4 max-w-xl text-alpine-700">
+              Skischolen, reisorganisaties en scholen vinden in de crew
+              gecontroleerde, Nederlandstalige skileraren. Een opdracht plaatsen
+              is gratis; skischolen en reisorganisaties betalen pas bij een
+              bevestigde plaatsing.
+            </p>
+          </div>
+          <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
+            {links.map((l) => (
+              <li key={l.href}>
+                <Link
+                  href={l.href}
+                  className="flex items-center justify-between rounded-xl bg-snow px-5 py-3 font-semibold text-alpine-900 hover:bg-amber-100"
+                >
+                  {l.label}
+                  <span aria-hidden="true" className="text-piste-600">→</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </Container>
     </section>
@@ -436,22 +469,23 @@ function FinalCta() {
       <Container>
         <div className="rounded-3xl bg-alpine-600 px-8 py-14 text-center text-white sm:px-16">
           <h2 className="font-display text-3xl font-extrabold sm:text-4xl">
-            Klaar voor het seizoen?
+            Rij mee met de crew
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-alpine-100">
-            We bouwen Skimeister op met de eerste lichting skileraren en
-            opdrachtgevers voor seizoen 2026/27. Sluit je aan.
+            De eerste crew gaat in februari 2027 op pad naar Bramberg, Zell am
+            See en Fügen. Sluit je aan en ga mee.
           </p>
+          <Strepen className="mx-auto mt-6 w-24" />
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-            <ButtonLink href="/opdrachten" variant="accent" size="lg">
-              Bekijk de opdrachten
+            <ButtonLink href="/register" variant="accent" size="lg">
+              Word crewlid
             </ButtonLink>
             <ButtonLink
-              href="/register"
+              href="/opdrachten"
               variant="opFoto"
               size="lg"
             >
-              Maak een gratis profiel aan
+              Bekijk de opdrachten
             </ButtonLink>
           </div>
         </div>
