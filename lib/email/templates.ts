@@ -1,5 +1,6 @@
 import type { Taal } from "@/lib/i18n/taal";
 import { CREW_WHATSAPP } from "@/lib/constants/crew";
+import { getCertById } from "@/lib/constants/certifications";
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://skimeister.nl";
 
@@ -64,7 +65,7 @@ export const emailTemplates = {
             "Welkom bij de crew!",
             `Je account is aangemaakt als <strong>${role}</strong>. ${
               role === "Instructeur"
-                ? "Je kunt meteen reageren op de opdrachten: kies er één of meer die bij je passen en reageer in één klik. We controleren je VOG en EHBO met de hand."
+                ? "Je kunt meteen reageren op de opdrachten: kies er één of meer die bij je passen en reageer in één klik. Heb je een VOG of EHBO-diploma, dan kun je die later in je profiel zetten."
                 : "Ontdek wat Skimeister voor je kan doen."
             }` +
               `<p style="margin:16px 0 0">Sluit je ook aan bij de WhatsApp-groep van de crew, voor nieuwe opdrachten, tips en nieuws: <a href="${CREW_WHATSAPP}" style="color:#e85420;font-weight:700">Skimeister Crew 26/27</a>.</p>`,
@@ -79,20 +80,33 @@ export const emailTemplates = {
     phone: string;
     naam: string;
     ip?: string;
-  }) => ({
-    subject: `Aanmelding Skimeister: ${c.roleLabel} — ${c.naam}`,
-    html: layout(
-      "Kopie van de aanmelding",
-      `<table style="width:100%;border-collapse:collapse;font-size:15px">` +
-        row("Accounttype", c.roleLabel) +
-        row("Naam", c.naam) +
-        row("E-mailadres", `<a href="mailto:${c.email}">${c.email}</a>`) +
-        row("Telefoonnummer", `<a href="tel:${c.phone}">${c.phone}</a>`) +
-        (c.ip ? row("IP-adres", c.ip) : "") +
-        `</table>`,
-      { label: "Bekijk in admin", href: `${SITE}/admin/gebruikers` },
-    ),
-  }),
+    skidiploma?: string | null;
+    ervaring?: number | null;
+    rijbewijs?: boolean | null;
+    vog?: boolean | null;
+    ehbo?: boolean | null;
+  }) => {
+    const jn = (v: boolean | null | undefined) => (v === true ? "Ja" : v === false ? "Nee" : "Niet ingevuld");
+    return {
+      subject: `Aanmelding Skimeister: ${c.roleLabel}, ${c.naam}`,
+      html: layout(
+        "Nieuwe aanmelding",
+        `<table style="width:100%;border-collapse:collapse;font-size:15px">` +
+          row("Accounttype", c.roleLabel) +
+          row("Naam", c.naam) +
+          row("E-mailadres", `<a href="mailto:${c.email}">${c.email}</a>`) +
+          row("Telefoonnummer", `<a href="tel:${c.phone}">${c.phone}</a>`) +
+          (c.skidiploma !== undefined ? row("Skidiploma", c.skidiploma ? (getCertById(c.skidiploma)?.name ?? c.skidiploma) : "Niet ingevuld") : "") +
+          (c.ervaring != null ? row("Jaren ervaring", String(c.ervaring)) : "") +
+          (c.rijbewijs !== undefined ? row("Rijbewijs", jn(c.rijbewijs)) : "") +
+          (c.vog !== undefined ? row("VOG", jn(c.vog)) : "") +
+          (c.ehbo !== undefined ? row("EHBO", jn(c.ehbo)) : "") +
+          (c.ip ? row("IP-adres", c.ip) : "") +
+          `</table>`,
+        { label: "Bekijk in admin", href: `${SITE}/admin/gebruikers` },
+      ),
+    };
+  },
 
   /** Seintje naar de beheerder bij elke reactie op een opdracht. */
   adminNieuweReactie: (c: {

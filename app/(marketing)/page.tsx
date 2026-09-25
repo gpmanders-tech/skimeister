@@ -24,7 +24,7 @@ const HOME_VRAGEN = [
   },
   {
     v: "Hoe word ik lid van de crew?",
-    a: "Maak een gratis profiel aan met je diploma's en de gebieden waar je wilt lesgeven. Zodra we je VOG en EHBO hebben gecontroleerd, kun je met één klik reageren op opdrachten.",
+    a: "Maak een gratis profiel aan met je skidiploma en vertel of je een rijbewijs, VOG en EHBO-diploma hebt. Daarna kun je meteen reageren op één of meer opdrachten.",
   },
   {
     v: "Hoe vind ik een vacature als skileraar?",
@@ -95,7 +95,7 @@ export default async function HomePage() {
       <Hero />
       <div className="-mt-7 mb-4 sm:-mt-9">
         <Band
-          woorden={["De crew", "Nederlandstalig", "Oostenrijk", "Zwitserland", "Frankrijk", "VOG en EHBO gecontroleerd", "Samen het seizoen in"]}
+          woorden={["De crew", "Nederlandstalig", "Oostenrijk", "Zwitserland", "Frankrijk", "Gratis lid", "Samen het seizoen in"]}
           kleur="bg-piste-500 text-alpine-900"
         />
       </div>
@@ -162,7 +162,7 @@ function Hero() {
           </div>
           <p className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-alpine-100">
             <span>✓ Gratis lid</span>
-            <span>✓ VOG &amp; EHBO handmatig gecontroleerd</span>
+            <span>✓ Reageer op meerdere opdrachten</span>
             <span>✓ Reageren in één klik</span>
           </p>
         </div>
@@ -218,8 +218,8 @@ function OpenOpdrachten({ opdrachten }: { opdrachten: Awaited<ReturnType<typeof 
 /* ── Hoe werkt het ─────────────────────────────────────────────────────────*/
 function HowItWorks() {
   const steps = [
-    { n: 1, t: "Maak je profiel", d: "Gratis, met je diploma's, je talen en de gebieden waar je wilt lesgeven." },
-    { n: 2, t: "Wij checken je papieren", d: "We controleren je VOG en EHBO met de hand. Daarna hoor je bij de crew." },
+    { n: 1, t: "Maak je profiel", d: "Gratis, met je skidiploma, je talen en je ervaring." },
+    { n: 2, t: "Vertel wat je hebt", d: "Rijbewijs, VOG en EHBO: niet verplicht, wel fijn als je ze hebt. Zo weten we wat je kunt doen." },
     { n: 3, t: "Reageer en ga mee", d: "Kies een opdracht die bij je past en reageer in één klik. De opdrachtgever neemt zelf contact op." },
   ];
   return (

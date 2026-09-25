@@ -76,7 +76,8 @@ export function RegisterForm({
         </div>
 
         <div className="grid grid-cols-1 gap-2">
-          {REGISTERABLE_ROLES.map((r) => (
+          {/* De site is voor skileraren (keuze Ger 25-9-2026); opdrachtgevers mailen ons. */}
+          {REGISTERABLE_ROLES.filter((r) => r === "instructor" || r === "aspirant").map((r) => (
             <button
               type="button"
               key={r}
@@ -138,7 +139,7 @@ export function RegisterForm({
         {isInstructeur ? (
           <>
             <div>
-              <Label htmlFor="certification">Hoogste certificering</Label>
+              <Label htmlFor="certification">Hoogste skidiploma</Label>
               <Select id="certification" name="certification" defaultValue="" required>
                 <option value="" disabled>
                   Kies je niveau
@@ -192,6 +193,12 @@ export function RegisterForm({
                 ))}
               </div>
             </div>
+
+            {/* Inventarisatie (keuze Ger 25-9-2026): niet verplicht om te hebben,
+                wel om in te vullen, zodat we weten wie wat heeft. */}
+            <JaNee naam="has_drivers_license" vraag="Heb je een rijbewijs?" />
+            <JaNee naam="has_vog" vraag="Heb je een VOG?" uitleg="Niet verplicht, wel fijn." />
+            <JaNee naam="has_ehbo" vraag="Heb je een EHBO-diploma?" uitleg="Niet verplicht, wel fijn." />
           </>
         ) : null}
 
@@ -216,8 +223,8 @@ export function RegisterForm({
 
         {isInstructeur ? (
           <p className="text-center text-xs text-alpine-500">
-            Daarna kun je meteen op opdrachten reageren. Foto, skigebieden,
-            beschikbaarheid en je VOG vul je later aan.
+            Daarna kun je meteen op opdrachten reageren. Foto, skigebieden en
+            beschikbaarheid vul je later aan.
           </p>
         ) : null}
       </form>
@@ -228,6 +235,40 @@ export function RegisterForm({
           Inloggen
         </Link>
       </p>
+      <p className="mt-2 text-center text-xs text-alpine-500">
+        Skischool of reisorganisatie? Mail ons op{" "}
+        <a href="mailto:info@skimeister.nl" className="font-medium text-piste-600 hover:underline">
+          info@skimeister.nl
+        </a>
+        .
+      </p>
     </div>
+  );
+}
+
+/** Verplichte ja/nee-vraag als twee keuzerondjes. */
+function JaNee({ naam, vraag, uitleg }: { naam: string; vraag: string; uitleg?: string }) {
+  return (
+    <fieldset>
+      <legend className="mb-1.5 text-sm font-medium text-alpine-900">{vraag}</legend>
+      {uitleg ? <p className="-mt-1 mb-1.5 text-xs text-alpine-500">{uitleg}</p> : null}
+      <div className="flex gap-6">
+        {[
+          ["ja", "Ja"],
+          ["nee", "Nee"],
+        ].map(([waarde, label]) => (
+          <label key={waarde} className="flex items-center gap-2 text-sm text-alpine-800">
+            <input
+              type="radio"
+              name={naam}
+              value={waarde}
+              required
+              className="h-4 w-4 border-alpine-300 text-piste-500 focus:ring-piste-400"
+            />
+            {label}
+          </label>
+        ))}
+      </div>
+    </fieldset>
   );
 }

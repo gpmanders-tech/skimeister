@@ -9,7 +9,7 @@ import { SkileraarInPak } from "@/components/huisstijl/SkileraarInPak";
 import { CREW_WHATSAPP } from "@/lib/constants/crew";
 
 const OMSCHRIJVING =
-  "De Skimeister crew: Nederlandstalige skileraren die samen het seizoen in de Alpen ingaan. Gratis lid, VOG en EHBO gecontroleerd, opdrachten in één klik.";
+  "De Skimeister crew: Nederlandstalige skileraren die samen het seizoen in de Alpen ingaan. Gratis lid, reageren op opdrachten in één klik.";
 
 export const metadata: Metadata = {
   ...canoniek("/crew"),
@@ -38,7 +38,7 @@ const HOORT_ERBIJ = [
 
 const AFSPRAKEN = [
   "We geven les in het Nederlands, aan kinderen en volwassenen.",
-  "Iedereen in de crew heeft een VOG en een EHBO-diploma; wij controleren ze met de hand.",
+  "Een VOG en een EHBO-diploma zijn niet verplicht, maar wel fijn. Heb je ze, dan controleren we ze met de hand.",
   "Minimaal ÖSV Anwärter of een vergelijkbaar diploma.",
   "Lid zijn is gratis, altijd.",
 ];
@@ -106,7 +106,7 @@ export default function Page() {
           <ol className="mx-auto mt-10 grid max-w-4xl gap-5 text-left md:grid-cols-3">
             {[
               ["Maak je profiel", "Gratis, met je diploma's, je talen en de gebieden waar je wilt lesgeven."],
-              ["Wij checken je papieren", "We controleren je VOG en EHBO met de hand."],
+              ["Vertel wat je hebt", "Skidiploma, rijbewijs, VOG en EHBO: we vragen het bij je aanmelding."],
               ["Reageer en ga mee", "Kies een opdracht die bij je past en reageer in één klik."],
             ].map(([t, d], i) => (
               <li key={t} className="rounded-2xl border border-alpine-100 bg-white p-7">

@@ -61,11 +61,11 @@ const GROEPEN: { titel: string; vragen: Vraag[] }[] = [
       },
       {
         v: "Hoe werkt de verificatie van VOG, EHBO en verzekering?",
-        a: "Instructeurs uploaden hun documenten. Na controle verschijnt een verified-badge op hun profiel, zodat organisaties zien dat alles op orde is.",
+        a: "VOG en EHBO zijn niet verplicht. Heb je ze, dan upload je ze in je profiel. Na onze controle verschijnt er een badge, zodat opdrachtgevers zien dat alles op orde is.",
       },
       {
         v: "Is een VOG verplicht?",
-        a: "Bij groepen met kinderen wel. Bij die opdrachten tonen we alleen instructeurs met een geldige VOG.",
+        a: "Nee, niet om lid te worden van de crew. Bij sommige opdrachten met kinderen vraagt de opdrachtgever wel om een VOG; dat staat dan bij de opdracht.",
       },
     ],
   },

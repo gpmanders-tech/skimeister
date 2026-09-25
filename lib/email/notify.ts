@@ -42,6 +42,11 @@ export interface SignupCopy {
   phone: string;
   naam: string;
   ip?: string;
+  skidiploma?: string | null;
+  ervaring?: number | null;
+  rijbewijs?: boolean | null;
+  vog?: boolean | null;
+  ehbo?: boolean | null;
 }
 
 /**
