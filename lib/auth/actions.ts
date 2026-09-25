@@ -98,19 +98,30 @@ export async function signUpAction(
   const certificering = String(formData.get("certification") ?? "").trim();
   const ervaring = Number(formData.get("years_experience") ?? "");
   const talen = formData.getAll("languages").map(String).filter(Boolean);
+  // Inventarisatie (keuze Ger 25-9-2026): zelf opgegeven, niet verplicht om te hebben.
+  const jaNee = (veld: string): boolean | null => {
+    const v = String(formData.get(veld) ?? "");
+    return v === "ja" ? true : v === "nee" ? false : null;
+  };
+  const rijbewijs = jaNee("has_drivers_license");
+  const heeftVog = jaNee("has_vog");
+  const heeftEhbo = jaNee("has_ehbo");
 
   if (isInstructeur) {
     if (voornaam.length < 2 || achternaam.length < 2) {
       return { error: "Vul je voor- en achternaam in." };
     }
     if (!getCertById(certificering)) {
-      return { error: "Kies je certificeringsniveau." };
+      return { error: "Kies je hoogste skidiploma." };
     }
     if (!Number.isFinite(ervaring) || ervaring < 0 || ervaring > 60) {
       return { error: "Vul in hoeveel jaar ervaring je hebt." };
     }
     if (talen.length === 0) {
       return { error: "Kies minimaal één taal waarin je lesgeeft." };
+    }
+    if (rijbewijs === null || heeftVog === null || heeftEhbo === null) {
+      return { error: "Vul bij rijbewijs, VOG en EHBO ja of nee in." };
     }
   }
 
@@ -138,7 +149,15 @@ export async function signUpAction(
       email,
       password,
       email_confirm: true,
-      user_metadata: { role, phone, voornaam, achternaam },
+      user_metadata: {
+        role,
+        phone,
+        voornaam,
+        achternaam,
+        rijbewijs,
+        vog: heeftVog,
+        ehbo: heeftEhbo,
+      },
     });
 
     if (error) {
@@ -172,6 +191,9 @@ export async function signUpAction(
           languages: talen,
           certifications: certificaten,
           profile_completeness: score,
+          has_drivers_license: rijbewijs,
+          has_vog: heeftVog,
+          has_ehbo: heeftEhbo,
           // Zichtbaar in de zoekresultaten pas na foto, bio en goedkeuring.
           is_active: false,
         });
@@ -195,6 +217,11 @@ export async function signUpAction(
         phone,
         naam: [voornaam, achternaam].filter(Boolean).join(" ") || "Niet opgegeven",
         ip,
+        skidiploma: isInstructeur ? certificering || null : null,
+        ervaring: isInstructeur && Number.isFinite(ervaring) ? ervaring : null,
+        rijbewijs,
+        vog: heeftVog,
+        ehbo: heeftEhbo,
       });
     } catch (e) {
       console.error("Registratie-mail mislukt (genegeerd):", e);

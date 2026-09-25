@@ -52,9 +52,9 @@ const BLOKKEN: Tekstblok[] = [
     ],
   },
   {
-    kop: "VOG en EHBO: waarom ze ertoe doen",
+    kop: "VOG en EHBO: niet verplicht, wel handig",
     alineas: [
-      "Wie met groepen werkt, en zeker met kinderen, moet kunnen laten zien dat het goed zit. Skimeister controleert je Verklaring Omtrent het Gedrag (VOG) en je EHBO-certificaat handmatig. Pas na die controle verschijnt er een badge op je profiel, nooit automatisch. Opdrachtgevers zien daardoor meteen dat je papieren op orde zijn, en dat scheelt jou een hoop heen-en-weer gemail voor elke opdracht.",
+      "Voor Skimeister zijn een Verklaring Omtrent het Gedrag (VOG) en een EHBO-diploma niet verplicht. Heb je ze wel, dan is dat fijn: bij groepen met kinderen vragen opdrachtgevers er vaak om. Zet ze in je profiel, dan controleren we ze met de hand en krijg je een badge. Zo zien opdrachtgevers meteen dat je papieren op orde zijn.",
     ],
   },
   {
@@ -79,7 +79,7 @@ const VRAGEN = [
   },
   {
     v: "Heb ik een VOG nodig om als skileraar te werken?",
-    a: "Bij groepen met kinderen, zoals schoolreizen, is een geldige VOG verplicht. Skimeister controleert je VOG en EHBO-certificaat handmatig en zet daarna een badge op je profiel.",
+    a: "Voor Skimeister niet. Bij sommige opdrachten met kinderen, zoals schoolreizen, vraagt de opdrachtgever wel om een VOG. Heb je er een, zet hem dan in je profiel: we controleren hem met de hand en zetten er een badge bij.",
   },
   {
     v: "Kost het iets om via Skimeister werk te vinden?",

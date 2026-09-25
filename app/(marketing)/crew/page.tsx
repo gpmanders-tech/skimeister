@@ -6,9 +6,10 @@ import { ButtonLink } from "@/components/ui/Button";
 import { PageHero } from "@/components/marketing/PageHero";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { SkileraarInPak } from "@/components/huisstijl/SkileraarInPak";
+import { CREW_WHATSAPP } from "@/lib/constants/crew";
 
 const OMSCHRIJVING =
-  "De Skimeister crew: Nederlandstalige skileraren die samen het seizoen in de Alpen ingaan. Gratis lid, VOG en EHBO gecontroleerd, opdrachten in één klik.";
+  "De Skimeister crew: Nederlandstalige skileraren die samen het seizoen in de Alpen ingaan. Gratis lid, reageren op opdrachten in één klik.";
 
 export const metadata: Metadata = {
   ...canoniek("/crew"),
@@ -37,7 +38,7 @@ const HOORT_ERBIJ = [
 
 const AFSPRAKEN = [
   "We geven les in het Nederlands, aan kinderen en volwassenen.",
-  "Iedereen in de crew heeft een VOG en een EHBO-diploma; wij controleren ze met de hand.",
+  "Een VOG en een EHBO-diploma zijn niet verplicht, maar wel fijn. Heb je ze, dan controleren we ze met de hand.",
   "Minimaal ÖSV Anwärter of een vergelijkbaar diploma.",
   "Lid zijn is gratis, altijd.",
 ];
@@ -105,7 +106,7 @@ export default function Page() {
           <ol className="mx-auto mt-10 grid max-w-4xl gap-5 text-left md:grid-cols-3">
             {[
               ["Maak je profiel", "Gratis, met je diploma's, je talen en de gebieden waar je wilt lesgeven."],
-              ["Wij checken je papieren", "We controleren je VOG en EHBO met de hand."],
+              ["Vertel wat je hebt", "Skidiploma, rijbewijs, VOG en EHBO: we vragen het bij je aanmelding."],
               ["Reageer en ga mee", "Kies een opdracht die bij je past en reageer in één klik."],
             ].map(([t, d], i) => (
               <li key={t} className="rounded-2xl border border-alpine-100 bg-white p-7">
@@ -124,6 +125,21 @@ export default function Page() {
             <ButtonLink href="/opdrachten" variant="outline" size="lg">
               Bekijk de opdrachten
             </ButtonLink>
+          </div>
+          <div className="mx-auto mt-10 max-w-xl rounded-2xl bg-alpine-900 p-6 text-left text-snow sm:p-8">
+            <h3 className="text-lg font-extrabold">De crew op WhatsApp</h3>
+            <p className="mt-2 text-sm text-alpine-200">
+              In de WhatsApp-groep delen we nieuwe opdrachten, tips en nieuws
+              voor het seizoen. Na je aanmelding keuren we je verzoek goed.
+            </p>
+            <a
+              href={CREW_WHATSAPP}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex min-h-11 items-center rounded-full bg-amber-400 px-6 text-sm font-extrabold uppercase tracking-wide text-alpine-900 hover:bg-amber-300"
+            >
+              Word lid van de WhatsApp-groep
+            </a>
           </div>
           <p className="mt-6 text-sm text-alpine-600">
             Nog geen diploma?{" "}
