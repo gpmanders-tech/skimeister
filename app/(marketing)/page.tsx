@@ -9,6 +9,7 @@ import { Hoogtelijnen } from "@/components/huisstijl/Hoogtelijnen";
 import { Sticker } from "@/components/huisstijl/Sticker";
 import { SkileraarInPak, BorstBadge } from "@/components/huisstijl/SkileraarInPak";
 import { Woordmerk } from "@/components/Logo";
+import { CREW_WHATSAPP } from "@/lib/constants/crew";
 import { Strepen } from "@/components/huisstijl/Strepen";
 import { getRecenteOpdrachten } from "@/lib/opdrachten/queries";
 import { getLiveCijfers, type LiveCijfers } from "@/lib/stats";
@@ -266,9 +267,19 @@ function CrewVoordelen() {
       <Container>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <SectionHeading eyebrow="De crew" title="Meer dan een vacaturebank" />
-          <Link href="/crew" className="text-sm font-semibold text-piste-600 hover:underline">
-            Over de crew →
-          </Link>
+          <div className="flex flex-wrap gap-x-6 gap-y-2">
+            <a
+              href={CREW_WHATSAPP}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-semibold text-piste-600 hover:underline"
+            >
+              Crew op WhatsApp →
+            </a>
+            <Link href="/crew" className="text-sm font-semibold text-piste-600 hover:underline">
+              Over de crew →
+            </Link>
+          </div>
         </div>
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {voordelen.map((v, i) => (

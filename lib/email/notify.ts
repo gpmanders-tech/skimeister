@@ -50,7 +50,7 @@ export interface SignupCopy {
  * Valt terug op het vaste beheeradres als ADMIN_EMAIL niet (goed) is gezet.
  */
 export async function notifyAdminSignupCopy(copy: SignupCopy): Promise<void> {
-  const to = (process.env.ADMIN_EMAIL || "gpmanders@gmail.com").trim();
+  const to = (process.env.ADMIN_EMAIL || "info@skimeister.nl").trim();
   if (!to) return;
   await sendEmail({ to, ...emailTemplates.signupCopy(copy) });
 }
@@ -65,7 +65,7 @@ export async function notifyAdminNewReaction(c: {
   instructeur: string;
   bericht: string | null;
 }) {
-  const to = (process.env.ADMIN_EMAIL || "gpmanders@gmail.com").trim();
+  const to = (process.env.ADMIN_EMAIL || "info@skimeister.nl").trim();
   if (!to) return;
   await sendEmail({ to, ...emailTemplates.adminNieuweReactie(c) });
 }

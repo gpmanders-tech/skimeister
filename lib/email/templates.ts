@@ -1,10 +1,11 @@
 import type { Taal } from "@/lib/i18n/taal";
+import { CREW_WHATSAPP } from "@/lib/constants/crew";
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://skimeister.nl";
 
 /** Afsluitregel onder elke mail, in de taal van de ontvanger. */
 const SLOGAN: Record<Taal, string> = {
-  nl: "De verbinding tussen skileraren en de skipiste.",
+  nl: "De crew van Nederlandstalige skileraren.",
   de: "Die Verbindung zwischen Skilehrern und der Piste.",
 };
 
@@ -58,15 +59,16 @@ export const emailTemplates = {
           ),
         }
       : {
-          subject: "Welkom bij Skimeister.nl 🎿",
+          subject: "Welkom bij de Skimeister crew",
           html: layout(
-            "Welkom bij Skimeister!",
-            `Je account is aangemaakt als <strong>${role}</strong>. Log in en zet de eerste stappen — ${
+            "Welkom bij de crew!",
+            `Je account is aangemaakt als <strong>${role}</strong>. ${
               role === "Instructeur"
-                ? "maak je profiel compleet om gevonden te worden."
-                : "ontdek wat het platform voor je kan doen."
-            }`,
-            { label: "Naar mijn dashboard", href: `${SITE}/dashboard` },
+                ? "Je kunt meteen reageren op de opdrachten: kies er één of meer die bij je passen en reageer in één klik. We controleren je VOG en EHBO met de hand."
+                : "Ontdek wat Skimeister voor je kan doen."
+            }` +
+              `<p style="margin:16px 0 0">Sluit je ook aan bij de WhatsApp-groep van de crew, voor nieuwe opdrachten, tips en nieuws: <a href="${CREW_WHATSAPP}" style="color:#e85420;font-weight:700">Skimeister Crew 26/27</a>.</p>`,
+            { label: "Bekijk de opdrachten", href: `${SITE}/opdrachten` },
           ),
         },
 
