@@ -48,7 +48,7 @@ export function SiteHeader() {
           <ButtonLink href="/login" variant="ghost" size="sm" className="max-xl:hidden">
             Inloggen
           </ButtonLink>
-          <ButtonLink href="/register" variant="accent" size="sm">
+          <ButtonLink href="/register" variant="accent" size="sm" className="max-sm:hidden">
             Aanmelden
           </ButtonLink>
           <MobielMenu />
@@ -93,6 +93,13 @@ function MobielMenu() {
           </Link>
         ))}
         <div className="my-1 border-t border-alpine-100" />
+        {/* Op een smalle telefoon staat Aanmelden niet in de kop maar hier */}
+        <Link
+          href="/register"
+          className="block rounded-xl px-3 py-2.5 text-sm font-bold text-piste-600 hover:bg-alpine-50 sm:hidden"
+        >
+          Aanmelden
+        </Link>
         <Link
           href="/login"
           className="block rounded-xl px-3 py-2.5 text-sm font-medium text-alpine-800 hover:bg-alpine-50"
