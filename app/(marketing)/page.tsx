@@ -52,8 +52,8 @@ const JSON_LD = {
       "@id": `${SITE}/#organisatie`,
       name: "Skimeister.nl",
       url: SITE,
-      logo: `${SITE}/og-skimeister.jpg`,
-      image: `${SITE}/og-skimeister.jpg`,
+      logo: `${SITE}/logo-skimeister.png`,
+      image: `${SITE}/og-skimeister-retro.jpg`,
       description:
         "Platform waar skischolen, reisorganisaties en scholen opdrachten plaatsen voor skileraren. VOG en EHBO worden handmatig gecontroleerd.",
       email: "info@skimeister.nl",

@@ -76,7 +76,7 @@ export function jobPostingJsonLd(o: Opdracht) {
       "@type": "Organization",
       name: "Skimeister.nl",
       sameAs: SITE,
-      logo: `${SITE}/og-skimeister.jpg`,
+      logo: `${SITE}/logo-skimeister.png`,
     },
     jobLocation: {
       "@type": "Place",
