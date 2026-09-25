@@ -79,7 +79,7 @@ const VRAGEN = [
   },
   {
     v: "In welke skigebieden kan ik een skileraar inhuren?",
-    a: "Skimeister richt zich op 25 skigebieden in Oostenrijk, Zwitserland en Frankrijk, van St. Anton en Kitzbühel tot Verbier en Val d'Isère.",
+    a: "Skimeister richt zich op 27 skigebieden in Oostenrijk, Zwitserland en Frankrijk, van St. Anton en Kitzbühel tot Verbier en Val d'Isère.",
   },
   {
     v: "Ik ben een skischool in Oostenrijk. Is er een Duitse pagina?",

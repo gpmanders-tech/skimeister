@@ -1,5 +1,5 @@
 /**
- * 25 skigebieden — selecteerbaar op alle profielen en projecten.
+ * 27 skigebieden: selecteerbaar op alle profielen en projecten.
  * Elk gebied krijgt een SEO-pagina op /skigebied/[slug].
  */
 
@@ -13,7 +13,7 @@ export interface Resort {
 }
 
 export const RESORTS: Resort[] = [
-  // 🇦🇹 Oostenrijk (20)
+  // 🇦🇹 Oostenrijk (22)
   { id: "st-anton", slug: "st-anton-am-arlberg", name: "St. Anton am Arlberg", country: "Oostenrijk" },
   { id: "kitzbuehel", slug: "kitzbuehel", name: "Kitzbühel", country: "Oostenrijk" },
   { id: "ischgl", slug: "ischgl", name: "Ischgl", country: "Oostenrijk" },
@@ -34,6 +34,8 @@ export const RESORTS: Resort[] = [
   { id: "wagrain", slug: "wagrain-kleinarl", name: "Wagrain / Kleinarl", country: "Oostenrijk" },
   { id: "skicircus", slug: "skicircus-saalbach-hinterglemm-leogang", name: "Skicircus Saalbach Hinterglemm Leogang", country: "Oostenrijk" },
   { id: "kitzsteinhorn", slug: "kitzsteinhorn-kaprun", name: "Kitzsteinhorn (Kaprun)", country: "Oostenrijk" },
+  { id: "bramberg", slug: "bramberg-wildkogel-arena", name: "Bramberg / Wildkogel-Arena", country: "Oostenrijk" },
+  { id: "fuegen", slug: "fuegen-zillertal", name: "Fügen / Spieljoch (Zillertal)", country: "Oostenrijk" },
 
   // 🇨🇭 Zwitserland (3)
   { id: "verbier", slug: "verbier", name: "Verbier", country: "Zwitserland" },
