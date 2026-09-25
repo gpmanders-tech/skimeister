@@ -45,7 +45,7 @@ export function SiteHeader() {
           >
             Opdrachten
           </Link>
-          <ButtonLink href="/login" variant="ghost" size="sm" className="hidden xl:inline-flex">
+          <ButtonLink href="/login" variant="ghost" size="sm" className="max-xl:hidden">
             Inloggen
           </ButtonLink>
           <ButtonLink href="/register" variant="accent" size="sm">
