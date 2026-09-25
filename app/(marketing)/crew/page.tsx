@@ -23,7 +23,7 @@ const HOORT_ERBIJ = [
   },
   {
     t: "Samen op pad",
-    d: "Bij veel opdrachten gaan meerdere skileraren tegelijk op pad. In februari 2027 bijvoorbeeld twee in Zell am See, drie in Bramberg en zes in Fügen.",
+    d: "Bij veel opdrachten gaan meerdere skileraren tegelijk op pad. In februari 2027 bijvoorbeeld twee in Zell am See en zes in Fügen, in dezelfde week.",
   },
   {
     t: "Het crewpak",
