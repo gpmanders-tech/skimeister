@@ -19,7 +19,7 @@ const titan = { fontFamily: "var(--font-titan), sans-serif" };
 export function BorstBadge({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 100 100" className={className} role="img" aria-label="Skimeister-badge">
-      <circle cx="50" cy="50" r="48" fill={INKT} />
+      <circle cx="50" cy="50" r="46" fill={INKT} stroke={CREME} strokeWidth="4" />
       <text x="50" y="58" textAnchor="middle" fontSize="54" fill={CREME} style={titan}>
         s
       </text>
@@ -103,6 +103,13 @@ export function SkileraarInPak({ className }: { className?: string }) {
       role="img"
       aria-label="Skileraar in het zwarte Skimeister-pak: op de rug het woordmerk met drie strepen, op de borst de ronde badge"
     >
+      <defs>
+        <clipPath id="kaart">
+          <rect width="560" height="560" rx="36" />
+        </clipPath>
+      </defs>
+      <g clipPath="url(#kaart)">
+      <rect width="560" height="560" fill="#1a1816" />
       {/* retro zon met strepen */}
       <circle cx="280" cy="250" r="228" fill={AMBER} />
       <rect x="40" y="318" width="480" height="7" fill={INKT} />
@@ -125,6 +132,7 @@ export function SkileraarInPak({ className }: { className?: string }) {
       <text x="393" y="545" textAnchor="middle" fontSize="13" fontWeight="800" letterSpacing="3" fill={INKT}>
         VOORKANT
       </text>
+      </g>
     </svg>
   );
 }

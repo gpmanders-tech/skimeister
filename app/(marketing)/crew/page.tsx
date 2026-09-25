@@ -5,7 +5,7 @@ import { Container } from "@/components/ui/Container";
 import { ButtonLink } from "@/components/ui/Button";
 import { PageHero } from "@/components/marketing/PageHero";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { Strepen } from "@/components/huisstijl/Strepen";
+import { SkileraarInPak } from "@/components/huisstijl/SkileraarInPak";
 
 const OMSCHRIJVING =
   "De Skimeister crew: Nederlandstalige skileraren die samen het seizoen in de Alpen ingaan. Gratis lid, VOG en EHBO gecontroleerd, opdrachten in één klik.";
@@ -90,13 +90,12 @@ export default function Page() {
               ))}
             </ul>
           </div>
-          <div className="rounded-3xl bg-alpine-600 p-10">
-            <p className="font-display text-5xl text-snow sm:text-6xl">skimeister</p>
-            <Strepen className="mt-3 w-full max-w-xs" />
-            <p className="mt-6 text-sm text-alpine-200">
-              Het logo dat de crew op het pak draagt.
-            </p>
-          </div>
+          <figure>
+            <SkileraarInPak className="w-full" />
+            <figcaption className="mt-3 text-sm text-alpine-200">
+              Het crewpak: het woordmerk onderaan op de rug, de badge op de borst.
+            </figcaption>
+          </figure>
         </Container>
       </section>
 
