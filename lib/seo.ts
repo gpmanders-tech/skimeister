@@ -24,7 +24,7 @@ export function canoniek(pad: string): Metadata {
 
 /** Standaard deelafbeelding (1200x630). */
 export const OG_IMAGE = {
-  url: `${SITE}/og-skimeister-retro.jpg`,
+  url: `${SITE}/og-skimeister-blauw.jpg`,
   width: 1200,
   height: 630,
   alt: "Skimeister.nl: opdrachten voor gecontroleerde skileraren",

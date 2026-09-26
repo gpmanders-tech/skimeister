@@ -56,7 +56,7 @@ const JSON_LD = {
       name: "Skimeister.nl",
       url: SITE,
       logo: `${SITE}/logo-skimeister.png`,
-      image: `${SITE}/og-skimeister-retro.jpg`,
+      image: `${SITE}/og-skimeister-blauw.jpg`,
       description:
         "Platform waar skischolen, reisorganisaties en scholen opdrachten plaatsen voor skileraren. VOG en EHBO worden handmatig gecontroleerd.",
       email: "info@skimeister.nl",
@@ -135,7 +135,7 @@ function Hero() {
   return (
     <section className="op-donker relative overflow-hidden bg-alpine-600 text-white">
       {/* Hoogtelijnen rond Zermatt als watermerk */}
-      <Hoogtelijnen className="absolute inset-0 h-full w-full opacity-30 [mask-image:radial-gradient(ellipse_at_50%_50%,black_60%,transparent_100%)]" />
+      <Hoogtelijnen className="absolute inset-0 h-full w-full opacity-15 [mask-image:radial-gradient(ellipse_at_50%_50%,black_60%,transparent_100%)]" />
       <Container className="relative grid gap-10 pb-20 pt-12 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:pb-24 lg:pt-16">
         <div>
           <Sticker kleur="zon" className="mb-6">
