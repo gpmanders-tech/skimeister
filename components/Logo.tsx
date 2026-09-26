@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 
 /**
  * Skimeister-logo (richting F, gekozen 25-9-2026): "skimeister" in Titan One
- * met drie strepen eronder. Oranje en amber blijven altijd; de letters en de
+ * met drie strepen eronder. Oranje en ijsblauw blijven altijd; de letters en de
  * onderste streep zijn inkt op een licht vlak en crème op een donker vlak.
  */
 export function Woordmerk({
@@ -16,7 +16,7 @@ export function Woordmerk({
   /** Zonder label is het logo decoratief (bijvoorbeeld binnen een link met eigen label). */
   label?: string;
 }) {
-  const inkt = variant === "light" ? "#faf6ee" : "#0b0a09";
+  const inkt = variant === "light" ? "#ffffff" : "#0c1c33";
   return (
     <svg
       viewBox="0 0 320 130"
@@ -38,7 +38,7 @@ export function Woordmerk({
         skimeister
       </text>
       <rect x="18" y="86" width="284" height="9" rx="4.5" fill="#ff6b35" />
-      <rect x="18" y="100" width="284" height="9" rx="4.5" fill="#ffb347" />
+      <rect x="18" y="100" width="284" height="9" rx="4.5" fill="#7cc4ff" />
       <rect x="18" y="114" width="284" height="9" rx="4.5" fill={inkt} />
     </svg>
   );

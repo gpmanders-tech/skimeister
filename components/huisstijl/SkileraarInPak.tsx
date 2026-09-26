@@ -112,9 +112,9 @@ export function SkileraarInPak({ className }: { className?: string }) {
         </clipPath>
       </defs>
       <g clipPath="url(#kaart)">
-      <rect width="560" height="560" fill="#1a1816" />
+      <rect width="560" height="560" fill="#0c3066" />
       {/* retro zon met strepen */}
-      <circle cx="280" cy="250" r="228" fill={AMBER} />
+      <circle cx="280" cy="250" r="228" fill="#7cc4ff" />
       <g clipPath="url(#zon)">
         <rect x="40" y="318" width="480" height="7" fill={INKT} />
         <rect x="40" y="342" width="480" height="11" fill={INKT} />
@@ -122,7 +122,7 @@ export function SkileraarInPak({ className }: { className?: string }) {
       </g>
       {/* bergen en sneeuw */}
       <polygon points="0,450 110,318 180,380 280,262 385,392 450,330 560,450 560,560 0,560" fill={CREME} />
-      <polygon points="280,262 318,306 298,300 280,318 262,300 244,306" fill="#ebe2d0" />
+      <polygon points="280,262 318,306 298,300 280,318 262,300 244,306" fill="#d9e6f6" />
       <rect x="0" y="470" width="560" height="90" fill={CREME} />
       {/* figuren: achterkant groot, voorkant iets kleiner ernaast */}
       <g transform="translate(-20 0)">
