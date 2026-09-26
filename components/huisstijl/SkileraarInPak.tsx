@@ -8,23 +8,23 @@ const PAK = "#121110";
 const BROEK = "#1b1917";
 const HELM = "#2a2826";
 const LAARS = "#3a3633";
-const CREME = "#faf6ee";
+const WIT = "#ffffff";
 const ORANJE = "#ff6b35";
-const AMBER = "#ffb347";
-const INKT = "#0b0a09";
+const IJSBLAUW = "#7cc4ff";
+const INKT = "#0c1c33";
 const HUID = "#e9b48f";
 const titan = { fontFamily: "var(--font-titan), sans-serif" };
 
-/** Het rondje van de borst: zwart, crème "s", oranje en amber streep. */
+/** Het rondje van de borst: zwart, witte "s", oranje en ijsblauwe streep. */
 export function BorstBadge({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 100 100" className={className} role="img" aria-label="Skimeister-badge">
-      <circle cx="50" cy="50" r="46" fill={INKT} stroke={CREME} strokeWidth="4" />
-      <text x="50" y="58" textAnchor="middle" fontSize="54" fill={CREME} style={titan}>
+      <circle cx="50" cy="50" r="46" fill={INKT} stroke={WIT} strokeWidth="4" />
+      <text x="50" y="58" textAnchor="middle" fontSize="54" fill={WIT} style={titan}>
         s
       </text>
       <rect x="27" y="66" width="46" height="6" rx="3" fill={ORANJE} />
-      <rect x="27" y="76" width="46" height="6" rx="3" fill={AMBER} />
+      <rect x="27" y="76" width="46" height="6" rx="3" fill={IJSBLAUW} />
     </svg>
   );
 }
@@ -49,8 +49,8 @@ function Figuur({ kant }: { kant: "voor" | "achter" }) {
       <polygon points="272,182 304,292 282,300 254,212" fill={PAK} />
       <circle cx="126" cy="298" r="12" fill={HELM} />
       <circle cx="294" cy="298" r="12" fill={HELM} />
-      <rect x="115" y="280" width="24" height="6" rx="3" fill={AMBER} transform="rotate(17 127 283)" />
-      <rect x="281" y="280" width="24" height="6" rx="3" fill={AMBER} transform="rotate(-17 293 283)" />
+      <rect x="115" y="280" width="24" height="6" rx="3" fill={IJSBLAUW} transform="rotate(17 127 283)" />
+      <rect x="281" y="280" width="24" height="6" rx="3" fill={IJSBLAUW} transform="rotate(-17 293 283)" />
       {/* jas */}
       <path d="M160 168 Q210 150 260 168 L280 202 L270 342 Q210 355 150 342 L140 202 Z" fill={PAK} />
       <path d="M144 206 Q210 196 276 206" stroke={HELM} strokeWidth="2" fill="none" />
@@ -61,20 +61,20 @@ function Figuur({ kant }: { kant: "voor" | "achter" }) {
           <ellipse cx="210" cy="126" rx="37" ry="35" fill={HELM} />
           <rect x="172" y="126" width="76" height="12" rx="6" fill={ORANJE} />
           {/* woordmerk onderaan de rug */}
-          <text x="210" y="313" textAnchor="middle" fontSize="23" textLength="100" lengthAdjust="spacingAndGlyphs" fill={CREME} style={titan}>
+          <text x="210" y="313" textAnchor="middle" fontSize="23" textLength="100" lengthAdjust="spacingAndGlyphs" fill={WIT} style={titan}>
             skimeister
           </text>
           <rect x="160" y="318" width="100" height="3.6" rx="1.8" fill={ORANJE} />
-          <rect x="160" y="324" width="100" height="3.6" rx="1.8" fill={AMBER} />
-          <rect x="160" y="330" width="100" height="3.6" rx="1.8" fill={CREME} />
+          <rect x="160" y="324" width="100" height="3.6" rx="1.8" fill={IJSBLAUW} />
+          <rect x="160" y="330" width="100" height="3.6" rx="1.8" fill={WIT} />
         </>
       ) : (
         <>
           {/* gezicht, helm en skibril */}
           <ellipse cx="210" cy="142" rx="26" ry="27" fill={HUID} />
           <path d="M173 132 A37 37 0 0 1 247 132 Z" fill={HELM} />
-          <rect x="178" y="122" width="64" height="22" rx="10" fill={AMBER} stroke={INKT} strokeWidth="3" />
-          <rect x="186" y="127" width="20" height="5" rx="2.5" fill={CREME} opacity="0.7" />
+          <rect x="178" y="122" width="64" height="22" rx="10" fill={IJSBLAUW} stroke={INKT} strokeWidth="3" />
+          <rect x="186" y="127" width="20" height="5" rx="2.5" fill={WIT} opacity="0.7" />
           <rect x="186" y="156" width="48" height="18" rx="7" fill={PAK} />
           {/* rits en zakken */}
           <line x1="210" y1="172" x2="210" y2="340" stroke={LAARS} strokeWidth="2.5" />
@@ -82,12 +82,12 @@ function Figuur({ kant }: { kant: "voor" | "achter" }) {
           <line x1="260" y1="282" x2="234" y2="276" stroke={HELM} strokeWidth="2.5" strokeLinecap="round" />
           {/* badge op de linkerborst (rechts in beeld) */}
           <g transform="translate(224 196) scale(0.3)">
-            <circle cx="50" cy="50" r="48" fill={INKT} stroke={CREME} strokeWidth="5" />
-            <text x="50" y="58" textAnchor="middle" fontSize="54" fill={CREME} style={titan}>
+            <circle cx="50" cy="50" r="48" fill={INKT} stroke={WIT} strokeWidth="5" />
+            <text x="50" y="58" textAnchor="middle" fontSize="54" fill={WIT} style={titan}>
               s
             </text>
             <rect x="27" y="66" width="46" height="7" rx="3.5" fill={ORANJE} />
-            <rect x="27" y="77" width="46" height="7" rx="3.5" fill={AMBER} />
+            <rect x="27" y="77" width="46" height="7" rx="3.5" fill={IJSBLAUW} />
           </g>
         </>
       )}
@@ -114,16 +114,16 @@ export function SkileraarInPak({ className }: { className?: string }) {
       <g clipPath="url(#kaart)">
       <rect width="560" height="560" fill="#0c3066" />
       {/* retro zon met strepen */}
-      <circle cx="280" cy="250" r="228" fill="#7cc4ff" />
+      <circle cx="280" cy="250" r="228" fill="#a8d8ff" />
       <g clipPath="url(#zon)">
         <rect x="40" y="318" width="480" height="7" fill={INKT} />
         <rect x="40" y="342" width="480" height="11" fill={INKT} />
         <rect x="40" y="370" width="480" height="15" fill={INKT} />
       </g>
       {/* bergen en sneeuw */}
-      <polygon points="0,450 110,318 180,380 280,262 385,392 450,330 560,450 560,560 0,560" fill={CREME} />
+      <polygon points="0,450 110,318 180,380 280,262 385,392 450,330 560,450 560,560 0,560" fill={WIT} />
       <polygon points="280,262 318,306 298,300 280,318 262,300 244,306" fill="#d9e6f6" />
-      <rect x="0" y="470" width="560" height="90" fill={CREME} />
+      <rect x="0" y="470" width="560" height="90" fill={WIT} />
       {/* figuren: achterkant groot, voorkant iets kleiner ernaast */}
       <g transform="translate(-20 0)">
         <Figuur kant="achter" />
