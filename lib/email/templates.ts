@@ -17,24 +17,24 @@ function layout(
   taal: Taal = "nl",
 ): string {
   return `
-  <div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;color:#0b0a09">
-    <div style="background:#0b0a09;padding:22px 28px 18px;border-radius:16px 16px 0 0">
-      <span style="color:#faf6ee;font-size:24px;font-weight:900;letter-spacing:-0.5px">skimeister</span>
+  <div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;color:#0c1c33">
+    <div style="background:#0f3b7a;padding:22px 28px 18px;border-radius:16px 16px 0 0">
+      <span style="color:#ffffff;font-size:24px;font-weight:900;letter-spacing:-0.5px">skimeister</span>
       <div style="margin-top:8px;width:132px">
         <div style="height:4px;border-radius:2px;background:#ff6b35"></div>
-        <div style="height:4px;border-radius:2px;background:#ffb347;margin-top:3px"></div>
-        <div style="height:4px;border-radius:2px;background:#faf6ee;margin-top:3px"></div>
+        <div style="height:4px;border-radius:2px;background:#7cc4ff;margin-top:3px"></div>
+        <div style="height:4px;border-radius:2px;background:#ffffff;margin-top:3px"></div>
       </div>
     </div>
-    <div style="border:1px solid #ebe2d0;border-top:0;border-radius:0 0 16px 16px;padding:28px">
+    <div style="border:1px solid #d9e6f6;border-top:0;border-radius:0 0 16px 16px;padding:28px">
       <h1 style="font-size:20px;margin:0 0 12px">${title}</h1>
-      <div style="font-size:15px;line-height:1.6;color:#1a1816">${body}</div>
+      <div style="font-size:15px;line-height:1.6;color:#0c1c33">${body}</div>
       ${
         cta
           ? `<div style="margin-top:24px"><a href="${cta.href}" style="display:inline-block;background:#ff6b35;color:#fff;text-decoration:none;padding:12px 22px;border-radius:999px;font-weight:600">${cta.label}</a></div>`
           : ""
       }
-      <p style="margin-top:28px;font-size:12px;color:#857b6a">${SLOGAN[taal]}</p>
+      <p style="margin-top:28px;font-size:12px;color:#4a5d78">${SLOGAN[taal]}</p>
     </div>
   </div>`;
 }
@@ -42,7 +42,7 @@ function layout(
 /** Eén regel in een label/waarde-tabel. */
 function row(label: string, value: string): string {
   return (
-    `<tr><td style="padding:8px 12px 8px 0;border-bottom:1px solid #eef1f6;color:#857b6a;white-space:nowrap;vertical-align:top">${label}</td>` +
+    `<tr><td style="padding:8px 12px 8px 0;border-bottom:1px solid #eef1f6;color:#4a5d78;white-space:nowrap;vertical-align:top">${label}</td>` +
     `<td style="padding:8px 0;border-bottom:1px solid #eef1f6"><strong>${value}</strong></td></tr>`
   );
 }
@@ -123,7 +123,7 @@ export const emailTemplates = {
         row("Instructeur", c.instructeur) +
         `</table>` +
         (c.bericht
-          ? `<blockquote style="margin:16px 0 0;padding-left:14px;border-left:2px solid #ffb347;color:#1a1816;font-style:italic">${c.bericht}</blockquote>`
+          ? `<blockquote style="margin:16px 0 0;padding-left:14px;border-left:2px solid #7cc4ff;color:#0c1c33;font-style:italic">${c.bericht}</blockquote>`
           : ""),
       { label: "Bekijk de reactie", href: `${SITE}/admin/opdrachten/${c.opdrachtId}` },
     ),

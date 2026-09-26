@@ -9,7 +9,7 @@ const base =
 
 const variants: Record<Variant, string> = {
   primary: "bg-alpine-600 text-white hover:bg-alpine-700 shadow-lg shadow-alpine-600/25",
-  accent: "bg-piste-500 text-white hover:bg-piste-600 shadow-lg shadow-piste-600/25",
+  accent: "bg-piste-500 text-alpine-900 hover:bg-piste-400 shadow-lg shadow-piste-600/25",
   outline: "border-2 border-alpine-600 text-alpine-700 hover:bg-alpine-50",
   ghost: "text-alpine-700 hover:bg-alpine-50",
   // Voor gebruik op een foto of een donker vlak. Als losse variant, want

@@ -6,23 +6,23 @@
    =========================================================================== */
 @theme {
   /* ---------------------------------------------------------------------
-     Retro-huisstijl sinds 25-9-2026, afgeleid van het logo (richting F):
-     zwart zoals de skipakken, oranje en amber zoals de strepen, crème als
-     papier. De tokennamen "alpine" en "piste" blijven bestaan zodat de
-     vele pagina's niet hoeven te veranderen; "alpine" is nu de inktschaal.
+     Kleurstelling 'Alpenblauw & oranje' sinds 26-9-2026 (keuze Ger, fris).
+     Het logo blijft richting F; de strepen zijn oranje, ijsblauw en wit/inkt.
+     De tokennaam "alpine" is weer de blauwschaal, "amber" is ijsblauw
+     (tweede streep). Zo hoeven de pagina's niet te veranderen.
      --------------------------------------------------------------------- */
 
-  /* Inkt: warm zwart tot crème (voorheen alpine-blauw) */
-  --color-alpine-50: #f6f0e4;
-  --color-alpine-100: #ebe2d0;
-  --color-alpine-200: #d6cab3;
-  --color-alpine-300: #b3a78f;
-  --color-alpine-400: #857b6a;
-  --color-alpine-500: #5a5247;
-  --color-alpine-600: #1a1816; /* primaire huisstijlkleur: pakzwart */
-  --color-alpine-700: #121110;
-  --color-alpine-800: #0e0d0c;
-  --color-alpine-900: #0b0a09;
+  /* Alpenblauw, 900 = inkt */
+  --color-alpine-50: #eef4fb;
+  --color-alpine-100: #d9e6f6;
+  --color-alpine-200: #b3cbeb;
+  --color-alpine-300: #7fa6d9;
+  --color-alpine-400: #4a7cc0;
+  --color-alpine-500: #4a5d78;
+  --color-alpine-600: #0f3b7a; /* primaire huisstijlkleur: alpenblauw */
+  --color-alpine-700: #0c3066;
+  --color-alpine-800: #0a2650;
+  --color-alpine-900: #0c1c33;
 
   /* Accent: oranje van de bovenste streep */
   --color-piste-50: #fff3ee;
@@ -34,25 +34,25 @@
   --color-piste-600: #e85420;
   --color-piste-700: #c04116;
 
-  /* Amber van de middelste streep */
-  --color-amber-100: #ffecc9;
-  --color-amber-300: #ffc56b;
-  --color-amber-400: #ffb347;
-  --color-amber-500: #f09a1a;
+  /* Ijsblauw van de middelste streep (tokennaam amber blijft) */
+  --color-amber-100: #e3f2ff;
+  --color-amber-300: #a8d8ff;
+  --color-amber-400: #7cc4ff;
+  --color-amber-500: #4aa8f0;
 
   /* Papier */
-  --color-snow: #faf6ee;
-  --color-snow-200: #f1eadb;
+  --color-snow: #f3f7fc;
+  --color-snow-200: #e6eef8;
 
   /* Familie-tokens (gedeelde componenten), hier naar de retro-kleuren */
-  --color-zee-50: #f6f0e4;
-  --color-zee-100: #ebe2d0;
-  --color-zee-200: #d6cab3;
-  --color-zee-300: #b3a78f;
-  --color-zee-400: #ffb347;
-  --color-zee-500: #5a5247;
-  --color-zee-600: #1a1816;
-  --color-zee-700: #121110;
+  --color-zee-50: #eef4fb;
+  --color-zee-100: #d9e6f6;
+  --color-zee-200: #b3cbeb;
+  --color-zee-300: #7fa6d9;
+  --color-zee-400: #7cc4ff;
+  --color-zee-500: #4a5d78;
+  --color-zee-600: #0f3b7a;
+  --color-zee-700: #0c3066;
 
   --color-vlam-50: #fff3ee;
   --color-vlam-100: #ffe0d2;
@@ -62,14 +62,14 @@
   --color-vlam-600: #c04116;
   --color-vlam-700: #9c340f;
 
-  --color-zon-100: #ffecc9;
-  --color-zon-300: #ffc56b;
+  --color-zon-100: #e3f2ff;
+  --color-zon-300: #a8d8ff;
   --color-vlam-300: #ff9d72;
-  --color-zon-400: #ffb347;
+  --color-zon-400: #7cc4ff;
 
-  --color-inkt: #0b0a09;
-  --color-inkt-700: #121110;
-  --color-grijs: #5a5247;
+  --color-inkt: #0c1c33;
+  --color-inkt-700: #0c3066;
+  --color-grijs: #4a5d78;
   --color-rood: #b42318;
 
   /* Fonts (gekoppeld in layout.tsx): Titan One voor koppen, Archivo voor tekst */
@@ -78,8 +78,8 @@
 }
 
 :root {
-  --background: #faf6ee;
-  --foreground: #0b0a09;
+  --background: #f3f7fc;
+  --foreground: #0c1c33;
 }
 
 body {
@@ -92,8 +92,8 @@ body {
 .bg-snow-texture {
   background-color: var(--color-snow);
   background-image:
-    radial-gradient(circle at 20% 15%, rgba(11, 10, 9, 0.03) 0, transparent 35%),
-    radial-gradient(circle at 80% 0%, rgba(255, 179, 71, 0.06) 0, transparent 30%);
+    radial-gradient(circle at 20% 15%, rgba(15, 59, 122, 0.04) 0, transparent 35%),
+    radial-gradient(circle at 80% 0%, rgba(124, 196, 255, 0.10) 0, transparent 30%);
 }
 
 /* Berg-silhouet als SVG-achtergrond kan per sectie worden toegevoegd */
@@ -110,7 +110,7 @@ h3, h4 {
   letter-spacing: -0.01em;
 }
 
-/* De drie strepen uit het logo: oranje, amber, crème */
+/* De drie strepen uit het logo: oranje, ijsblauw, wit */
 .strepen {
   display: grid;
   gap: 4px;

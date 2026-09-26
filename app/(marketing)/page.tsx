@@ -133,7 +133,7 @@ export default async function HomePage() {
 /* ── Hero ──────────────────────────────────────────────────────────────────*/
 function Hero() {
   return (
-    <section className="op-donker relative overflow-hidden bg-alpine-900 text-white">
+    <section className="op-donker relative overflow-hidden bg-alpine-600 text-white">
       {/* Hoogtelijnen rond Zermatt als watermerk */}
       <Hoogtelijnen className="absolute inset-0 h-full w-full opacity-30 [mask-image:radial-gradient(ellipse_at_50%_50%,black_60%,transparent_100%)]" />
       <Container className="relative grid gap-10 pb-20 pt-12 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:pb-24 lg:pt-16">

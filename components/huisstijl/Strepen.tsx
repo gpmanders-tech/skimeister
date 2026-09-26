@@ -16,7 +16,7 @@ export function Strepen({
     <div aria-hidden="true" className={cn("strepen", className)}>
       <span className="bg-piste-500" />
       <span className="bg-amber-400" />
-      <span className={licht ? "bg-alpine-900" : "bg-snow"} />
+      <span className={licht ? "bg-alpine-900" : "bg-white"} />
     </div>
   );
 }
