@@ -61,7 +61,7 @@ export async function notifyAdminSignupCopy(copy: SignupCopy): Promise<void> {
 }
 
 /** Kopie (cc) van beheermeldingen naar Ger zelf (keuze Ger 6-10-2026). Uit te zetten met ADMIN_CC="-". */
-function adminCc(): string | undefined {
+export function adminCc(): string | undefined {
   const cc = (process.env.ADMIN_CC ?? "gpmanders@gmail.com").trim();
   return cc && cc !== "-" ? cc : undefined;
 }
