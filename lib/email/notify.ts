@@ -57,7 +57,13 @@ export interface SignupCopy {
 export async function notifyAdminSignupCopy(copy: SignupCopy): Promise<void> {
   const to = (process.env.ADMIN_EMAIL || "info@skimeister.nl").trim();
   if (!to) return;
-  await sendEmail({ to, ...emailTemplates.signupCopy(copy) });
+  await sendEmail({ to, cc: adminCc(), ...emailTemplates.signupCopy(copy) });
+}
+
+/** Kopie (cc) van beheermeldingen naar Ger zelf (keuze Ger 6-10-2026). Uit te zetten met ADMIN_CC="-". */
+function adminCc(): string | undefined {
+  const cc = (process.env.ADMIN_CC ?? "gpmanders@gmail.com").trim();
+  return cc && cc !== "-" ? cc : undefined;
 }
 
 /**
@@ -72,7 +78,7 @@ export async function notifyAdminNewReaction(c: {
 }) {
   const to = (process.env.ADMIN_EMAIL || "info@skimeister.nl").trim();
   if (!to) return;
-  await sendEmail({ to, ...emailTemplates.adminNieuweReactie(c) });
+  await sendEmail({ to, cc: adminCc(), ...emailTemplates.adminNieuweReactie(c) });
 }
 
 export async function notifyNewMessage(receiverId: string, senderName: string) {

@@ -35,6 +35,7 @@ const FROM = process.env.MAIL_FROM ?? "Skimeister <info@skimeister.nl>";
  */
 export async function sendEmail(opts: {
   to: string;
+  cc?: string;
   subject: string;
   html: string;
   replyTo?: string;
@@ -48,6 +49,7 @@ export async function sendEmail(opts: {
     await t.sendMail({
       from: FROM,
       to: opts.to,
+      cc: opts.cc || undefined,
       subject: opts.subject,
       html: opts.html,
       replyTo: opts.replyTo,
