@@ -85,6 +85,7 @@ export const emailTemplates = {
     rijbewijs?: boolean | null;
     vog?: boolean | null;
     ehbo?: boolean | null;
+    gevondenVia?: string | null;
   }) => {
     const jn = (v: boolean | null | undefined) => (v === true ? "Ja" : v === false ? "Nee" : "Niet ingevuld");
     return {
@@ -101,6 +102,7 @@ export const emailTemplates = {
           (c.rijbewijs !== undefined ? row("Rijbewijs", jn(c.rijbewijs)) : "") +
           (c.vog !== undefined ? row("VOG", jn(c.vog)) : "") +
           (c.ehbo !== undefined ? row("EHBO", jn(c.ehbo)) : "") +
+          row("Gevonden via", c.gevondenVia || "Niet ingevuld") +
           (c.ip ? row("IP-adres", c.ip) : "") +
           `</table>`,
         { label: "Bekijk in admin", href: `${SITE}/admin/gebruikers` },

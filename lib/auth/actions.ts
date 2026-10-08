@@ -106,6 +106,12 @@ export async function signUpAction(
   const rijbewijs = jaNee("has_drivers_license");
   const heeftVog = jaNee("has_vog");
   const heeftEhbo = jaNee("has_ehbo");
+  // Herkomst (keuze Ger 8-10-2026), alleen bekende waarden
+  const HERKOMST: Record<string, string> = {
+    google: "Via Google", skischool: "Via een skischool", "vriend-collega": "Via een vriend of collega",
+    social: "Via social media", whatsapp: "Via de WhatsApp-groep", anders: "Anders",
+  };
+  const gevondenVia = HERKOMST[String(formData.get("gevonden_via") ?? "")] ?? null;
 
   if (isInstructeur) {
     if (voornaam.length < 2 || achternaam.length < 2) {
@@ -157,6 +163,7 @@ export async function signUpAction(
         rijbewijs,
         vog: heeftVog,
         ehbo: heeftEhbo,
+        gevonden_via: gevondenVia,
       },
     });
 
@@ -222,6 +229,7 @@ export async function signUpAction(
         rijbewijs,
         vog: heeftVog,
         ehbo: heeftEhbo,
+        gevondenVia,
       });
     } catch (e) {
       console.error("Registratie-mail mislukt (genegeerd):", e);

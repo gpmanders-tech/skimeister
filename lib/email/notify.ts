@@ -47,6 +47,7 @@ export interface SignupCopy {
   rijbewijs?: boolean | null;
   vog?: boolean | null;
   ehbo?: boolean | null;
+  gevondenVia?: string | null;
 }
 
 /**

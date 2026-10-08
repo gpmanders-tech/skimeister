@@ -202,6 +202,20 @@ export function RegisterForm({
           </>
         ) : null}
 
+        {/* Herkomst (keuze Ger 8-10-2026): zo zien we hoe skileraren Skimeister vinden. */}
+        <div>
+          <Label htmlFor="gevonden_via">Hoe heb je Skimeister gevonden?</Label>
+          <Select id="gevonden_via" name="gevonden_via" defaultValue="">
+            <option value="">Kies wat past (niet verplicht)</option>
+            <option value="google">Via Google</option>
+            <option value="skischool">Via een skischool</option>
+            <option value="vriend-collega">Via een vriend of collega</option>
+            <option value="social">Via social media</option>
+            <option value="whatsapp">Via de WhatsApp-groep</option>
+            <option value="anders">Anders</option>
+          </Select>
+        </div>
+
         <div>
           <Label htmlFor="password">Wachtwoord</Label>
           <Input
