@@ -7,7 +7,15 @@ import { PageHero } from "@/components/marketing/PageHero";
 import { OpdrachtKaart } from "@/components/opdrachten/OpdrachtKaart";
 import { RESORTS, getResortBySlug } from "@/lib/constants/resorts";
 import { getOpenOpdrachten } from "@/lib/opdrachten/queries";
-import { canoniek, CERT_PER_LAND } from "@/lib/seo";
+import { canoniek, CERT_PER_LAND, webpaginaJsonLd } from "@/lib/seo";
+import { JsonLd } from "@/components/seo/JsonLd";
+
+/** Zelfde tekst als generateMetadata(), zodat titel/description en de structured data nooit uit elkaar lopen. */
+function omschrijving(resort: { name: string; country: string }, aantal: number) {
+  return aantal > 0
+    ? `${aantal} open ${aantal === 1 ? "opdracht" : "opdrachten"} voor skileraren in ${resort.name}, ${resort.country}. Bekijk periode, gevraagde certificering en vergoeding, en reageer met één klik.`
+    : `Werken als skileraar in ${resort.name}, ${resort.country}: welke certificering gangbaar is en hoe je via Skimeister op opdrachten reageert.`;
+}
 
 export function generateStaticParams() {
   return RESORTS.map((r) => ({ slug: r.slug }));
@@ -33,10 +41,7 @@ export async function generateMetadata({
       aantal > 0
         ? `${aantal} ${aantal === 1 ? "opdracht" : "opdrachten"} voor skileraren in ${resort.name}`
         : `Skileraar worden in ${resort.name}`,
-    description:
-      aantal > 0
-        ? `${aantal} open ${aantal === 1 ? "opdracht" : "opdrachten"} voor skileraren in ${resort.name}, ${resort.country}. Bekijk periode, gevraagde certificering en vergoeding, en reageer met één klik.`
-        : `Werken als skileraar in ${resort.name}, ${resort.country}: welke certificering gangbaar is en hoe je via Skimeister op opdrachten reageert.`,
+    description: omschrijving(resort, aantal),
     ...canoniek(`/skigebied/${slug}`),
     // Een pagina zonder opdrachten heeft weinig eigens te vertellen. Die
     // houden we uit de index tot er echte inhoud staat: 27 dunne pagina's
@@ -59,6 +64,17 @@ export default async function ResortPage({
 
   return (
     <>
+      <JsonLd
+        data={webpaginaJsonLd({
+          pad: `/skigebied/${resort.slug}`,
+          naam:
+            opdrachten.length > 0
+              ? `Opdrachten voor skileraren in ${resort.name}`
+              : `Skileraar worden in ${resort.name}`,
+          omschrijving: omschrijving(resort, opdrachten.length),
+          type: "CollectionPage",
+        })}
+      />
       <PageHero
         eyebrow={resort.country}
         title={

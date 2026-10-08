@@ -1,18 +1,28 @@
 import type { Metadata } from "next";
-import { canoniek } from "@/lib/seo";
+import { canoniek, webpaginaJsonLd } from "@/lib/seo";
 import { Container } from "@/components/ui/Container";
 import { PageHero } from "@/components/marketing/PageHero";
+import { JsonLd } from "@/components/seo/JsonLd";
+
+const OMSCHRIJVING =
+  "Hoe Skimeister.nl omgaat met je persoonsgegevens (AVG/GDPR): welke gegevens we verwerken, waar ze staan, welke cookies we gebruiken en je rechten.";
 
 export const metadata: Metadata = {
   ...canoniek("/privacy"),
   title: "Privacybeleid",
-  description:
-    "Hoe Skimeister.nl omgaat met je persoonsgegevens (AVG/GDPR): welke gegevens we verwerken, waar ze staan, welke cookies we gebruiken en je rechten.",
+  description: OMSCHRIJVING,
 };
 
 export default function Page() {
   return (
     <>
+      <JsonLd
+        data={webpaginaJsonLd({
+          pad: "/privacy",
+          naam: "Privacybeleid van Skimeister.nl",
+          omschrijving: OMSCHRIJVING,
+        })}
+      />
       <PageHero eyebrow="Juridisch" title="Privacybeleid" kruimels={[{ naam: "Privacybeleid", pad: "/privacy" }]} />
       <Container className="py-16">
         <div className="mx-auto max-w-2xl space-y-5 text-sm text-alpine-800">

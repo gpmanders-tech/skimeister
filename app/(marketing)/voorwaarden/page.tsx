@@ -1,18 +1,28 @@
 import type { Metadata } from "next";
-import { canoniek } from "@/lib/seo";
+import { canoniek, webpaginaJsonLd } from "@/lib/seo";
 import { Container } from "@/components/ui/Container";
 import { PageHero } from "@/components/marketing/PageHero";
+import { JsonLd } from "@/components/seo/JsonLd";
+
+const OMSCHRIJVING =
+  "De algemene voorwaarden voor het gebruik van Skimeister.nl door skileraren, aspiranten, skischolen, reisorganisaties en scholen.";
 
 export const metadata: Metadata = {
   ...canoniek("/voorwaarden"),
   title: "Algemene voorwaarden",
-  description:
-    "De algemene voorwaarden voor het gebruik van Skimeister.nl door skileraren, aspiranten, skischolen, reisorganisaties en scholen.",
+  description: OMSCHRIJVING,
 };
 
 export default function Page() {
   return (
     <>
+      <JsonLd
+        data={webpaginaJsonLd({
+          pad: "/voorwaarden",
+          naam: "Algemene voorwaarden van Skimeister.nl",
+          omschrijving: OMSCHRIJVING,
+        })}
+      />
       <PageHero eyebrow="Juridisch" title="Algemene voorwaarden" kruimels={[{ naam: "Algemene voorwaarden", pad: "/voorwaarden" }]} />
       <Container className="py-16">
         <div className="mx-auto max-w-2xl space-y-5 text-sm text-alpine-800">
